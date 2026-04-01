@@ -1,0 +1,76 @@
+:root {
+  --bg-color:#0b0d11; --card-bg:#161b22;--accent-color:#26a69a;--text-primary:#ffffff;--text-secondary:#9ca3af;--font-family:'Segoe UI',system-ui,sans-serif;
+}
+.header {
+  display: flex; align-items: center; justify-content: space-between; padding: 0 20px; height: 60px; background-color: #1e1e1e; border-bottom: 1px solid #30363d; position: sticky; top: 0; z-index: 1000;
+}
+.header-left {
+  display: flex; align-items: center; gap: 15px;
+}
+.logo {
+  display: flex; align-items: center; gap: 10px; text-decoration: none; color: #ffffff; font-weight: bold; font-size: 1.1rem;
+}
+.logo img {
+  height: 32px; border-radius: 4px;
+}
+.search-container input {
+  background-color: #3c3c3c; border: 1px solid #555; color: white; padding: 6px 12px; border-radius: 4px; width: 200px; font-size: 0.9rem; transition: width 0.3s, border-color 0.3s;
+}
+.search-container input:focus {
+  outline: none; border-color: #26a69a; width: 240px;
+}
+.navi {
+  display: flex; align-items: center; gap: 25px;
+}
+.nav-links {
+  display: flex; list-style: none; gap: 20px; margin: 0; padding: 0;
+}
+.nav-links a {
+  text-decoration: none; color: #cccccc; font-size: 0.95rem; transition: color 0.2s;
+}
+.nav-links a:hover {
+  color: #ffffff;
+}
+.menu-trigger {
+  display: none; flex-direction: column; gap: 4px; background: none; border: none; cursor: pointer;
+}
+.menu-trigger span {
+  display: block; width: 20px; height: 2px; background-color: #ffffff;
+}
+@media (max-width:768px){
+  .nav-links, .search-container {display: none;}
+  .menu-trigger {display: flex;}
+}
+body {
+  background-color: var(--bg-color); color: var(--text-primary); font-family: var(--font-family); margin: 0; line-height: 1.6;
+}
+h1 {
+  padding: 5px;
+}
+p {
+  padding: 5px;
+}
+section {
+  padding: 5px;
+}
+.container {
+  display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 80px 20px; text-align: center; background: radial-gradient(circle at top, #1e252e 0%, var(--bg-color) 70%);
+}
+.htitle {
+  font-size: 3.5rem; margin-top: 0.5rem; font-weight: 800; letter-spacing: -0.02em;
+}
+.download-box {
+  display: inline-flex; align-items: center; background-color: var(--accent-color); color: white; padding: 14px 32px; border-radius: 6px; text-decoration: none; font-size: 1.2rem; transition: transform 0.2s, background-color 0.2s; box-shadow: 0 4px 14px rgba(38, 166, 154, 0.4);
+}
+.download-box:hover {
+  background-color: #2bbbad; transform: translateY(-2px);
+}
+fieldset {
+  border: 1px solid #30363d; border-radius: 8px; background-color: var(--card-bg); padding: 20px; margin: 40px auto; width: 400px;max-width: 600px;
+}
+legend {
+  color: var(--accent-color); padding: 0 10px; font-weight: bold;
+}
+code {
+  font-family:'Courier New', Courier, monospace; color: #d1d5db; font-weight: bold;
+}
