@@ -7,7 +7,175 @@
   <meta name="author" content="Hiraku Yamana">
   <meta name="keywords" content="Module,Programming,Language">
   <title>Module Document</title>
-  <link rel="stylesheet" href="module.css">
+  <style>
+    :root {
+      --card-bg: #000; --accent-color: #26a69a; --text-primary: #000; --text-secondary: #9ca3af; --cell-size: 50px; --border-color: #333; --highlight-color: #e6f2ff; --syntax-bg: #f6f8fa;
+    }
+    .code-container {
+      border: 1px solid #30363d; border-radius: 10px; color: #fff; background-color: #0d1117; margin: 20px 20%;
+    }
+    .code-header {
+      display: flex; border-radius: 8px; justify-content: space-between; padding: 8px 16px; background-color: #161b22; border-bottom: 1px solid #30363d; box-sizing: border-box; color: #fff;
+    }
+    .code {
+      font-family: 'Consolas'; white-space: pre; padding-top: 10px; padding-bottom: 10px; margin-left: 10px;
+    }
+    .header {
+      display: flex; align-items: center; justify-content: space-between; padding: 0 20px; height: 60px; background-color: #1e1e1e; border-bottom: 1px solid #30363d; position: sticky; top: 0; z-index: 1000;
+    }
+    .header-left {
+      display: flex; align-items: center; gap: 15px;
+    }
+    .logo {
+      display: flex; align-items: center; gap: 10px; text-decoration: none; color: #fff; font-weight: bold; font-size: 1rem;
+    }
+    .logo img {
+      height: 32px; border-radius: 4px;
+    }
+    #checkbox {
+      margin-right: 8px; width: 16px; height: 16px; cursor: pointer;
+    }
+    .search-container input {
+      background-color: #3c3c3c; border: 1px solid #555; color: #fff; padding: 6px 12px; border-radius: 4px; width: 200px; font-size: 1rem; border-color: 0.3s;
+    }
+    .search-container input:focus {
+      outline: none; border-color: var(--accent-color);
+    }
+    .navi {
+      display: flex; align-items: center; gap: 25px;
+    }
+    .navi-links {
+      display: flex; list-style: none; gap: 15px; margin: 0; padding: 0;
+    }
+    .nav-links a {
+      text-decoration: none; color: #ccc; font-size: 1rem; transition: color 0.2s;
+    }
+    .nav-links a:hover {
+      color: #fff; text-decoration: underline;
+    }
+    .menu-trigger {
+      color: #fff; font-size: large; display: none; flex-direction: column; gap: 4px; background: none; border: none;
+    }
+    .menu-trigger span {
+      display: block; width: 20px; height: 2px; background-color: #fff;
+    }
+    @media (max-width:768px){
+      .navi {
+        position: fixed; top: 60px; left: -100%; width: auto; height: auto; background-color: #1e1e1e; display: flex;
+      }
+      .navi:active {
+        left: 0;
+      }
+      .nav-links {
+        flex-direction: column; padding: 20px; display: flex !important;
+      }
+      .search-container {
+        display: flex; justify-items: center;
+      }
+      .menu-trigger {
+        display: flex;
+      }
+    }
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif; margin: 0; color: var(--text-primary); background-color: #fff; line-height: 1.6;
+    }
+    h1 {
+      font-weight: 600; padding-left: 10px; margin-top: 24px; margin-bottom: 16px; margin-left: 7px; border-left: 4px solid #696969; background: none !important; font-size: 2rem; padding-bottom: 0.3em; border-bottom: 1px solid var(--border-color);
+    }
+    h2 {
+      padding: 5px; font-size: 1.5rem; font-weight: 600; margin-top: 24px; margin-bottom: 10px;
+    }
+    h3 {
+      padding: 5px;
+    }
+    h4 {
+      padding: 5px;
+    }
+    p {
+      padding-left: 15px;
+    }
+    li {
+      margin: 15px;
+    }
+    details {
+      margin: 10%;
+    }
+    table {
+      border: 1px solid #000; text-align: center; position: relative;
+    }
+    article {
+      margin-top: 20px;
+    }
+    .display-row {
+      margin-row: 10px; display: flex; margin-left: 20%;
+    }
+    .cell {
+      width: var(--cell-size); height: var(--cell-size); border: 1px solid var(--border-color); display: flex; justify-content: center; align-items: center; font-size: 1.2rem; font-weight: bold; background-color: #fff;
+    }
+    .container {
+      display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 80px 20px; text-align: center;
+    }
+    .htitle {
+      font-size: 3.5rem; margin-bottom: 40px; letter-spacing: -0.02em;
+    }
+    .download-box {
+      display: inline-flex; align-items: center; background-color: var(--accent-color); color: #fff; padding: 14px 32px; border-radius: 6px; text-decoration: none; font-size: 1rem; transition: 0.2s, background-color 0.2s; box-shadow: 0 4px 14px rgba(38, 166, 154, 0.4);
+    }
+    .download-box:hover {
+      background-color: #2bbbad; transform: translateY(2px); cursor: pointer;
+    }
+    .keyword {
+      color: #ce5dbd;
+    }
+    .function {
+      color: #c5b36b;
+    }
+    .string {
+      color: #ce9178;
+    }
+    .comment {
+      color: #75715e;
+    }
+    .variable {
+      color: #9cdcfe;
+    }
+    .type {
+      color: #377dc8;
+    }
+    .number {
+      color: #b5cea8;
+    }
+    .clname {
+      color: #3e8f66;
+    }
+    .modify {
+      color: #4987ca;
+    }
+    .error {
+      color: #cf4c4c;
+    }
+    .shadow {
+      background-color: #e6dede; border-radius: 4px; padding-left: 3px; padding-right: 3px; padding-top: auto; padding-bottom: auto;
+    }
+    .example {
+      margin-top: 8px; border: 1px solid #e0e0e0; border-radius: 4px; background-color: #fafafa;
+    }
+    .example summary {
+      padding: 10px; cursor: pointer; font-weight: bold; color: #198754;
+    }
+    .example summary::before {
+      display: inline-block; margin-right: 8px; transition: transform 0.2s; font-size: 1rem;
+    }
+    .example[open] summary {
+      border-bottom: 1px solid #e0e0e0;
+    }
+    .example[open] summary::before {
+      transform: rotate(90deg);
+    }
+    .example-contents {
+      padding: 12px; background-color: #1e1e1e; color: #fff; font-family: 'Consolas', 'Courier';
+    }
+  </style>
 </head>
 <body>
   <header class="header">
