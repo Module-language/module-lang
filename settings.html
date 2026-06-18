@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Editor Settings</title>
+  <style>
+    body {
+      background-color: #252526; color: #cccccc; font-family: sans-serif; padding: 20px;
+    }
+    .setting-item {
+      margin-bottom: 20px;
+    }
+    label {
+      display: block; margin-bottom: 8px; font-size: 14px;
+    }
+    select, input {
+      background: #3c3c3c; color: #ffffff; border: 1px solid #6b6b6b; padding: 6px; width: 100%; border-radius: 4px;
+    }
+  </style>
+</head>
+<body>
+  <h2>Editor Settings</h2>
+  <hr style="border-color: #3c3c3c; margin: 15px 0;">
+  <div class="setting-item">
+    <label for="font-size-input">Font Size (px)</label>
+    <input type="number" id="font-size-input" min="20" max="40" value="24">
+  </div>
+  <div class="setting-item">
+    <label for="theme-select">Color Theme</label>
+    <select id="theme-select">
+      <option value="default">Dark (<span style="font-style: italic;">default</span>)</option>
+      <option value="monokai">Monokai</option>
+    </select>
+  </div>
+  <script>
+    function sendSetting(key, value){
+      localStorage.setItem(`setting_${key}`, value);
+      if (window.opener){
+        window.opener.postMessage({
+          type: "UPDATE_SETTING",
+          key: key,
+          value: value
+        }, "*");
+      }
+    }
+    const fontSizeInput = document.getElementById("font-size-input");
+    fontSizeInput.addEventListener("input", (e) => {
+      sendSetting("fontSize", e.target.value);
+    });
+    const themeSelect = document.getElementById("theme-select");
+    themeSelect.addEventListener("change", (e) => {
+      sendSetting("theme", e.target.value);
+    });
+    window.addEventListener("DOMContentLoaded", () => {
+      const savedFsize = localStorage.getItem("setting_fontSize");
+      if (savedFsize){
+        fontSizeInput.value = savedFsize;
+      }
+      const savedTheme = localStorage.getItem("setting_theme");
+      if (savedTheme){
+        themeSelect.value = savedTheme;
+      }
+    });
+  </script>
+</body>
+</html>

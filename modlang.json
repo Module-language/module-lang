@@ -1,0 +1,59 @@
+{
+  "name": "Module",
+  "extension": "mod",
+  "syntax": {
+    "keywords": ["def", "fn", "tef", "if", "else", "ifdef", "is", "and", "or", "xor", "not", "true", "false", "!panic", "!trap", "loop", "end", "continue", "return", "where", "import", "class"],
+    "type": ["void", "bool", "int", "float", "str", "set", "FILE", "ERROR"],
+    "functions": ["input", "output", "sizeof", "typeof", "nameof"],
+    "modifier": ["var", "const", "static", "unsigned", "private"]
+  },
+  "diagnostics": {
+    "type_limits": {
+      "int": {
+        "min": -32768,
+        "max": 32767,
+        "warning_message": "Overflow trap to escalate automatically!"
+      }
+    },
+    "required_syntax": [
+      {
+        "trigger": "fn ",
+        "must_contain": "(",
+        "severity": "error",
+        "message": "Missing argument list '()' after function declaration."
+      }
+    ]
+  },
+  "auto_complete": {
+    "function": {
+      "fn": "fn main(){\n  \n}",
+      "def": "def func(){\n  \n}"
+    }
+  },
+  "docs": {
+    "def": {
+      "syntax": "def <func>(arg1, arg2, ...): statement;",
+      "desc": "declares a no-named function"
+    },
+    "fn": {
+      "syntax": "fn main(): statement;",
+      "desc": "declares a main function"
+    },
+    "tef": {
+      "synatx": "tef <new-type> <type-def>",
+      "desc": "declares a new type"
+    },
+    "output": {
+      "syntax": "output <expr>",
+      "desc": "prints its value (basic print function)"
+    },
+    "input": {
+      "syntax": "input <expr>",
+      "desc": "gets and returns its value"
+    },
+    "var": {
+      "syntax": "var <name>:<type> = <value>",
+      "desc": "declares a variable"
+    }
+  }
+}
