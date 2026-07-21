@@ -9,7 +9,7 @@
   <title>Module Document</title>
   <style>
     html {
-      scroll-behavier: smooth;
+      scroll-behavior: smooth;
       scroll-padding-top: 65px;
     }
     body {
@@ -369,41 +369,63 @@
         <span></span>
         <span></span>
       </button>
-      <a class="logo"><img src="modlang.ico" alt="Modlang Logo"><span>Module Code Editor</span></a>
+      <p><input type="text" spellcheck="true" placeholder="検索する"></p>
     </div>
-    <nav class="navi">
-      <ul class="nav-links">
-        <li><a href="#toc">Contents</a></li>
-        <li><a href="#docs">Docs</a></li>
-        <li><a href="#update">Updates</a></li>
-        <li><a href="#download">Download</a></li>
-        <li><a href="#endow">Endowment</a></li>
+    <nav>
+      <p><a href="#welcome">ようこそ</a></p>
+      <ul>
+        <li>Module言語とは</li>
+        <li>コードの基本構成</li>
       </ul>
-      <div class="search-container"><input id="search" type="text" placeholder="Search for..." spellcheck="false"></div>
+      <p><a href="#begin">はじめに</a></p>
+      <ul>
+        <li>型
+          <ul>
+            <li>整数型</li>
+            <li>浮動小数点数型</li>
+            <li>文字列型</li>
+            <li>集合型</li>
+          </ul>
+        </li>
+        <li>演算子
+          <ul>
+            <li>a</li>
+          </ul>
+        </li>
+        <li>制御文
+          <ul>
+            <li>if</li>
+            <li>loop</li>
+          </ul>
+        </li>
+        <li>関数</li>
+        <li>名前空間</li>
+        <li>標準ライブラリ</li>
+        <li>付録
+          <ul>
+            <li>拡張バッカス・ナウア記法(EBNF)</li>
+            <li>中間表現(MIR)</li>
+          </ul>
+        </li>
+      </ul>
     </nav>
   </header>
   <main>
-    <section>
-      <div id="container" class="container">
-        <span class="htitle">Module Language</span>
-        <a id="download" class="download-box"><div class="icon"></div>Download</a>
-        <article>You have to agree to <a href="https://drive.google.com/file/d/1zz5OEhse6Er7hTmc9F7pjhx3-OWTDE79">licence and privacy</a>.</article>
-      </div>
+    <section id="title">
+      <span class="htitle">Module Language</span>
+      <span class="open-box" id="open-box" onclick="window.open('./code.html')">エディタを開く</span>
+      <article>使用前に <a href="./agreement.html">ライセンスおよび規約</a> に同意する必要があります。</article>
     </section>
-    <section class="hero">
-      <h1>Welcome to us!</h1>
-      <p>Module Language has two methods for editing code:</p>
+    <section id="welcome">
+      <h1>ようこそ</h1>
+      <h2>Moduleとは</h2>
+      <p><strong>安全性</strong>・<strong>記述性</strong>・<strong>性能</strong>のバランスを追求したプログラミング言語です。Visual Studio Code (通称<q>VS Code</q>) などの環境構築を必要とせず、</p>
       <ul>
-        <li>to download <a href="#container">Module Language Set</a> for Windows</li>
-        <li>to open a Module Editor on the web</li>
+        <li><a href="#open-box">公式エディタ</a></li>
+        <li>コンパイラ</li>
       </ul>
-      <h2>Let's start to code Hello World!</h2>
-      <p>We are going to start with Hello World code. Here is the example below:</p>
-      <div class="code-container"><span class="code-header">Module</span>
-        <div class="code"><span class="keyword">fn</span> init(){}<br>  <span class="keyword">def</span> print(<span class="type">str</span>) -> <span class="type">str</span></div>
-      </div>
+      <p>の二つのみで編集ができます。コンパイラは <a>ここから</a> 入手してください。</p>
     </section>
-    <hr>
     <section>
       <h1>About Commercial Use</h1>
       <p>Any licence that we provide you is required for a commercial use. Please click the following URLs and submit it to us.</p>
