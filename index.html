@@ -424,7 +424,70 @@
         <li><a href="#open-box">公式エディタ</a></li>
         <li>コンパイラ</li>
       </ul>
-      <p>の二つのみで編集ができます。コンパイラは <a>ここから</a> 入手してください。</p>
+      <p>の二つのみで編集ができます。コンパイラは <a href="#" onclick="window.confirm('ダウンロードしますか?')">ここから</a> 入手してください。</p>
+      <table>
+        <thead><tr><th>従来の課題</th><th>Moduleの考え方</th></tr></thead>
+        <tbody>
+          <tr><td>メモリ安全</td><td>コンパイラが安全性を補助する</td></tr>
+          <tr><td>記述量</td><td>必要最低限の構文で書ける</td></tr>
+          <tr><td>学習コスト</td><td>初学者でも理解しやすい設計</td></tr>
+        </tbody>
+      </table>
+      <h2>コードの基本構成</h2>
+      <p>基本的に</p>
+      <ol>
+        <li><code>fn init</code>ブロック内で宣言し、</li>
+        <li><code>fn main</code>ブロック内で実行したいことを書き、</li>
+        <li>その間に定義を書く。</li>
+      </ol>
+      <p>という流れです。コードを上部から読んだとき<br><strong>宣言 → 定義 → 実行</strong><br>となります (この順は必須でない) 。コンパイラは<strong>宣言</strong>を優先的に定義し、その次にユーザーの定義を最適化します。</p>
+    </section>
+    <section id="begin">
+      <h1>はじめに</h1>
+      <p>このパートでは、コードを書く際の基本となる情報を整理します。</p>
+      <div class="ref-card">
+        <h2 class="ref-title">コメント</h2>
+        <p class="ref-description">コード中にメモを残しておきたいとき、率直に書くと定義されていない文字が含まれている可能性があるため、コンパイル時警告になります。安全にコメントを書く方法は以下の二通りあります。</p>
+        <section class="ref-section syntax-box">
+          <h3 class="section-label">構文</h3>
+          <code><span class="comment">// コメント</span><br><span class="comment">/-<br> コメント <br>-/</span></code>
+        </section>
+        <p>実行したい内容と無関係な部分は、その部分をコメントにする工夫があります。</p>
+      </div>
+      <div class="ref-card">
+        <h2 class="ref-title">識別子と予約語</h2>
+        <h3>識別子</h3>
+        <p class="ref-description">識別子とは、後述する予約語以外の、以下の規則がある語句のことです:</p>
+        <ul>
+          <li>ユニコード文字である</li>
+          <li>数字で始めてはいけない</li>
+          <li>大文字と小文字は区別される</li>
+        </ul>
+        <h3>予約語</h3>
+        <p>予約語は、既に使用が決まっている語句のことであり、以下の27個が挙げられます:</p>
+        <table>
+          <tbody>
+            <tr><td>void</td><td>bool</td><td>int</td><td>float</td><td>str</td></tr>
+            <tr><td>set</td><td>FILE</td><td>ERROR</td><td>var</td><td>const</td></tr>
+            <tr><td>def</td><td>fn</td><td>tef</td><td>if</td><td>ifdef</td></tr>
+            <tr><td>and</td><td>or</td><td>not</td><td>true</td><td>false</td></tr>
+            <tr><td>is</td><td>loop</td><td>jump</td><td>import</td><td>of</td></tr>
+            <tr><td>new</td><td>in</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="ref-card">
+        <h2 class="ref-title">式と文</h2>
+        <p class="ref-description">式は命令を含まないもの、文は命令を含むものと定義します。文は改行区切りであり、他言語にみられる行末セミコロンは必要ありません。また、インデントはコンパイル時に読み飛ばされるので、プログラマーは自由にタブをいくつか置くことができます。</p>
+        <section class="ref-section syntax-box">
+          <h3 class="section-label">変数の宣言</h3>
+          <code><span class="modify">var</span> name : type = value</code>
+        </section>
+        <section class="ref-section example-box">
+          <h3 class="section-label">値20を、(符号付き)整数型で宣言します。</h3>
+          <code><span class="modify">var</span> age : <span class="type">int</span> = 20</code>
+        </section>
+      </div>
     </section>
     <section>
       <h1>About Commercial Use</h1>
