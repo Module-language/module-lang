@@ -1,27 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="theme-color" content="#4a90e2">
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="author" content="Hiraku Yamana">
   <title>Module Web Editor</title>
   <link rel="manifest" href="manifest.json">
   <style>
     body {
       margin: 0;
       padding: 0;
-      height: 100%;
+      height: 100vh;
+      width: 100vw;
       background-color: #f7f7f7;
       color: #2b2b2b;
       font-family: 'Segoe UI', sans-serif;
       overflow: hidden;
-    }
-    :root {
-      --editor-fsize: 16px;
-      --border-color: #e0e0e0;
-      --bg-light: #fff;
-      --bg-darker: #f0f0f0;
-      --accent-color: #4a90e2;
-      --text-dark: #2b2b2b;
-      --text-muted: #7c7c7c;
     }
     .app-container {
       display: grid;
@@ -35,8 +27,8 @@
     .top-menu-bar {
       grid-column: 1 / -1;
       grid-row: 1;
-      background-color: var(--bg-darker);
-      border-bottom: 1px solid var(--border-color);
+      background-color: #f0f0f0;
+      border-bottom: 1px solid #e0e0e0;
       display: flex;
       align-items: center;
       padding: 0 15px;
@@ -44,13 +36,14 @@
       font-size: 14px;
       font-weight: 500;
       z-index: 200;
+      box-sizing: border-box;
     }
     .menu-item {
       position: relative;
       cursor: pointer;
       padding: 6px 12px;
       border-radius: 4px;
-      color: var(--text-dark);
+      color: #2b2b2b;
       user-select: none;
       transition: background 0.2s;
     }
@@ -65,8 +58,8 @@
       position: absolute;
       top: 100%;
       left: 0;
-      background-color: var(--bg-light);
-      border: 1px solid var(--border-color);
+      background-color: #fff;
+      border: 1px solid #e0e0e0;
       border-radius: 4px;
       box-shadow: 0 4px 12px rgba(0,0,0,0.15);
       min-width: 160px;
@@ -77,26 +70,26 @@
     .dropdown-item {
       padding: 8px 16px;
       font-size: 13px;
-      color: var(--text-dark);
+      color: #2b2b2b;
       display: flex;
       align-items: center;
       gap: 8px;
-      transition: background 0.2s;
+      transition: background 0.2s, color 0.2s;
     }
     .dropdown-item:hover {
-      background-color: var(--accent-color);
+      background-color: #4a90e2;
       color: #ffffff;
     }
     .dropdown-divider {
       height: 1px;
-      background-color: var(--border-color);
+      background-color: #e0e0e0;
       margin: 4px 0;
     }
     .activity-bar {
       grid-column: 1;
       grid-row: 2;
       background-color: #e8e8e8;
-      border-right: 1px solid var(--border-color);
+      border-right: 1px solid #e0e0e0;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -112,21 +105,21 @@
       cursor: pointer;
       border-radius: 6px;
       margin-bottom: 10px;
-      background-color: var(--bg-light);
-      border: 1px solid var(--border-color);
+      background-color: #fff;
+      border: 1px solid #e0e0e0;
       font-size: 16px;
       transition: all 0.2s;
     }
     .action-item.active, .action-item:hover {
-      background-color: var(--accent-color);
+      background-color: #4a90e2;
       color: #ffffff;
-      border-color: var(--accent-color);
+      border-color: #e0e0e0;
     }
     .sidebar {
       grid-column: 2;
       grid-row: 2;
-      background-color: var(--bg-light);
-      border-right: 1px solid var(--border-color);
+      background-color: #fff;
+      border-right: 1px solid #e0e0e0;
       display: flex;
       flex-direction: column;
       overflow: hidden;
@@ -143,8 +136,8 @@
       font-weight: bold;
       text-transform: uppercase;
       letter-spacing: 1px;
-      color: var(--text-muted);
-      border-bottom: 1px solid var(--border-color);
+      color: #7c7c7c;
+      border-bottom: 1px solid #e0e0e0;
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -170,7 +163,7 @@
       font-size: 13px;
       cursor: pointer;
       user-select: none;
-      color: var(--text-dark);
+      color: #7c7c7c;
       position: relative;
     }
     .tree-item:hover {
@@ -193,7 +186,7 @@
       width: 14px;
       text-align: center;
       font-size: 9px;
-      color: var(--text-muted);
+      color: #7c7c7c;
       transition: transform 0.1s ease;
     }
     .tree-item.collapsed .arrow {
@@ -208,42 +201,42 @@
     }
     .main-editor {
       display: grid;
-      background-color: var(--bg-light);
+      background-color: #fff;
       position: relative;
       overflow: hidden;
       grid-template-rows: 35px 1fr;
     }
     .editor-tab-bar {
       height: 35px;
-      background-color: var(--bg-darker);
+      background-color: #f0f0f0;
       display: flex;
       padding-left: 5px;
     }
     .tab {
       display: flex;
       align-items: center;
-      background-color: var(--bg-light);
+      background-color: #fff;
       padding: 5px 12px;
-      border: 1px solid var(--border-color);
+      border: 1px solid #e0e0e0;
       border-bottom: none;
       border-radius: 4px 4px 0 0;
       font-size: 12px;
       height: 30px;
       margin-top: 5px;
       margin-right: 4px;
-      color: var(--text-dark);
+      color: #2b2b2b;
       cursor: pointer;
     }
     .tab.active {
-      background-color: var(--bg-light);
-      color: var(--accent-color);
-      border-top: 2px solid var(--accent-color);
+      background-color: #fff;
+      color: #4a90e2;
+      border-top: 2px solid #4a90e2;
       font-weight: bold;
     }
     .tab-close {
       margin-left: 8px;
       font-size: 15px;
-      color: var(--text-muted);
+      color: #7c7c7c;
       padding: 2px;
     }
     .tab-close:hover {
@@ -253,8 +246,8 @@
       position: absolute;
       top: 40px;
       right: 20px;
-      background-color: var(--bg-light);
-      border: 1px solid var(--border-color);
+      background-color: #fff;
+      border: 1px solid #e0e0e0;
       box-shadow: 0 4px 12px rgba(0,0,0,0.1);
       padding: 10px;
       border-radius: 6px;
@@ -275,7 +268,7 @@
     .find-row input {
       flex: 1;
       padding: 4px;
-      border: 1px solid var(--border-color);
+      border: 1px solid #e0e0e0;
       border-radius: 4px;
       font-size: 12px;
       background: #fafafa;
@@ -283,8 +276,8 @@
     }
     .find-row button {
       padding: 4px 8px;
-      border: 1px solid var(--border-color);
-      background: var(--bg-darker);
+      border: 1px solid #e0e0e0;
+      background: #f0f0f0;
       border-radius: 4px;
       font-size: 12px;
       cursor: pointer;
@@ -294,13 +287,13 @@
     }
     .match-count {
       font-size: 11px;
-      color: var(--text-muted);
+      color: #7c7c7c;
       text-align: right;
     }
     .editor-container {
       position: relative;
       overflow: hidden;
-      background-color: var(--bg-light);
+      background-color: #fff;
       grid-row: 2;
       height: 100%;
       width: 100%;
@@ -312,10 +305,10 @@
       width: 55px;
       bottom: 0;
       background-color: #f3f3f3;
-      border-right: 1px solid var(--border-color);
+      border-right: 1px solid #e0e0e0;
       padding: 10px 8px 10px 0;
       font-family: 'Consolas', 'Courier New', Courier, monospace;
-      font-size: var(--editor-fsize);
+      font-size: 16px;
       line-height: 1.5;
       color: #a0a0a0;
       text-align: right;
@@ -339,7 +332,7 @@
       height: 100%;
       padding: 10px;
       font-family: 'Consolas', 'Courier New', Courier, monospace;
-      font-size: var(--editor-fsize);
+      font-size: 16px;
       line-height: 1.5;
       white-space: pre;
       word-wrap: normal;
@@ -369,8 +362,8 @@
     }
     .suggest-widget {
       position: absolute;
-      background-color: var(--bg-light);
-      border: 1px solid var(--border-color);
+      background-color: #fff;
+      border: 1px solid #e0e0e0;
       box-shadow: 0 4px 14px rgba(0,0,0,0.18);
       border-radius: 4px;
       max-height: 220px;
@@ -383,7 +376,7 @@
     .suggest-item {
       padding: 6px 12px;
       font-size: 13px;
-      color: var(--text-dark);
+      color: #2b2b2b;
       cursor: pointer;
       display: flex;
       justify-content: space-between;
@@ -397,7 +390,7 @@
     .suggest-item .type-badge {
       font-size: 10px;
       font-weight: bold;
-      color: var(--text-muted);
+      color: #7c7c7c;
       border: 1px solid #d0d0d0;
       padding: 1px 4px;
       border-radius: 3px;
@@ -410,7 +403,7 @@
     .status-bar {
       grid-column: 1 / -1;
       grid-row: 3;
-      background-color: var(--accent-color);
+      background-color: #4a90e2;
       color: #ffffff;
       display: flex;
       justify-content: space-between;
@@ -426,8 +419,8 @@
     }
     .hover-widget {
       position: absolute;
-      background-color: var(--bg-light);
-      border: 1px solid var(--border-color);
+      background-color: #fff;
+      border: 1px solid #e0e0e0;
       box-shadow: 0 4px 14px rgba(0,0,0,0.15);
       border-radius: 4px;
       padding: 8px 12px;
@@ -436,7 +429,7 @@
       font-family: 'Segoe UI', sans-serif;
       max-width: 300px;
       font-size: 13px;
-      color: var(--text-dark);
+      color: #2b2b2b;
     }
     .otm-trap {
       background-color: rgba(255, 74, 74, 0.15);
