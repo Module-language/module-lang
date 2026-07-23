@@ -469,10 +469,10 @@
           <tbody>
             <tr><td>void</td><td>bool</td><td>int</td><td>float</td><td>str</td></tr>
             <tr><td>set</td><td>FILE</td><td>ERROR</td><td>var</td><td>const</td></tr>
-            <tr><td>def</td><td>fn</td><td>tef</td><td>if</td><td>ifdef</td></tr>
-            <tr><td>and</td><td>or</td><td>not</td><td>true</td><td>false</td></tr>
-            <tr><td>is</td><td>loop</td><td>jump</td><td>import</td><td>of</td></tr>
-            <tr><td>new</td><td>in</td></tr>
+            <tr><td>def</td><td>tef</td><td>if</td><td>ifdef</td><td>and</td></tr>
+            <tr><td>or</td><td>not</td><td>true</td><td>false</td><td>is</td></tr>
+            <tr><td>loop</td><td>jump</td><td>import</td><td>of</td><td>new</td></tr>
+            <tr><td>in</td><td></td><td></td><td></td><td></td></tr>
           </tbody>
         </table>
       </div>
@@ -501,6 +501,20 @@
     <address><a href="">Suggestion</a></address>
     <p><small>Copyright © 2026. All rights reserved.</small></p>
   </footer>
-  <script src="module.js"></script>
+  <script>
+    document.addEventlistener('DOMContentLoaded', () => {
+      const menuTrigger = document.getElementById('menu-trigger');
+      const navi = document.querySelector('nav');
+      const naviLinks = document.querySelectorAll('nav a, nav li');
+      menuTrigger.addEventListener('click', () => {
+        navi.classList.toggle('active');
+      });
+      navLinks.forEach(link => {
+        link.addEventListener('click', () => {
+          navi.classList.remove('active');
+        });
+      });
+    });
+  </script>
 </body>
 </html>
