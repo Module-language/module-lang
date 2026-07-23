@@ -466,14 +466,14 @@
     <p><small>Copyright © 2026. All rights reserved.</small></p>
   </footer>
   <script>
-    document.addEventlistener('DOMContentLoaded', () => {
+    document.addEventListener('DOMContentLoaded', () => {
       const menuTrigger = document.getElementById('menu-trigger');
       const navi = document.querySelector('nav');
       const naviLinks = document.querySelectorAll('nav a, nav li');
       menuTrigger.addEventListener('click', () => {
         navi.classList.toggle('active');
       });
-      navLinks.forEach(link => {
+      naviLinks.forEach(link => {
         link.addEventListener('click', () => {
           navi.classList.remove('active');
         });
