@@ -6,302 +6,57 @@
   <style>
     html {scroll-behavior: smooth; scroll-padding-top: 65px;}
     body {font-family: 'Segoe UI', sans-serif; margin: 0; color: #24292e; background-color: #fff; line-height: 1.6;}
-    header {
-      display: flex;
-      justify-content: space-between;
-      padding: 0 20px;
-      height: 60px;
-      background-color: #1e1e1e; position: sticky; top: 0; z-index: 1001;}
-    .header-left {
-      display: flex;
-      align-items: center;
-      gap: 15px;
-      margin: 0;
-    }
-    .menu-trigger {
-      display: flex;
-      font-size: large;
-      flex-direction: column;
-      gap: 4px;
-      color: #fff;
-      background: none;
-      border: none;
-    }
-    .menu-trigger:hover {
-      cursor: pointer;
-    }
-    .menu-trigger span {
-      display: block;
-      width: 20px;
-      height: 2px;
-      background-color: #fff;
-    }
-    nav {
-      position: fixed;
-      width: 260px;
-      height: calc(100vh - 60px);
-      top: 60px;
-      background-color: #1e1e1e;
-      color: #ccc;
-      left: -260px;
-      transition: left 0.4s;
-      overflow-y: auto;
-      padding: 1.5rem 0;
-      box-sizing: border-box;
-      z-index: 1000;
-    }
-    nav.active {
-      left: 0;
-    }
-    nav p {
-      margin: 1.5rem 0 0.5rem 0;
-      padding: 0 1.5rem;
-      font-size: 0.85rem;
-      font-weight: bold;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      color: #8b949e;
-    }
-    nav p a {
-      color: #8b949e;
-      text-decoration: none;
-      transition: color 0.2s;
-    }
-    nav p a:hover {
-      color: #fff;
-    }
-    nav ul {
-      list-style: none;
-      padding: 0;
-      margin: 0;
-    }
-    nav > ul > li {
-      padding: 0.5rem 1.5rem;
-      font-size: 0.95rem;
-      color: #e6edf3;
-      cursor: pointer;
-      transition: all 0.2s;
-    }
-    nav > ul > li:hover {
-      background-color: #2d2d2d;
-      color: #fff;
-    }
-    nav ul ul {
-      margin-top: 0.25rem;
-      padding-left: 1rem;
-      border-left: 1px solid #333;
-      margin-left: 0.5rem;
-    }
-    nav ul ul li {
-      padding: 0.35rem 0.75rem;
-      font-size: 0.85rem;
-      color: #8b949e;
-      cursor: pointer;
-      transition: color 0.2s;
-    }
-    nav ul ul li:hover {
-      color: #58a6ff;
-      background: none;
-    }
-    #title {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      padding: 5rem 2rem;
-      background: linear-gradient(180deg, #fcfcfc 0%, #f6f8fa 100%);
-      border-bottom: 1px solid #e1e4d8;
-    }
-    .htitle {
-      font-family: 'Courier New', Courier, monospace;
-      font-size: 3.5rem;
-      font-weight: bold;
-      color: #1a1a1a;
-      letter-spacing: 2px;
-      margin: 0 0 2rem 0;
-      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.03);
-    }
-    .open-box {
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      background-color: #212529;
-      color: #fff;
-      padding: 12px 36px;
-      border-radius: 6px;
-      text-decoration: none;
-      font-size: 1rem;
-      font-weight: bold;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-      transition: all 0.3s ease;
-    }
-    .open-box:hover {
-      transform: translateY(-2px);
-    }
-    #welcome h2 {
-      font-size: 1.75rem;
-      color: #1a1a1a;
-      margin-top: 2rem;
-      margin-bottom: 1rem;
-      padding-bottom: 0.25rem;
-      border-bottom: 2px solid #f0f0f0;
-    }
-    #welcome p {
-      font-size: 1rem;
-      color: #333;
-      line-height: 1.7;
-      margin-bottom: 1.25rem;
-    }
-    #welcome ul {
-      padding-left: 1.5rem;
-      margin-bottom: 1.5rem;
-    }
-    #welcome ul li {
-      font-size: 1rem;
-      color: #444;
-      margin-bottom: 0.5rem;
-      line-height: 1.5;
-    }
-    #welcome ol {
-      padding: 1.3rem 1.3rem 1.3rem 2.5rem;
-      margin-bottom: 1.5rem;
-      background-color: #f8f9fa;
-      border-radius: 8px;
-      border: 1px solid #e1e4e8;
-    }
-    #welcome ol ul {
-      font-size: 1rem;
-      color: #24292e;
-      margin-bottom: 0.75rem;
-    }
-    #welcome strong {
-      display: inline-block;
-      background: linear-gradient(transparent 70%, #e2f0fd 70%);
-      padding: 0 4px;
-      color: #0366d6;
-    }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin: 2rem 0;
-      font-size: 0.95rem;
-      border-radius: 8px;
-      border: 1px solid #e1e4e8;
-      display: block;
-      overflow-x: auto;
-    }
-    th {
-      background-color: #f6f8fa;
-      color: #24292e;
-      font-weight: bold;
-      text-align: left;
-      padding: 12px 16px;
-      border-bottom: 2px solid #e1e4e8;
-    }
-    td {
-      padding: 12px 16px;
-      color: #444;
-      border-bottom: 1px solid #eee;
-    }
-    main section {
-      max-width: 800px;
-      margin: 0 auto;
-      padding: 3rem 1.5rem;
-      box-sizing: border-box;
-    }
-    main section#title {
-      max-width: 100%;
-      padding: 5rem 2rem;
-    }
-    h1 {
-      border-bottom: 3px solid #333;
-      border-left: 5px solid #696969;
-      padding-left: 10px;
-      font-weight: 600;
-      border-radius: 6px;
-    }
-    .keyword {
-      color: #ce5dbd;
-    }
-    .function {
-      color: #c5b36b;
-    }
-    .string {
-      color: #ce9178;
-    }
-    .comment {
-      color: #75715e;
-      font-style: italic;
-    }
-    .type {
-      color: #377dc8;
-    }
-    .modify {
-      color: #4987ca;
-    }
-    .error {
-      color: #cf4c4c;
-    }
-    .ref-card {
-      max-width: 800px;
-      margin: 1.5rem auto;
-      padding: 1.5rem;
-      border: 1px solid #e1e4e8;
-      border-radius: 8px;
-      background: #fff;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-      font-family: sans-serif;
-    }
-    .ref-title {
-      margin-top: 0;
-      margin-bottom: 0.5rem;
-      font-size: 1.3rem;
-      color: #1a1a1a;
-    }
-    .ref-description {
-      color: #586069;
-      font-size: 0.9rem;
-      margin-top: 0;
-      margin-bottom: 1.25rem;
-    }
-    .ref-section {
-      margin-bottom: 1rem;
-      padding: 0.75rem 1rem;
-      border-radius: 6px;
-    }
-    .section-label {
-      margin-top: 0;
-      margin-bottom: 0.5rem;
-      font-size: 0.8rem;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      font-weight: bold;
-    }
-    .syntax-box {
-      background: #f6f8fa;
-      border-left: 4px solid #0366d6;
-    }
-    .syntax-box .section-label {
-      color: #0366d6;
-    }
-    .syntax-box code {
-      color: #000;
-      font-family: 'Courier New', Courier, monospace;
-    }
-    .example-box {
-      background: #0d1117;
-      border-left: 4px solid #28a745;
-      color: #c9d1d9;
-    }
-    .example-box .section-label {
-      color: #28a745;
-    }
-    .example-box code {
-      margin: 0;
-      overflow-x: auto;
-      font-family: 'Courier New', Courier, monospace;
-    }
+    header {display: flex; justify-content: space-between; padding: 0 20px; height: 60px; background-color: #1e1e1e; position: sticky; top: 0; z-index: 1001;}
+    .header-left {display: flex; align-items: center; gap: 15px; margin: 0;}
+    .menu-trigger {display: flex; font-size: large; flex-direction: column; gap: 4px; color: #fff; background: none; border: none;}
+    .menu-trigger:hover {cursor: pointer;}
+    .menu-trigger span {display: block; width: 20px; height: 2px; background-color: #fff;}
+    nav {position: fixed; width: 260px; height: calc(100vh - 60px); top: 60px; background-color: #1e1e1e; color: #ccc; left: -260px; transition: left 0.4s; overflow-y: auto; padding: 1.5rem 0; box-sizing: border-box; z-index: 1000;}
+    nav.active {left: 0;}
+    nav p {margin: 1.5rem 0 0.5rem 0; padding: 0 1.5rem; font-size: 0.85rem; font-weight: bold; text-transform: uppercase; color: #8b949e;}
+    nav p a {color: #8b949e; text-decoration: none; transition: color 0.2s;}
+    nav p a:hover {color: #fff;}
+    nav ul {list-style: none; padding: 0; margin: 0;}
+    nav > ul > li {padding: 0.5rem 1.5rem; font-size: 0.95rem; color: #e6edf3; cursor: pointer; transition: all 0.2s;}
+    nav > ul > li:hover {background-color: #2d2d2d; color: #fff;}
+    nav ul ul {margin-top: 0.25rem; padding-left: 1rem; border-left: 1px solid #333; margin-left: 0.5rem;}
+    nav ul ul li {padding: 0.35rem 0.75rem; font-size: 0.85rem; color: #8b949e; cursor: pointer; transition: color 0.2s;}
+    nav ul ul li:hover {color: #58a6ff; background: none;}
+    #title {display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 5rem 2rem; background: linear-gradient(180deg, #fcfcfc 0%, #f6f8fa 100%); border-bottom: 1px solid #e1e4d8;}
+    .htitle {font-family: 'Courier New', Courier, monospace; font-size: 3.5rem; font-weight: bold; color: #1a1a1a; letter-spacing: 2px; margin: 0 0 2rem 0; text-shadow: 0 2px 4px rgba(0, 0, 0, 0.03);}
+    .open-box {cursor: pointer; display: inline-flex; align-items: center; background-color: #212529; color: #fff; padding: 12px 36px; border-radius: 6px; text-decoration: none; font-size: 1rem; font-weight: bold; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); transition: all 0.3s ease;}
+    .open-box:hover {transform: translateY(-2px);}
+    #welcome h2 {font-size: 1.75rem; color: #1a1a1a; margin-top: 2rem; margin-bottom: 1rem; padding-bottom: 0.25rem; border-bottom: 2px solid #f0f0f0;}
+    #welcome p {font-size: 1rem; color: #333; line-height: 1.7; margin-bottom: 1.25rem;}
+    #welcome ul {padding-left: 1.5rem; margin-bottom: 1.5rem;}
+    #welcome ul li {font-size: 1rem; color: #444; margin-bottom: 0.5rem; line-height: 1.5;}
+    #welcome ol {padding: 1.3rem 1.3rem 1.3rem 2.5rem; margin-bottom: 1.5rem; background-color: #f8f9fa; border-radius: 8px; border: 1px solid #e1e4e8;}
+    #welcome ol ul {font-size: 1rem; color: #24292e; margin-bottom: 0.75rem;}
+    #welcome strong {display: inline-block; background: linear-gradient(transparent 70%, #e2f0fd 70%); padding: 0 4px; color: #0366d6;}
+    table {width: 100%; border-collapse: collapse; margin: 2rem 0; font-size: 0.95rem; border-radius: 8px; border: 1px solid #e1e4e8; display: block; overflow-x: auto;}
+    th {background-color: #f6f8fa; color: #24292e; font-weight: bold; text-align: left; padding: 12px 16px; border-bottom: 2px solid #e1e4e8;}
+    td {padding: 12px 16px; color: #444; border-bottom: 1px solid #eee;}
+    main section {max-width: 800px; margin: 0 auto; padding: 3rem 1.5rem; box-sizing: border-box;}
+    main section#title {max-width: 100%; padding: 5rem 2rem;}
+    h1 {border-bottom: 3px solid #333; border-left: 5px solid #696969; padding-left: 10px; font-weight: 600; border-radius: 6px;}
+    .keyword {color: #ce5dbd;}
+    .function {color: #c5b36b;}
+    .string {color: #ce9178;}
+    .comment {color: #75715e; font-style: italic;}
+    .type {color: #377dc8;}
+    .modify {color: #4987ca;}
+    .error {color: #cf4c4c;}
+    .ref-card {max-width: 800px; margin: 1.5rem auto; padding: 1.5rem; border: 1px solid #e1e4e8; border-radius: 8px; background: #fff; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05); font-family: sans-serif;}
+    .ref-title {margin-top: 0; margin-bottom: 0.5rem; font-size: 1.3rem; color: #1a1a1a;}
+    .ref-description {color: #586069; font-size: 0.9rem; margin-top: 0; margin-bottom: 1.25rem;}
+    .ref-section {margin-bottom: 1rem; padding: 0.75rem 1rem; border-radius: 6px;}
+    .section-label {margin-top: 0; margin-bottom: 0.5rem; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em; font-weight: bold;}
+    .syntax-box {background: #f6f8fa; border-left: 4px solid #0366d6;}
+    .syntax-box .section-label {color: #0366d6;}
+    .syntax-box code {color: #000; font-family: 'Courier New', Courier, monospace;}
+    .example-box {background: #0d1117; border-left: 4px solid #28a745; color: #c9d1d9;}
+    .example-box .section-label {color: #28a745;}
+    .example-box code {margin: 0; overflow-x: auto; font-family: 'Courier New', Courier, monospace;}
   </style>
 </head>
 <body>
@@ -315,13 +70,13 @@
       <ul><li>Module言語とは</li><li>コードの基本構成</li></ul>
       <p><a href="#begin">はじめに</a></p>
       <ul>
-        <li>型<ul><li>整数型</li><li>浮動小数点数型</li><li>文字列型</li><li>集合型</li></ul></li>
-        <li>演算子<ul><li>a</li></ul></li>
-        <li>制御文<ul><li>if</li><li>loop</li></ul></li>
-        <li>関数</li>
-        <li>名前空間</li>
-        <li>標準ライブラリ</li>
-        <li>付録<ul><li>拡張バッカス・ナウア記法(EBNF)</li><li>中間表現(MIR)</li></ul></li>
+        <li><a href="#types"></a><ul><li>基本型 (Fundamental Type)<ul><li>空型</li><li>真偽型</li><li>整数型</li><li>浮動小数点数型</li><li>文字列型</li></ul></li><li>構造型 (Structure Type)<ul><li>集合型</li><li>配列型</li></ul></li><li>参照型 (Reference Type)</li><li>特殊型 (Irregular Type)</li></ul></li>
+        <li><a href="#operators">演算子</a><ul><li>単項演算子<ul><li>正化演算子</li><li>負化演算子</li></ul></li><li>二項演算子<ul><li>算術演算子</li><li>代入演算子</li><li>>論理演算子</li><li>ビット演算子</li><li>シフト演算子</li></ul></li><li>複合演算子</li></ul></li>
+        <li><a href="#control">制御文</a><ul><li>if</li><li>jump</li></ul></li>
+        <li><a href="#func">関数</a></li>
+        <li><a href="namespace">名前空間</a></li>
+        <li><a href="stdlib">標準ライブラリ</a></li>
+        <li><a href="appendix">付録</a><ul><li>拡張バッカス・ナウア記法(EBNF)</li><li>中間表現(MIR)</li></ul></li>
       </ul>
     </nav>
   </header>
@@ -406,7 +161,7 @@
           <code><span class="modify">var</span> age : <span class="type">int</span> = 20<br><span class="modify">const</span> lifespan : <span class="type">int</span> = 80</code>
         </section>
       </div>
-      <div class="ref-card">
+      <div class="ref-card" id="types">
         <h2 class="ref-title">組み込み型</h2>
         <p class="ref-description">あ</p>
         <section>
