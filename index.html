@@ -406,6 +406,10 @@
         <li>その間に定義を書く。</li>
       </ol>
       <p>という流れです。コードを上部から読んだとき<br><strong>宣言 → 定義 → 実行</strong><br>となります (この順は必須でない) 。コンパイラは<strong>宣言</strong>を優先的に定義し、その次にユーザーの定義を最適化します。</p>
+      <section class="ref-section example-box">
+        <h3 class="example-label"><q>Hello, world!</q>を出力する</h3>
+        <code><span class="keyword">def</span> print(<span class="type">str</span>) &rightarrow; <span class="type">str</span><span class="modify">const</span> message : <span class="type">str</span> = <span class="string">"Hello, world!"</span><br>print : x &rightarrow; y { y = <span class="function">output</span>(message) }<br><span class="function">main</span>: {<br> print(message)<br>}</code>
+      </section>
     </section>
     <section id="begin">
       <h1>はじめに</h1>
@@ -415,7 +419,7 @@
         <p class="ref-description">コード中にメモを残しておきたいとき、率直に書くと定義されていない文字が含まれている可能性があるため、コンパイル時警告になります。安全にコメントを書く方法は以下の二通りあります。</p>
         <section class="ref-section syntax-box">
           <h3 class="section-label">構文</h3>
-          <code><span class="comment">// コメント</span><br><span class="comment">/-<br> コメント <br>-/</span></code>
+          <code><span class="comment">// コメント</span><br><span class="comment">/-<br> コメント<br>-/</span></code>
         </section>
         <p class="ref-description">実行したい内容と無関係な部分は、その部分をコメントにする工夫があります。</p>
       </div>
@@ -429,15 +433,14 @@
           <li>大文字と小文字は区別される</li>
         </ul>
         <h3>予約語</h3>
-        <p class="ref-description">予約語は、既に使用が決まっている語句のことであり、以下の26個が挙げられます:</p>
+        <p class="ref-description">予約語は、既に使用が決まっている語句のことであり、以下の22個が挙げられます:</p>
         <table>
           <tbody>
             <tr><td>void</td><td>bool</td><td>int</td><td>float</td><td>str</td></tr>
-            <tr><td>set</td><td>FILE</td><td>ERROR</td><td>var</td><td>const</td></tr>
-            <tr><td>def</td><td>tef</td><td>if</td><td>ifdef</td><td>and</td></tr>
-            <tr><td>or</td><td>not</td><td>true</td><td>false</td><td>is</td></tr>
-            <tr><td>loop</td><td>jump</td><td>import</td><td>of</td><td>new</td></tr>
-            <tr><td>in</td><td></td><td></td><td></td><td></td></tr>
+            <tr><td>var</td><td>const</td><td>def</td><td>tef</td><td>if</td></tr>
+            <tr><td>ifdef</td><td>and</td><td>or</td><td>not</td><td>true</td></tr>
+            <tr><td>false</td><td>is</td><td>jump</td><td>import</td><td>of</td></tr>
+            <tr><td>new</td><td>in</td></tr>
           </tbody>
         </table>
       </div>
@@ -448,7 +451,7 @@
           <h3 class="section-label">変数の宣言</h3>
           <code><span class="modify">var</span> name : type = value</code>
         </section>
-        <section>
+        <section class="ref-section syntax-box">
           <h3 class="section-label">定数の宣言</h3>
           <code><span class="modify">const</span> name : type = value</code>
         </section>
