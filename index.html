@@ -351,8 +351,8 @@
       <h2>コードの基本構成</h2>
       <p>基本的に</p>
       <ol>
-        <li><code>var/const/def</code>修飾子で宣言し、</li>
-        <li><code>main</code>ブロック内で実行したいことを書き、</li>
+        <li> var/const/def 修飾子で宣言し、</li>
+        <li> main ブロック内で実行したいことを書き、</li>
         <li>その間に定義を書く。</li>
       </ol>
       <p>という流れです。コードを上部から読んだとき<br><strong>宣言 → 定義 → 実行</strong><br>となります (この順は必須でない) 。コンパイラは<strong>宣言</strong>を優先的に定義し、その次にユーザーの定義を最適化します。</p>
@@ -377,11 +377,7 @@
         <h2 class="ref-title">識別子と予約語</h2>
         <h3>識別子</h3>
         <p class="ref-description">識別子とは、後述する予約語以外の、以下の規則がある語句のことです:</p>
-        <ul>
-          <li>ユニコード文字である</li>
-          <li>数字で始めてはいけない</li>
-          <li>大文字と小文字は区別される</li>
-        </ul>
+        <ul><li>ユニコード文字である</li><li>数字で始めてはいけない</li><li>大文字と小文字は区別される</li></ul>
         <h3>予約語</h3>
         <p class="ref-description">予約語は、既に使用が決まっている語句のことであり、以下の22個が挙げられます:</p>
         <table>
@@ -419,32 +415,13 @@
         </section>
       </div>
     </section>
-    <section>
-      <h1>About Commercial Use</h1>
-      <p>Any licence that we provide you is required for a commercial use. Please click the following URLs and submit it to us.</p>
-      <a id="licence">Retain your licence</a>
+    <section id="licence">
+      <h1>商用利用について</h1>
+      <p>. Please click the following URLs and submit it to us.</p>
+      <a href="#">Retain your licence</a>
     </section>
   </main>
-  <hr>
-  <footer>
-    <address><a href="">Bug report</a></address>
-    <address><a href="">Suggestion</a></address>
-    <p><small>Copyright © 2026. All rights reserved.</small></p>
-  </footer>
-  <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      const menuTrigger = document.getElementById('menu-trigger');
-      const navi = document.querySelector('nav');
-      const naviLinks = document.querySelectorAll('nav a, nav li');
-      menuTrigger.addEventListener('click', () => {
-        navi.classList.toggle('active');
-      });
-      naviLinks.forEach(link => {
-        link.addEventListener('click', () => {
-          navi.classList.remove('active');
-        });
-      });
-    });
-  </script>
+  <footer><address><a href="#">Bug report</a></address><address><a href="#">Suggestion</a></address><p><small>Copyright © 2026. All rights reserved.</small></p></footer>
+  <script> document.addEventListener('DOMContentLoaded', () => {const navi = document.querySelector('nav'); const naviLinks = document.querySelectorAll('nav a, nav li'); document.getElementById('menu-trigger').addEventListener('click', () => {navi.classList.toggle('active');}); naviLinks.forEach(link => {link.addEventListener('click', () => {navi.classList.remove('active');});});});</script>
 </body>
 </html>
