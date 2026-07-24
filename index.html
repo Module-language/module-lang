@@ -401,8 +401,8 @@
       <h2>コードの基本構成</h2>
       <p>基本的に</p>
       <ol>
-        <li><code>fn init</code>ブロック内で宣言し、</li>
-        <li><code>fn main</code>ブロック内で実行したいことを書き、</li>
+        <li><code>var/const/def</code>修飾子で宣言し、</li>
+        <li><code>main</code>ブロック内で実行したいことを書き、</li>
         <li>その間に定義を書く。</li>
       </ol>
       <p>という流れです。コードを上部から読んだとき<br><strong>宣言 → 定義 → 実行</strong><br>となります (この順は必須でない) 。コンパイラは<strong>宣言</strong>を優先的に定義し、その次にユーザーの定義を最適化します。</p>
@@ -417,7 +417,7 @@
           <h3 class="section-label">構文</h3>
           <code><span class="comment">// コメント</span><br><span class="comment">/-<br> コメント <br>-/</span></code>
         </section>
-        <p>実行したい内容と無関係な部分は、その部分をコメントにする工夫があります。</p>
+        <p class="ref-description">実行したい内容と無関係な部分は、その部分をコメントにする工夫があります。</p>
       </div>
       <div class="ref-card">
         <h2 class="ref-title">識別子と予約語</h2>
@@ -429,7 +429,7 @@
           <li>大文字と小文字は区別される</li>
         </ul>
         <h3>予約語</h3>
-        <p>予約語は、既に使用が決まっている語句のことであり、以下の27個が挙げられます:</p>
+        <p class="ref-description">予約語は、既に使用が決まっている語句のことであり、以下の26個が挙げられます:</p>
         <table>
           <tbody>
             <tr><td>void</td><td>bool</td><td>int</td><td>float</td><td>str</td></tr>
@@ -448,9 +448,21 @@
           <h3 class="section-label">変数の宣言</h3>
           <code><span class="modify">var</span> name : type = value</code>
         </section>
+        <section>
+          <h3 class="section-label">定数の宣言</h3>
+          <code><span class="modify">const</span> name : type = value</code>
+        </section>
         <section class="ref-section example-box">
           <h3 class="section-label">値20を、(符号付き)整数型で宣言します。</h3>
-          <code><span class="modify">var</span> age : <span class="type">int</span> = 20</code>
+          <code><span class="modify">var</span> age : <span class="type">int</span> = 20<br><span class="modify">const</span> lifespan : <span class="type">int</span> = 80</code>
+        </section>
+      </div>
+      <div class="ref-card">
+        <h2 class="ref-title">組み込み型</h2>
+        <p class="ref-description">あ</p>
+        <section>
+          <h3 class="section-label">空型</h3>
+          <code>name : <span class="type">void</span> = value</code>
         </section>
       </div>
     </section>
