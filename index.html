@@ -4,27 +4,14 @@
   <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="description" content="Module Programming Language"><meta name="author" content="Hiraku Yamana">
   <title>Module Document</title>
   <style>
-    html {
-      scroll-behavior: smooth;
-      scroll-padding-top: 65px;
-    }
-    body {
-      font-family: 'Segoe UI', sans-serif;
-      margin: 0;
-      color: #24292e;
-      background-color: #fff;
-      line-height: 1.6;
-    }
+    html {scroll-behavior: smooth; scroll-padding-top: 65px;}
+    body {font-family: 'Segoe UI', sans-serif; margin: 0; color: #24292e; background-color: #fff; line-height: 1.6;}
     header {
       display: flex;
       justify-content: space-between;
       padding: 0 20px;
       height: 60px;
-      background-color: #1e1e1e;
-      position: sticky;
-      top: 0;
-      z-index: 1001;
-    }
+      background-color: #1e1e1e; position: sticky; top: 0; z-index: 1001;}
     .header-left {
       display: flex;
       align-items: center;
@@ -152,17 +139,6 @@
     .open-box:hover {
       transform: translateY(-2px);
     }
-    #title article {
-      margin-top: 1rem;
-      font-size: 0.85rem;
-      color: #586069;
-    }
-    #title article a {
-      color: #0366d6;
-      text-decoration: none;
-      border-bottom: 1px dashed #0366d6;
-      transition: color 0.2s;
-    }
     #welcome h2 {
       font-size: 1.75rem;
       color: #1a1a1a;
@@ -199,9 +175,6 @@
       color: #24292e;
       margin-bottom: 0.75rem;
     }
-    #welcome ol li:last-child {
-      margin-bottom: 0;
-    }
     #welcome strong {
       display: inline-block;
       background: linear-gradient(transparent 70%, #e2f0fd 70%);
@@ -230,15 +203,6 @@
       padding: 12px 16px;
       color: #444;
       border-bottom: 1px solid #eee;
-    }
-    tbody tr:nth-child(even) {
-      background-color: #fcfcfc;
-    }
-    td:first-child {
-      font-weight: 500;
-      color: #1a1a1a;
-      width: 30%;
-      min-width: 120px;
     }
     main section {
       max-width: 800px;
@@ -306,9 +270,6 @@
       padding: 0.75rem 1rem;
       border-radius: 6px;
     }
-    .ref-section:last-child {
-      margin-bottom: 0;
-    }
     .section-label {
       margin-top: 0;
       margin-bottom: 0.5rem;
@@ -351,27 +312,16 @@
     </div>
     <nav>
       <p><a href="#welcome">ようこそ</a></p>
-      <ul>
-        <li>Module言語とは</li>
-        <li>コードの基本構成</li>
-      </ul>
+      <ul><li>Module言語とは</li><li>コードの基本構成</li></ul>
       <p><a href="#begin">はじめに</a></p>
       <ul>
-        <li>型
-          <ul><li>整数型</li><li>浮動小数点数型</li><li>文字列型</li><li>集合型</li></ul>
-        </li>
-        <li>演算子
-          <ul><li>a</li></ul>
-        </li>
-        <li>制御文
-          <ul><li>if</li><li>loop</li></ul>
-        </li>
+        <li>型<ul><li>整数型</li><li>浮動小数点数型</li><li>文字列型</li><li>集合型</li></ul></li>
+        <li>演算子<ul><li>a</li></ul></li>
+        <li>制御文<ul><li>if</li><li>loop</li></ul></li>
         <li>関数</li>
         <li>名前空間</li>
         <li>標準ライブラリ</li>
-        <li>付録
-          <ul><li>拡張バッカス・ナウア記法(EBNF)</li><li>中間表現(MIR)</li></ul>
-        </li>
+        <li>付録<ul><li>拡張バッカス・ナウア記法(EBNF)</li><li>中間表現(MIR)</li></ul></li>
       </ul>
     </nav>
   </header>
@@ -379,7 +329,7 @@
     <section id="title">
       <span class="htitle">Module Language</span>
       <span class="open-box" id="open-box" onclick="window.open('./code.html')">エディタを開く</span>
-      <article>使用前に <a href="./agreement.html">ライセンスおよび規約</a> に同意する必要があります。</article>
+      <article>使用前に <a href="./agreement.html" style="color: #0366d6; border-bottom: 1px dashed #0366d6;">ライセンスおよび規約</a> に同意する必要があります。</article>
     </section>
     <section id="welcome">
       <h1>ようこそ</h1>
