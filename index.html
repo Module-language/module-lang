@@ -408,7 +408,7 @@
       <p>という流れです。コードを上部から読んだとき<br><strong>宣言 → 定義 → 実行</strong><br>となります (この順は必須でない) 。コンパイラは<strong>宣言</strong>を優先的に定義し、その次にユーザーの定義を最適化します。</p>
       <section class="ref-section example-box">
         <h3 class="example-label"><q>Hello, world!</q>を出力する</h3>
-        <code><span class="keyword">def</span> print(<span class="type">str</span>) &rightarrow; <span class="type">str</span><span class="modify">const</span> message : <span class="type">str</span> = <span class="string">"Hello, world!"</span><br>print : x &rightarrow; y { y = <span class="function">output</span>(message) }<br><span class="function">main</span>: {<br> print(message)<br>}</code>
+        <code><span class="keyword">def</span> print(<span class="type">str</span>) &rightarrow; <span class="type">str</span><br><span class="modify">const</span> message : <span class="type">str</span> = <span class="string">"Hello, world!"</span><br><br>print : x &rightarrow; y { y = <span class="function">output</span>(message) }<br><span class="function">main</span>: {<br>&nbsp;print(message)<br>}</code>
       </section>
     </section>
     <section id="begin">
