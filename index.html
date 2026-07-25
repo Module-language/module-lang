@@ -35,7 +35,7 @@
     #welcome strong {display: inline-block; background: linear-gradient(transparent 70%, #e2f0fd 70%); padding: 0 4px; color: #0366d6;}
     table {width: 100%; border-collapse: collapse; margin: 2rem 0; font-size: 0.95rem; border-radius: 8px; border: 1px solid #e1e4e8; display: block; overflow-x: auto;}
     th {background-color: #f6f8fa; color: #24292e; font-weight: bold; text-align: left; padding: 12px 16px; border-bottom: 2px solid #e1e4e8;}
-    td {padding: 12px 16px; color: #444; border-bottom: 1px solid #eee;}
+    td {color: #444; border-bottom: 1px solid #eee;}
     main section {max-width: 800px; margin: 0 auto; padding: 3rem 1.5rem; box-sizing: border-box;}
     main section#title {max-width: 100%; padding: 5rem 2rem;}
     h1 {border-bottom: 3px solid #333; border-left: 5px solid #696969; padding-left: 10px; font-weight: 600; border-radius: 6px;}
@@ -70,8 +70,8 @@
       <ul><li><a href="#about">Moduleとは</a></li><li><a href="#basis">コードの基本構成</a></li></ul>
       <p><a href="#begin">はじめに</a></p>
       <ul>
-        <li><a href="#types">型</a><ul><li>基本型 (Fundamental Type)<ul><li>空型</li><li>真偽型</li><li>整数型</li><li>浮動小数点数型</li><li>文字列型</li></ul></li><li>構造型 (Structure Type)<ul><li>集合型</li><li>配列型</li></ul></li><li>参照型 (Reference Type)</li><li>特殊型 (Irregular Type)</li></ul></li>
-        <li><a href="#operators">演算子</a><ul><li>単項演算子<ul><li>正化演算子</li><li>負化演算子</li></ul></li><li>二項演算子<ul><li>算術演算子</li><li>代入演算子</li><li>>論理演算子</li><li>ビット演算子</li><li>シフト演算子</li><li>推論演算子</li></ul></li><li>複合演算子</li></ul></li>
+        <li><a href="#types">型</a><ul><li>基本型 (Fundamental Type)<ul><li>空型</li><li>論理型</li><li>整数型</li><li>浮動小数点数型</li><li>文字列型</li></ul></li><li>構造型 (Structure Type)<ul><li>集合型</li><li>配列型</li></ul></li><li>参照型 (Reference Type)</li><li>特殊型 (Irregular Type)</li></ul></li>
+        <li><a href="#operators">演算子</a><ul><li>単項演算子<ul><li>正化演算子</li><li>負化演算子</li></ul></li><li>二項演算子<ul><li>算術演算子</li><li>代入演算子</li><li>論理演算子</li><li>ビット演算子</li><li>シフト演算子</li><li>推論演算子</li></ul></li><li>複合演算子</li></ul></li>
         <li><a href="#control">制御文</a><ul><li>if</li><li>jump</li></ul></li>
         <li><a href="#func">関数</a></li>
         <li><a href="namespace">名前空間</a></li>
@@ -134,14 +134,13 @@
         <p class="ref-description">識別子とは、後述する予約語以外の、以下の規則がある語句のことです:</p>
         <ul><li>ユニコード文字である</li><li>数字で始めてはいけない</li><li>大文字と小文字は区別される</li></ul>
         <h3>予約語</h3>
-        <p class="ref-description">予約語は、既に使用が決まっている語句のことであり、以下の22個が挙げられます:</p>
+        <p class="ref-description">予約語は、既に使用が決まっている語句のことであり、以下の20個が挙げられます:</p>
         <table>
           <tbody>
             <tr><td>void</td><td>bool</td><td>int</td><td>float</td><td>str</td></tr>
             <tr><td>var</td><td>const</td><td>def</td><td>tef</td><td>if</td></tr>
-            <tr><td>ifdef</td><td>and</td><td>or</td><td>not</td><td>true</td></tr>
-            <tr><td>false</td><td>is</td><td>jump</td><td>import</td><td>of</td></tr>
-            <tr><td>new</td><td>in</td></tr>
+            <tr><td>and</td><td>or</td><td>not</td><td>true</td><td>false</td></tr>
+            <tr><td>is</td><td>jump</td><td>import</td><td>new</td><td>in</td></tr>
           </tbody>
         </table>
       </div>
@@ -164,33 +163,71 @@
       <div class="ref-card" id="types">
         <h2 class="ref-title">組み込み型</h2>
         <p class="ref-description">あ</p>
-        <section>
+        <section class="ref-section syntax-box">
           <h3 class="section-label">空型</h3>
           <code>name : <span class="type">void</span> = value</code>
+        </section>
+        <p class="ref-description">a</p>
+        <section class="ref-section syntax-box">
+          <h3 class="section-label">論理型</h3>
+          <code>name : <span class="type">bool</span> = value</code>
         </section>
       </div>
       <div class="ref-card" id="operators">
         <h2 class="ref-title">演算子</h2>
-        <p class="ref-description">a</p>
+        <p class="ref-description">いくつかの変数や定数を組み合わせた式のことで、以下の種類があります。</p>
         <table>
           <thead><tr><th>優先順位</th><th>演算子</th><th>意味</th></tr></thead>
           <tbody>
             <tr><td>高</td><td>() [] .</td><td>括弧、アクセス指定</td></tr>
-            <tr><td></td><td>of</td><td>詳細</td></tr>
+            <tr><td></td><td>::</td><td>キャスト</td></tr>
+            <tr><td></td><td>func(...)</td><td>関数呼び出し</td></tr>
+            <tr><td></td><td>not</td><td>否定</td></tr>
+            <tr><td></td><td>* / %</td><td>乗算、除算、剰余</td></tr>
+            <tr><td></td><td>+ -</td><td>加算、減算</td></tr>
+            <tr><td></td><td>&lt;&lt; &gt;&gt;</td><td>シフト</td></tr>
+            <tr><td></td><td>&lt; &lt;= &gt; &gt;=</td><td>不等号</td></tr>
+            <tr><td></td><td>is</td><td>等号</td></tr>
+            <tr><td></td><td>and</td><td>論理積、ビット積</td></tr>
+            <tr><td></td><td>or</td><td>論理和、ビット和</td></tr>
             <tr><td></td><td>&coloneq;</td><td>推論</td></tr>
             <tr><td>低</td><td>=</td><td>代入</td></tr>
           </tbody>
         </table>
-        <section>
+        <section class="ref-section syntax-box">
           <h3 class="section-label">a</h3>
           <code>a</code>
+        </section>
+      </div>
+      <div class="ref-card" id="control">
+        <h2 class="ref-title">制御文</h2>
+        <p class="ref-description">a</p>
+        <section class="ref-section syntax-box">
+          <h3 class="section-label">if</h3>
+          <code><span class="keyword">if</span> (condition){<br>&nbsp;statement<br>}</code>
+        </section>
+        <section class="ref-section syntax-box">
+          <h3 class="section-label">jump</h3>
+          <code><span class="keyword">jump</span> label-name</code>
+        </section>
+        <p class="ref-description">もしループを構成したいときは、<code> if </code>と<code> jump </code>を使うことで</p>
+      </div>
+      <div class="ref-card" id="func">
+        <h2 class="ref-title">関数</h2>
+        <p class="ref-description">a</p>
+        <section class="ref-section syntax-box">
+          <h3 class="section-label">関数の宣言</h3>
+          <code><span class="keyword">def</span> func-name(type1, type2, ...) &rightarrow; return-type</code>
+        </section>
+        <section class="ref-section syntax-box">
+          <h3 class="section-label">関数の定義</h3>
+          <code>func-name : (param1, param2, ...) &rightarrow; return-param {<br>&nbsp;statement<br>}</code>
         </section>
       </div>
     </section>
     <section id="licence">
       <h1>商用利用について</h1>
-      <p>. Please click the following URLs and submit it to us.</p>
-      <a href="#">Retain your licence</a>
+      <p>もし、Module言語で書かれたコードを商用にするとき、<a href="#">公式Github</a>に公開するか、<a href="#">公式審査員</a>に送信してください。もし、認証が未完了のままで商用扱いされているコードが発見された場合、直ちに差し止めの措置を行います。</p>
     </section>
   </main>
   <footer><address><a href="#">Bug report</a></address><address><a href="#">Suggestion</a></address><p><small>Copyright © 2026. All rights reserved.</small></p></footer>
