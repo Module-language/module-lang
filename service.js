@@ -1,6 +1,6 @@
 const CACHE_NAME = 'module-editor-v1';
 const ASSETS = [
-  './', './code.html', './settings.html', './manifest.json', './modlang.json'
+  './', './code.html', './manifest.json', './modlang.json'
 ];
 self.addEventListener('install', (e) => {
   e.waitUntil(
