@@ -50,7 +50,7 @@
     .ref-title {margin-top: 0; margin-bottom: 0.5rem; font-size: 1.3rem; color: #1a1a1a;}
     .ref-description {color: #586069; font-size: 0.9rem; margin-top: 0; margin-bottom: 1.25rem;}
     .ref-section {margin-bottom: 1rem; padding: 0.75rem 1rem; border-radius: 6px;}
-    .section-label {margin-top: 0; margin-bottom: 0.5rem; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em; font-weight: bold;}
+    .section-label {margin-top: 0; margin-bottom: 0.5rem; font-size: 0.8rem; font-weight: bold;}
     .syntax-box {background: #f6f8fa; border-left: 4px solid #0366d6;}
     .syntax-box .section-label {color: #0366d6;}
     .syntax-box code {color: #000; font-family: 'Courier New', Courier, monospace;}
@@ -223,18 +223,22 @@
           <h3 class="section-label">jump</h3>
           <code><span class="keyword">jump</span> label-name</code>
         </section>
-        <p class="ref-description">もしループを構成したいときは、<code> if </code>と<code> jump </code>を使うことで</p>
+        <p class="ref-description">もしループを構成したいときは、<code>if</code>と<code>jump</code>を使うことで</p>
       </div>
       <div class="ref-card" id="func">
         <h2 class="ref-title">関数</h2>
         <p class="ref-description">a</p>
         <section class="ref-section syntax-box">
           <h3 class="section-label">関数の宣言</h3>
-          <code><span class="keyword">def</span> func-name(type1, type2, ...) &rightarrow; return-type</code>
+          <code><span class="keyword">def</span> func-name(type1, type2, ...) -&gt; return-type</code>
         </section>
         <section class="ref-section syntax-box">
           <h3 class="section-label">関数の定義</h3>
-          <code>func-name : (param1, param2, ...) &rightarrow; return-param {<br>&nbsp;statement<br>}</code>
+          <code>func-name : (param1, param2, ...) -&gt; return-param {<br>&nbsp;statement<br>}</code>
+        </section>
+        <section class="ref-section example-box">
+          <h3 class="section-label">a</h3>
+          <code><span class="comment">// 加算関数を宣言する</span><br><span class="keyword">def</span> add(<span class="type">int</span>, <span class="type">int</span>) -&gt; <span class="type">int</span><br><span class="comment">// 加算関数を定義する</span><br>add : (x, y) -&gt; z {z = x + y}</code>
         </section>
       </div>
     </section>
