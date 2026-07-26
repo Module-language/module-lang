@@ -5,122 +5,22 @@
     <title>Module Web IDE</title>
     <link rel="manifest" href="./manifest.json">
     <style>
-      body {
-        margin: 0;
-        padding: 0;
-        font-family: 'Consolas','Courier New',monospace;
-        background: #f7f7f7;
-        color: #000;
-        display: grid;
-        grid-template-columns: 20% 1fr;
-        grid-template-rows: 40px 1fr;
-        height: 100vh;
-        width: 100vw;
-        overflow: hidden;
-      }
-      .menu-bar {
-        grid-column: 1/-1;
-        grid-row: 1;
-        background-color: #f0f0f0;
-        border-bottom: 1px solid #e0e0e0;
-        display: flex;
-        align-items: center;
-        padding: 0 15px;
-        gap: 5px;
-        font-size: 14px;
-        z-index: 200;
-        box-sizing: border-box;
-        font-family: 'Segoe UI',sans-serif;
-      }
-      .menu-item {
-        position: relative;
-        cursor: pointer;
-        padding: 6px 12px;
-        border-radius: 4px;
-        color: #000;
-        user-select: none;
-        transition: background 0.2s;
-      }
-      .menu-item:hover {
-        background-color: #e0e0e0;
-      }
-      .menu-item:hover .dropdown-menu {
-        display: block;
-      }
-      .dropdown-menu {
-        display: none;
-        position: absolute;
-        top: 100%;
-        left: 0;
-        background-color: #ffffff;
-        border: 1px solid #e0e0e0;
-        border-radius: 4px;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-        min-width: 160px;
-        padding: 4px 0;
-        margin-top: 2px;
-        z-index: 250;
-      }
-      .dropdown-item {
-        padding: 8px 16px;
-        font-size: 13px;
-        color: #000;
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        transition: background 0.2s, color 0.2s;
-      }
-      .dropdown-item:hover {
-        background-color: #007acc;
-        color: #ffffff;
-      }
-      .dropdown-divider {
-        height: 1px;
-        background-color: #e0e0e0;
-        margin: 4px 0;
-      }
-      #sidebar {
-        grid-column: 1;
-        grid-row: 2;
-        background: #fff;
-        box-sizing: border-box;
-        display: flex;
-        flex-direction: column;
-        overflow: hidden;
-      }
-      .tab-container {
-        display: flex;
-        background: #e5e5e5;
-      }
-      .tab-btn {
-        flex: 1;
-        padding: 8px;
-        background: none;
-        border: none;
-        color: #858585;
-        cursor: pointer;
-        font-size: 11px;
-        text-align: center;
-        border-bottom: 2px solid transparent;
-      }
-      .tab-btn:hover {
-        color: #000;
-        background: #dcdcdc;
-      }
-      .tab-btn.active {
-        color: #000;
-        border-bottom: 2px solid #007acc;
-        background: #fff;
-      }
-      .tab-content {
-        display: none;
-        padding: 15px;
-        flex: 1;
-        overflow-y: auto;
-      }
-      .tab-content.active {
-        display: block;
-      }
+      body {margin: 0; padding: 0; font-family: 'Consolas','Courier New',monospace; background: #f7f7f7; color: #000; display: grid; grid-template-columns: 20% 1fr; grid-template-rows: 40px 1fr; height: 100vh; width: 100vw; overflow: hidden;}
+      .menu-bar {grid-column: 1/-1; grid-row: 1; background-color: #f0f0f0; border-bottom: 1px solid #e0e0e0; display: flex; align-items: center; padding: 0 15px; gap: 5px; font-size: 14px; z-index: 200; box-sizing: border-box; font-family: 'Segoe UI',sans-serif;}
+      .menu-item {position: relative; cursor: pointer; padding: 6px 12px; border-radius: 4px; color: #000; user-select: none; transition: background 0.2s;}
+      .menu-item:hover {background-color: #e0e0e0;}
+      .menu-item:hover .dropdown-menu {display: block;}
+      .dropdown-menu {display: none; position: absolute; top: 100%; left: 0; background-color: #ffffff; border: 1px solid #e0e0e0; border-radius: 4px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); min-width: 160px; padding: 4px 0; margin-top: 2px; z-index: 250;}
+      .dropdown-item {padding: 8px 16px; font-size: 13px; color: #000; display: flex; align-items: center; gap: 8px; transition: background 0.2s, color 0.2s;}
+      .dropdown-item:hover {background-color: #007acc; color: #ffffff;}
+      .dropdown-divider {height: 1px; background-color: #e0e0e0; margin: 4px 0;}
+      #sidebar {grid-column: 1; grid-row: 2; background: #fff; box-sizing: border-box; display: flex; flex-direction: column; overflow: hidden;}
+      .tab-container {display: flex; background: #e5e5e5;}
+      .tab-btn {flex: 1; padding: 8px; background: none; border: none; color: #858585; cursor: pointer; font-size: 11px; text-align: center; border-bottom: 2px solid transparent;}
+      .tab-btn:hover {color: #000; background: #dcdcdc;}
+      .tab-btn.active {color: #000; border-bottom: 2px solid #007acc; background: #fff;}
+      .tab-content {display: none; padding: 15px; flex: 1; overflow-y: auto;}
+      .tab-content.active {display: block;}
       .list-item {
         padding: 6px 8px;
         margin-bottom: 4px;
@@ -134,24 +34,10 @@
         user-select: none;
         transition: background-color 0.2s, color 0.2s;
       }
-      .error-item {
-        border-left: 4px solid #f48771;
-        color: #d32f2f;
-        background: #ffebee;
-      }
-      .file-item {
-        color: #007acc;
-        cursor: pointer;
-      }
-      .file-item:hover {
-        background-color: #e2eeff !important;
-        color: #007acc !important;
-      }
-      .file-item.active-file {
-        background-color: #007acc !important;
-        color: #fff !important;
-        font-weight: bold;
-      }
+      .error-item {border-left: 4px solid #f48771; color: #d32f2f; background: #ffebee;}
+      .file-item {color: #007acc; cursor: pointer;}
+      .file-item:hover {background-color: #e2eeff !important; color: #007acc !important;}
+      .file-item.active-file {background-color: #007acc !important; color: #fff !important; font-weight: bold;}
       #editor-container {
         grid-column: 2;
         grid-row: 2;
@@ -323,25 +209,19 @@
       });
       let FILES = JSON.parse(localStorage.getItem("editor_files")) || [];
       const completions = {
-          keywords: ['of', 'in', 'new', 'def', 'fn', 'tef', 'if', 'ifdef', 'is', 'and', 'or', 'not', 'true', 'false', 'loop', 'jump', 'where', 'import'],
-          types: ['bool', 'int', 'float', 'str', 'set', 'FILE', 'ERROR'],
+          keywords: ['in', 'new', 'def', 'tef', 'if', 'is', 'and', 'or', 'not', 'true', 'false', 'jump', 'import'],
+          types: ['bool', 'int', 'float', 'str', 'set'],
           functions: ['input', 'output'],
           modify: ['var', 'const'],
           error: ['!over', '!panic']
       };
-      let dCompletion = {
-          functions: [],
-          variables: [],
-          constants: []
-      };
+      let dCompletion = {functions: [], variables: [], constants: []};
       const suggestWidget = document.getElementById('suggest');
       let suggetsIndex = 0; let currentSuggest = [];
       const languages = {mod: []};
       function HighlightRules(){
           const eReg = str => str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-          const makeSource = arr => {
-              return `\\b(${arr.map(eReg).join('|')})\\b`;
-          };
+          const makeSource = arr => {return `\\b(${arr.map(eReg).join('|')})\\b`;};
           languages.mod = [
               {class: 'comment', source: /(\/\/.*|\/\-[\s\S]*?-\/)/.source},
               {class: 'string', source: /("(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*')/.source},
@@ -351,9 +231,7 @@
               {class: 'keyword', source: makeSource(completions.keywords)},
               {class: 'function', source: makeSource(completions.functions)},
           ];
-          languages.mod.forEach(r => {
-              r.reg = new RegExp('^' + r.source + '$');
-          });
+          languages.mod.forEach(r => {r.reg = new RegExp('^' + r.source + '$');});
           const combinedSource = languages.mod.map(r => `(${r.source})`).join('|');
           combReg = new RegExp(combinedSource, 'g');
       }
@@ -406,9 +284,7 @@
               fileDiv.title = relPath;
               fileDiv.style.paddingLeft = '15px';
               fileElements[relPath] = fileDiv;
-              fileDiv.addEventListener('click', () => {
-                  loadFile(relPath);
-              });
+              fileDiv.addEventListener('click', () => {loadFile(relPath);});
               parentElement.appendChild(fileDiv);
           }
       }
@@ -428,9 +304,7 @@
               }
               highlightOverlay.innerHTML = applyHighlight(realInput.value);
               updateLinenum();
-          } catch (err){
-              alert(`Failed to load folder: ${err.message}`);
-          }
+          } catch (err){alert(`Failed to load folder: ${err.message}`);}
       }
       window.addEventListener('load', async () => {
           if ('serviceWorker' in navigator) {
@@ -457,9 +331,7 @@
           let html = text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
           html = html.replace(combReg, (match) => {
               const rule = languages.mod.find(r => r.reg.test(match));
-              if (rule){
-                  return `<span class="${rule.class}">${match}</span>`;
-              }
+              if (rule){return `<span class="${rule.class}">${match}</span>`;}
               return match;
           });
           if (html.endsWith('\n') || html === '') html += ' ';
