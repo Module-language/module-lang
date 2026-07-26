@@ -162,29 +162,48 @@
       </div>
       <div class="ref-card" id="types">
         <h2 class="ref-title">型</h2>
-        <p class="ref-description">あ</p>
+        <p class="ref-description">型とは、占有するメモリの名前のことです。基本型、構造型、直接メモリを指し示す参照型、プログラマが定義する特殊型に分割されます。</p>
         <section class="ref-section syntax-box">
-          <h3 class="section-label">空型</h3>
+          <h3 class="section-label">基本型 (Fundamental Type)</h3>
+          <p class="ref-description">基本型は空型、論理型、整数型、浮動小数点数型、文字列型に分けられ、これらをいくつか組み合わせて新たな型を生成することができます。</p>
+          <h4>空型</h4>
+          <p class="ref-description">a</p>
           <code>name : <span class="type">void</span> = value</code>
-        </section>
-        <p class="ref-description">a</p>
-        <section class="ref-section syntax-box">
-          <h3 class="section-label">論理型</h3>
+          <h4>論理型</h4>
+          <p class="ref-description">a</p>
           <code>name : <span class="type">bool</span> = value</code>
+					<h4>整数型</h4>
+					<p class="ref-description">a</p>
+					<code>name : <span class="type">int</span> = value</code>
+					<h4>浮動小数点数型</h4>
+					<p class="ref-description">a</p>
+					<code>name : <span class="type">float</span> = value</code>
+					<h4>文字列型</h4>
+					<p class="ref-description">a</p>
+					<code>name : <span class="type">str</span> = value</code>
+					<h3 class="section-label">構造型 (Structure Type)</h3>
+					<p class="ref-description">a</p>
+					<h4>集合型</h4>
+					<p class="ref-description">a</p>
+					<code>name : <span class="type">set</span> = {v1, v2, ...}</code>
+					<h4>配列型</h4>
+					<p class="ref-description">a</p>
+					<h5>固定長配列</h5>
+					<p class="ref-description">a</p>
+					<code>name : type[length] = {v1, v2, ...}</code>
+					<h5>可変長配列</h5>
+					<p class="ref-description">a</p>
+					<code>name : type[] = {v1, v2, ...}</code>
+					<h3 class="section-label">参照型 (Reference Type)</h3>
+					<p class="ref-description">参照型は変数や定数、関数を指し示す型のことで、予約語の <code><span class="keyword">at</span></code> を使います。</p>
+					<code>name : type = <span class="keyword">at</span> variable</code>
+					<p class="ref-description">特に関数は以下のように記述します。</p>
+					<code>name : type -> type = <span class="keyword">at</span> func</code>
         </section>
-        <section class="ref-section syntax-box">
-          <h3 class="section-label">整数型</h3>
-          <code>name : <span class="type">int</span> = value</code>
-        </section>
-        <p class="ref-description">a</p>
-        <section class="ref-section syntax-box">
-          <h3 class="section-label">浮動小数点数型</h3>
-          <code>name : <span class="type">float</span> = value</code>
-        </section>
-        <section class="ref-section syntax-box">
-          <h3 class="section-label">文字列型</h3>
-          <code>name : <span class="type">str</span> = value</code>
-        </section>
+				<section class="ref-section example-box">
+					<p class="ref-description">a</p>
+					<code><span class="keyword">var</span> a:<span class="type">int</span> = 19<br><span class="keyword">var</span> b:<span class="type">int</span> = 1<br><span class="keyword">def</span> add(<span class="type">int</span>, <span class="type">int</span>) -> <span class="type">int</span><br><span class="keyword">const</span> f : (<span class="type">int</span>, <span class="type">int</span>) -&gt; <span class="type">int</span> = <span class="leyword">at</span> add<br>add : (x, y) -&gt; z {z = x + y}<br>main : {<br>&nbsp;<span class="function">output</span>(f(a, b))<br>}</code>
+				</section>
       </div>
       <div class="ref-card" id="operators">
         <h2 class="ref-title">演算子</h2>
@@ -227,7 +246,7 @@
       </div>
       <div class="ref-card" id="func">
         <h2 class="ref-title">関数</h2>
-        <p class="ref-description">a</p>
+        <p class="ref-description">関数はコンピュータに対する命令(アルゴリズム)の集合です。コンパイラは<ol><li>到達不能コード削除</li><li>インライン展開</li><li>定数畳み込み</li></ol>の順で最適化を行います。</p>
         <section class="ref-section syntax-box">
           <h3 class="section-label">関数の宣言</h3>
           <code><span class="keyword">def</span> func-name(type1, type2, ...) -&gt; return-type</code>
@@ -246,7 +265,7 @@
       <h1>商用利用について</h1>
       <p>もし、Module言語で書かれたコードを商用にするとき、<a href="#">公式Github</a>に公開するか、<a href="#">公式審査員</a>に送信してください。もし、認証が未完了のままで商用扱いされているコードが発見された場合、直ちに差し止めの措置を行います。</p>
     </section>
-  </main>
+  </main><!-- $name value size -->
   <footer><address><a href="#">Bug report</a></address><address><a href="#">Suggestion</a></address><p><small>Copyright © 2026. All rights reserved.</small></p></footer>
   <script>document.addEventListener('DOMContentLoaded', () => {const navi = document.querySelector('nav'); const naviLinks = document.querySelectorAll('nav a'); document.getElementById('menu-trigger').addEventListener('click', () => {navi.classList.toggle('active');}); naviLinks.forEach(link => {link.addEventListener('click', () => {navi.classList.remove('active');});});});</script>
 </body>
