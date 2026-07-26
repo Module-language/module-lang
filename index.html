@@ -84,7 +84,7 @@
     <section id="title">
       <span class="htitle">Module Language</span>
       <span class="open-box" id="open-box" onclick="window.open('./code.html')">エディタを開く</span>
-      <article>使用前に <a href="./agreement.html" style="color: #0366d6; border-bottom: 1px dashed #0366d6;">ライセンスおよび規約</a> に同意する必要があります。</article>
+      <article style="margin-top: 3px;">使用前に <a href="./agreement.html" style="color: #0366d6; border-bottom: 1px dashed #0366d6;">ライセンスおよび規約</a> に同意する必要があります。</article>
     </section>
     <section id="welcome">
       <h1>ようこそ</h1>
@@ -94,7 +94,7 @@
         <li><a href="#title">公式エディタ</a></li>
         <li>コンパイラ</li>
       </ul>
-      <p>の二つのみで編集ができます。コンパイラは <a href="#" onclick="window.confirm('ダウンロードしますか?')">ここから</a> 入手してください。</p>
+      <p>の二つのみで編集ができます。コンパイラは <a href="#" onclick="download()">ここから</a> 入手してください。</p>
       <table>
         <thead><tr><th>従来の課題</th><th>Moduleの考え方</th></tr></thead>
         <tbody>
@@ -161,7 +161,7 @@
         </section>
       </div>
       <div class="ref-card" id="types">
-        <h2 class="ref-title">組み込み型</h2>
+        <h2 class="ref-title">型</h2>
         <p class="ref-description">あ</p>
         <section class="ref-section syntax-box">
           <h3 class="section-label">空型</h3>
@@ -171,6 +171,19 @@
         <section class="ref-section syntax-box">
           <h3 class="section-label">論理型</h3>
           <code>name : <span class="type">bool</span> = value</code>
+        </section>
+        <section clasS="ref-section syntax-box">
+          <h3 class="section-label">整数型</h3>
+          <code>name : <span class="type">int</span> = value</code>
+        </section>
+        <p class="ref-description">a</p>
+        <section class="ref-section syntax-box">
+          <h3 class="section-label">浮動小数点数型</h3>
+          <code>name : <span class="type">float</span> = value</code>
+        </section>
+        <section class="ref-section syntax-box">
+          <h3 class="section-label">文字列型</h3>
+          <code>name : <span class="type">str</span> = value</code>
         </section>
       </div>
       <div class="ref-card" id="operators">
@@ -231,6 +244,6 @@
     </section>
   </main>
   <footer><address><a href="#">Bug report</a></address><address><a href="#">Suggestion</a></address><p><small>Copyright © 2026. All rights reserved.</small></p></footer>
-  <script> document.addEventListener('DOMContentLoaded', () => {const navi = document.querySelector('nav'); const naviLinks = document.querySelectorAll('nav a, nav li'); document.getElementById('menu-trigger').addEventListener('click', () => {navi.classList.toggle('active');}); naviLinks.forEach(link => {link.addEventListener('click', () => {navi.classList.remove('active');});});});</script>
+  <script> function download(){if (confirm('コンパイラをダウンロードしますか？')){window.open('./download.pdf')}} document.addEventListener('DOMContentLoaded', () => {const navi = document.querySelector('nav'); const naviLinks = document.querySelectorAll('nav a, nav li'); document.getElementById('menu-trigger').addEventListener('click', () => {navi.classList.toggle('active');}); naviLinks.forEach(link => {link.addEventListener('click', () => {navi.classList.remove('active');});});});</script>
 </body>
 </html>
