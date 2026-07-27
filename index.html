@@ -115,6 +115,7 @@
         <h3 class="example-label"><q>Hello, world!</q>を出力する</h3>
         <code><span class="keyword">def</span> print(<span class="type">str</span>) -&gt; <span class="type">str</span><br><span class="modify">const</span> message : <span class="type">str</span> = <span class="string">"Hello, world!"</span><br><br>print : x -&gt; y { y = <span class="function">output</span>(x) }<br><span class="function">main</span>: {<br>&nbsp;print(message)<br>}</code>
       </section>
+			<p>例外処理はありません (エントリーポイントとなるmain関数が<var>-1</var>という値を返します)。</p>
     </section>
     <section id="begin">
       <h1>はじめに</h1>
@@ -146,7 +147,7 @@
       </div>
       <div class="ref-card">
         <h2 class="ref-title">式と文</h2>
-        <p class="ref-description">式は命令を含まないもの、文は命令を含むものと定義します。文は改行区切りであり、他言語にみられる行末セミコロンは必要ありません。また、インデントはコンパイル時に読み飛ばされるので、プログラマーは自由にタブをいくつか置くことができます。</p>
+        <p class="ref-description">式は命令を含まないもの、文は命令を含むものと定義します。文は改行区切りであり、他言語にみられる行末セミコロンは必要ありません。また、インデントはコンパイル時に読み飛ばされるので、プログラマーは自由にタブをいくつか置くことができます。ただし、変数/定数は必ず初期化しなければなりません (未定義動作の防止)。</p>
         <section class="ref-section syntax-box">
           <h3 class="section-label">変数の宣言</h3>
           <code><span class="modify">var</span> name : type = value</code>
@@ -173,7 +174,7 @@
           <p class="ref-description">a</p>
           <code>name : <span class="type">bool</span> = value</code>
 					<h4>整数型</h4>
-					<p class="ref-description">a</p>
+					<p class="ref-description">負数は２の補数として扱われます。</p>
 					<code>name : <span class="type">int</span> = value</code>
 					<h4>浮動小数点数型</h4>
 					<p class="ref-description">a</p>
@@ -181,6 +182,8 @@
 					<h4>文字列型</h4>
 					<p class="ref-description">a</p>
 					<code>name : <span class="type">str</span> = value</code>
+        </section>
+				<section class="ref-section syntax-box">
 					<h3 class="section-label">構造型 (Structure Type)</h3>
 					<p class="ref-description">a</p>
 					<h4>集合型</h4>
@@ -189,17 +192,24 @@
 					<h4>配列型</h4>
 					<p class="ref-description">a</p>
 					<h5>固定長配列</h5>
-					<p class="ref-description">a</p>
 					<code>name : type[length] = {v1, v2, ...}</code>
 					<h5>可変長配列</h5>
-					<p class="ref-description">a</p>
-					<code>name : type[] = {v1, v2, ...}</code>
+					<code>name : type[length] = {v1, v2, ...}</code>
+				</section>
+				<section class="ref-section syntax-box">
 					<h3 class="section-label">参照型 (Reference Type)</h3>
 					<p class="ref-description">参照型は変数や定数、関数を指し示す型のことで、予約語の <code><span class="keyword">at</span></code> を使います。</p>
 					<code>name : type = <span class="keyword">at</span> variable</code>
 					<p class="ref-description">特に関数は以下のように記述します。</p>
 					<code>name : type -> type = <span class="keyword">at</span> func</code>
-        </section>
+					<p class="ref-description">a</p>
+				</section>
+				<section class="ref-section syntax-box">
+					<h3 class="section-label">特殊型 (Irregular Type)</h3>
+					<p class="ref-description">特殊型はプログラマが自由に型を生成でき、予約語の <code><span class="keyword">tef</span></code> (グローバル型) と <code><span class="keyword">new</span></code> (ローカル型) を使います。</p>
+					<code><span class="keyword">tef</span> identifier typedef<br>name : <span class="keyword">new</span> identifier typedef = value</code>
+					<p class="ref-description">特に<code><span class="keyword">new</span></code>は、<var>identifier</var>の部分を省略することがきます。これはローカルなゆえに匿名だからです。</p>
+				</section>
 				<section class="ref-section example-box">
 					<p class="ref-description">a</p>
 					<code><span class="keyword">var</span> a:<span class="type">int</span> = 19<br><span class="keyword">var</span> b:<span class="type">int</span> = 1<br><span class="keyword">def</span> add(<span class="type">int</span>, <span class="type">int</span>) -> <span class="type">int</span><br><span class="keyword">const</span> f : (<span class="type">int</span>, <span class="type">int</span>) -&gt; <span class="type">int</span> = <span class="leyword">at</span> add<br>add : (x, y) -&gt; z {z = x + y}<br>main : {<br>&nbsp;<span class="function">output</span>(f(a, b))<br>}</code>
@@ -212,7 +222,9 @@
           <thead><tr><th>優先順位</th><th>演算子</th><th>意味</th></tr></thead>
           <tbody>
             <tr><td>高</td><td>() [] .</td><td>括弧、アクセス指定</td></tr>
+						<tr><td></td><td>!</td><td>オーバーフロー解決</td></tr>
             <tr><td></td><td>::</td><td>キャスト</td></tr>
+						<tr><td></td><td>sizeof typeof alignof</td><td>サイズ指定、型指定</td></tr>
             <tr><td></td><td>func(...)</td><td>関数呼び出し</td></tr>
             <tr><td></td><td>not</td><td>否定</td></tr>
             <tr><td></td><td>* / %</td><td>乗算、除算、剰余</td></tr>
@@ -223,13 +235,70 @@
             <tr><td></td><td>and</td><td>論理積、ビット積</td></tr>
             <tr><td></td><td>or</td><td>論理和、ビット和</td></tr>
             <tr><td></td><td>&coloneq;</td><td>推論</td></tr>
-            <tr><td>低</td><td>=</td><td>代入</td></tr>
+            <tr><td></td><td>=</td><td>代入</td></tr>
+						<tr><td>低</td><td>where</td><td>限定</td></tr>
           </tbody>
         </table>
         <section class="ref-section syntax-box">
-          <h3 class="section-label">a</h3>
+          <h3 class="section-label">オーバーフロー解決演算子</h3>
+					<p class="ref-description">a</p>
           <code>a</code>
         </section>
+				<section class="ref-section syntax-box">
+					<h3 class="section-label">キャスト演算子</h3>
+					<p class="ref-description">a</p>
+					<code></code>
+				</section>
+				<section class="ref-section syntax-box">
+					<h3 class="section-label">サイズ指定演算子 / 型指定演算子</h3>
+					<p class="ref-description">a</p>
+					<code></code>
+				</section>
+				<section class="ref-section syntax-box">
+					<h3 class="section-label">否定演算子</h3>
+					<p class="ref-description">a</p>
+					<code></code>
+				</section>
+				<section class="ref-section syntax-box">
+					<h3 class="section-label">算術演算子</h3>
+					<p class="ref-description">a</p>
+					<code></code>
+				</section>
+				<section class="ref-section syntax-box">
+					<h3 class="section-label">シフト演算子</h3>
+					<p class="ref-description">a</p>
+					<code></code>
+				</section>
+				<section class="ref-section syntax-box">
+					<h3 class="section-label">不等号演算子</h3>
+					<p class="ref-description">a</p>
+					<code></code>
+				</section>
+				<section class="ref-section syntax-box">
+					<h3 class="section-label">等号演算子</h3>
+					<p class="ref-description">a</p>
+					<code></code>
+				</section>
+				<section class="ref-section syntax-box">
+					<h3 class="section-label">論理演算子</h3>
+					<p class="ref-description">a</p>
+					<code></code>
+				</section>
+				<section class="ref-section syntax-box">
+					<h3 class="section-label">推論演算子</h3>
+					<p class="ref-description">a</p>
+					<code></code>
+				</section>
+				<section class="ref-section syntax-box">
+					<h3 class="section-label">代入演算子</h3>
+					<p class="ref-description">a</p>
+					<code></code>
+				</section>
+				<section class="ref-section syntax-box">
+					<h3 class="section-label">限定演算子</h3>
+					<p class="ref-description">a</p>
+					<code></code>
+				</section>
       </div>
       <div class="ref-card" id="control">
         <h2 class="ref-title">制御文</h2>
