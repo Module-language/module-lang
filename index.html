@@ -17,15 +17,11 @@
     nav p a {color: #8b949e; text-decoration: none; transition: color 0.2s;}
     nav p a:hover {color: #fff;}
     nav ul {list-style: none; padding: 0; margin: 0;}
-    nav > ul > li {padding: 0.5rem 1.5rem; font-size: 0.95rem; color: #e6edf3; cursor: pointer; transition: all 0.2s;}
+    nav > ul > li {padding: 0.5rem 1.5rem; font-size: 0.95rem; color: #e6edf3; cursor: pointer; transition: all 0.2s; text-decoration: none;}
     nav > ul > li:hover {background-color: #2d2d2d; color: #fff;}
     nav ul ul {margin-top: 0.25rem; padding-left: 1rem; border-left: 1px solid #333; margin-left: 0.5rem;}
     nav ul ul li {padding: 0.35rem 0.75rem; font-size: 0.85rem; color: #8b949e; cursor: pointer; transition: color 0.2s;}
     nav ul ul li:hover {color: #58a6ff; background: none;}
-    #title {display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 5rem 2rem; background: linear-gradient(180deg, #fcfcfc 0%, #f6f8fa 100%); border-bottom: 1px solid #e1e4d8;}
-    .htitle {font-family: 'Courier New', Courier, monospace; font-size: 3.5rem; font-weight: bold; color: #1a1a1a; letter-spacing: 2px; margin: 0 0 2rem 0; text-shadow: 0 2px 4px rgba(0, 0, 0, 0.03);}
-    .open-box {cursor: pointer; display: inline-flex; align-items: center; background-color: #212529; color: #fff; padding: 12px 36px; border-radius: 6px; text-decoration: none; font-size: 1rem; font-weight: bold; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); transition: all 0.3s ease;}
-    .open-box:hover {transform: translateY(-2px);}
     #welcome h2 {font-size: 1.75rem; color: #1a1a1a; margin-top: 2rem; margin-bottom: 1rem; padding-bottom: 0.25rem; border-bottom: 2px solid #f0f0f0;}
     #welcome p {font-size: 1rem; color: #333; line-height: 1.7; margin-bottom: 1.25rem;}
     #welcome ul {padding-left: 1.5rem; margin-bottom: 1.5rem;}
@@ -37,7 +33,6 @@
     th {background-color: #f6f8fa; color: #24292e; font-weight: bold; text-align: left; padding: 12px 16px; border-bottom: 2px solid #e1e4e8;}
     td {color: #444; border-bottom: 1px solid #eee; padding: 3px;}
     main section {max-width: 800px; margin: 0 auto; padding: 3rem 1.5rem; box-sizing: border-box;}
-    main section#title {max-width: 100%; padding: 5rem 2rem;}
     h1 {border-bottom: 3px solid #333; border-left: 4px solid #696969; padding-left: 10px; font-weight: 600; border-radius: 6px;}
     .keyword {color: #ce5dbd;}
     .function {color: #c5b36b;}
@@ -45,7 +40,6 @@
     .comment {color: #75715e; font-style: italic;}
     .type {color: #377dc8;}
     .modify {color: #4987ca;}
-    .error {color: #cf4c4c;}
     .ref-card {max-width: 800px; margin: 1.5rem auto; padding: 1.5rem; border: 1px solid #e1e4e8; border-radius: 8px; background: #fff; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05); font-family: sans-serif;}
     .ref-title {margin-top: 0; margin-bottom: 0.5rem; font-size: 1.3rem; color: #1a1a1a;}
     .ref-description {color: #586069; font-size: 0.9rem; margin-top: 0; margin-bottom: 1.25rem;}
@@ -67,7 +61,7 @@
     </div>
     <nav>
       <p><a href="#welcome">ようこそ</a></p>
-      <ul><li><a href="#about">Moduleとは</a></li><li><a href="#basis">コードの基本構成</a></li></ul>
+      <ul><li>Moduleとは</li><li>コードの基本構成</li></ul>
       <p><a href="#begin">はじめに</a></p>
       <ul>
         <li><a href="#types">型</a><ul><li>基本型 (Fundamental Type)<ul><li>空型</li><li>論理型</li><li>整数型</li><li>浮動小数点数型</li><li>文字列型</li></ul></li><li>構造型 (Structure Type)<ul><li>集合型</li><li>配列型</li></ul></li><li>参照型 (Reference Type)</li><li>特殊型 (Irregular Type)</li></ul></li>
@@ -81,17 +75,17 @@
     </nav>
   </header>
   <main>
-    <section id="title">
-      <span class="htitle">Module Language</span>
-      <span class="open-box" id="open-box" onclick="window.open('./code.html')">エディタを開く</span>
-      <article style="margin-top: 3px;">使用前に <a href="./agreement.html" style="color: #0366d6; border-bottom: 1px dashed #0366d6;">ライセンスおよび規約</a> に同意する必要があります。</article>
+    <section style="display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 5rem 2rem; border-bottom: 1px solid #e1e4d8;">
+      <span style="font-family: 'Courier New', Courier, monospace; font-size: 3.5rem; font-weight: bold; color: #1a1a1a; letter-spacing: 2px; margin: 0 0 2rem 0; text-shadow: 0 2px 4px rgba(0, 0, 0, 0.03);">Module Language</span>
+      <span style="cursor: pointer; display: inline-flex; align-items: center; background-color: #212529; color: #fff; padding: 12px 36px; border-radius: 6px; text-decoration: none; font-size: 1rem; font-weight: bold; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);" id="open-box" onclick="window.open('./code.html')">エディタを開く</span>
+      <article style="margin-top: 3px;">使用前に <a href="./agreement.html" style="color: #0366d6; border-bottom: 1px dashed #0366d6; text-decoration: none;">ライセンスおよび規約</a> に同意する必要があります。</article>
     </section>
     <section id="welcome">
       <h1>ようこそ</h1>
       <h2 id="about">Moduleとは</h2>
       <p><strong>安全性</strong>・<strong>記述性</strong>・<strong>性能</strong>のバランスを追求したプログラミング言語です。Visual Studio Code (通称<q>VS Code</q>) などの環境構築を必要とせず、</p>
       <ul>
-        <li><a href="#title">公式エディタ</a></li>
+        <li>公式エディタ</li>
         <li>コンパイラ</li>
       </ul>
       <p>の二つのみで編集ができます。コンパイラは <a href="#" onclick="addEventListener('click', () => {if (confirm('ダウンロードしますか？')){window.open('./compiler.zip');}})">ここから</a> 入手してください。</p>
@@ -132,8 +126,7 @@
       <div class="ref-card">
         <h2 class="ref-title">識別子と予約語</h2>
         <h3>識別子</h3>
-        <p class="ref-description">識別子とは、後述する予約語以外の、以下の規則がある語句のことです:</p>
-        <ul><li>ユニコード文字である</li><li>数字で始めてはいけない</li><li>大文字と小文字は区別される</li></ul>
+        <p class="ref-description">識別子とは、後述する予約語以外の、以下の規則がある語句のことです:<ul><li>ユニコード文字である</li><li>数字で始めてはいけない</li><li>大文字と小文字は区別される</li></ul></p>
         <h3>予約語</h3>
         <p class="ref-description">予約語は、既に使用が決まっている語句のことであり、以下の20個が挙げられます:</p>
         <table>
