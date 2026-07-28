@@ -5,142 +5,137 @@
   <title>Module Document</title>
   <style>
     html {scroll-behavior: smooth; scroll-padding-top: 65px;}
-    body {font-family: 'Segoe UI', sans-serif; margin: 0; color: #24292e; background-color: #fff; line-height: 1.6;}
+    body {font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; margin: 0; color: #24292e; background-color: #fff; line-height: 1.6;}
     header {display: flex; justify-content: space-between; padding: 0 20px; height: 60px; background-color: #1e1e1e; position: sticky; top: 0; z-index: 1001;}
-    .header-left {display: flex; align-items: center; gap: 15px; margin: 0;}
-    .menu-trigger {display: flex; font-size: large; flex-direction: column; gap: 4px; color: #fff; background: none; border: none;}
-    .menu-trigger:hover {cursor: pointer;}
-    .menu-trigger span {display: block; width: 20px; height: 2px; background-color: #fff;}
-    nav {position: fixed; width: 260px; height: calc(100vh - 60px); top: 60px; background-color: #1e1e1e; color: #ccc; left: -260px; transition: left 0.4s; overflow-y: auto; padding: 1.5rem 0; box-sizing: border-box; z-index: 1000;}
+    .header-left {display: flex; align-items: center; gap: 15px;}
+		.header-left input[type="text"]{background-color: #2d2d2d; border: 1px solid #444; color: #fff; padding: 6px 12px; border-radius: 4px; font-size: 0.85rem; outline: none;}
+		.header-left input[type="text"]::placeholder {color: #8b949e;}
+    .menu-trigger {display: flex; flex-direction: column; gap: 5px; background: none; border: none; padding: 5px; cursor: pointer; align-items: center; justify-content: center;}
+    .menu-trigger span {display: block; width: 22px; height: 2px; background-color: #fff; border-radius: 2px; transition: all 0.3s;}
+    nav {position: fixed; width: 260px; height: calc(100vh - 60px); top: 60px; background-color: #1e1e1e; color: #ccc; left: -260px; transition: left 0.3s ease-in-out; overflow-y: auto; padding: 1.5rem 0; box-sizing: border-box; z-index: 1000; box-shadow: 2px 0 8px rgba(0, 0, 0, 0.2);}
     nav.active {left: 0;}
-    nav p {margin: 1.5rem 0 0.5rem 0; padding: 0 1.5rem; font-size: 0.85rem; font-weight: bold; text-transform: uppercase; color: #8b949e;}
+    nav p {margin: 1.2rem 0 0.4rem 0; padding: 0 1.5rem; font-size: 0.85rem; font-weight: bold; text-transform: uppercase; color: #8b949e;}
     nav p a {color: #8b949e; text-decoration: none; transition: color 0.2s;}
     nav p a:hover {color: #fff;}
     nav ul {list-style: none; padding: 0; margin: 0;}
-    nav > ul > li {padding: 0.5rem 1.5rem; font-size: 0.95rem; color: #e6edf3; cursor: pointer; transition: all 0.2s; text-decoration: none;}
+    nav > ul > li {padding: 0.5rem 1.5rem; font-size: 0.95rem; color: #e6edf3; cursor: pointer; transition: all 0.2s;}
     nav > ul > li:hover {background-color: #2d2d2d; color: #fff;}
-    nav ul ul {margin-top: 0.25rem; padding-left: 1rem; border-left: 1px solid #333; margin-left: 0.5rem;}
+    nav ul ul {margin-top: 0.25rem; padding-left: 1rem; border-left: 1px solid #333; margin-left: 1.5rem;}
     nav ul ul li {padding: 0.35rem 0.75rem; font-size: 0.85rem; color: #8b949e; cursor: pointer; transition: color 0.2s;}
-    nav ul ul li:hover {color: #58a6ff; background: none;}
-    #welcome h2 {font-size: 1.75rem; color: #1a1a1a; margin-top: 2rem; margin-bottom: 1rem; padding-bottom: 0.25rem; border-bottom: 2px solid #f0f0f0;}
+		nav ul ul li a {color: inherit; text-decoration: none; display: block;}
+    nav ul ul li:hover {color: #58a6ff;}
+    #welcome h2 {font-size: 1.4rem; color: #1a1a1a; margin-top: 2rem; margin-bottom: 1rem; padding-bottom: 0.25rem; border-bottom: 1px solid #e1e4e8;}
     #welcome p {font-size: 1rem; color: #333; line-height: 1.7; margin-bottom: 1.25rem;}
     #welcome ul {padding-left: 1.5rem; margin-bottom: 1.5rem;}
-    #welcome ul li {font-size: 1rem; color: #444; margin-bottom: 0.5rem; line-height: 1.5;}
-    #welcome ol {padding: 1.3rem 1.3rem 1.3rem 2.5rem; margin-bottom: 1.5rem; background-color: #f8f9fa; border-radius: 8px; border: 1px solid #e1e4e8;}
-    #welcome ol ul {font-size: 1rem; color: #24292e; margin-bottom: 0.75rem;}
+    #welcome ul li {font-size: 1rem; color: #444; margin-bottom: 0.5rem;}
+    #welcome ol {padding: 1.2rem 1.2rem 1.2rem 2.5rem; margin-bottom: 1.5rem; background-color: #f8f9fa; border-radius: 8px; border: 1px solid #e1e4e8;}
     #welcome strong {display: inline-block; background: linear-gradient(transparent 70%, #e2f0fd 70%); padding: 0 4px; color: #0366d6;}
-    table {width: 100%; border-collapse: collapse; margin: 2rem 0; font-size: 0.95rem; border-radius: 8px; border: 1px solid #e1e4e8; display: block;}
-    th {background-color: #f6f8fa; color: #24292e; font-weight: bold; text-align: left; padding: 12px 16px; border-bottom: 2px solid #e1e4e8;}
-    td {color: #444; border-bottom: 1px solid #eee; padding: 3px;}
-    main section {max-width: 800px; margin: 0 auto; padding: 3rem 1.5rem; box-sizing: border-box;}
-    h1 {border-bottom: 3px solid #333; border-left: 4px solid #696969; padding-left: 10px; font-weight: 600; border-radius: 6px;}
+    .table-wrapper {width: 100%; overflow-x: auto; margin: 1.5rem 0;}
+		table {width: 100%; border-collapse: collapse; font-size: 0.95rem; border-radius: 6px; border: 1px solid #e1e4e8; overflow: hidden;}
+    th {background-color: #f6f8fa; color: #24292e; font-weight: bold; text-align: left; padding: 10px 14px; border-bottom: 2px solid #e1e4e8;}
+    td {color: #444; border-bottom: 1px solid #eee; padding: 10px 14px;}
+    main section {max-width: 850px; margin: 0 auto; padding: 2.5rem 1.5rem; box-sizing: border-box;}
+    h1 {border-bottom: 2px solid #e1e4e8; border-left: 4px solid #0366d6; padding-left: 12px; font-weight: bold; color: #1a1a1a; margin-bottom: 1.5rem;}
     .keyword {color: #ce5dbd;}
     .function {color: #c5b36b;}
     .string {color: #ce9178;}
     .comment {color: #75715e; font-style: italic;}
     .type {color: #377dc8;}
     .modify {color: #4987ca;}
-    .ref-card {max-width: 800px; margin: 1.5rem auto; padding: 1.5rem; border: 1px solid #e1e4e8; border-radius: 8px; background: #fff; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05); font-family: sans-serif;}
-    .ref-title {margin-top: 0; margin-bottom: 0.5rem; font-size: 1.3rem; color: #1a1a1a;}
-    .ref-description {color: #586069; font-size: 0.9rem; margin-top: 0; margin-bottom: 1.25rem;}
-    .ref-section {margin-bottom: 1rem; padding: 0.75rem 1rem; border-radius: 6px;}
-    .section-label {margin-top: 0; margin-bottom: 0.5rem; font-size: 0.8rem; font-weight: bold;}
+    .ref-card {margin: 1.5rem 0; padding: 1.5rem; border: 1px solid #e1e4e8; border-radius: 8px; background: #fff; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);}
+    .ref-title {margin-top: 0; margin-bottom: 0.5rem; font-size: 1.3rem; color: #1a1a1a; border: none; padding: 0;}
+    .ref-description {color: #586069; font-size: 0.9rem; margin-top: 0; margin-bottom: 1rem;}
+    .ref-section {margin-bottom: 1rem; padding: 1rem; border-radius: 6px;}
+		.section-label, .example-label {margin-top: 0; margin: 0.5rem; font-size: 0.85; font-weight: bold;}
     .syntax-box {background: #f6f8fa; border-left: 4px solid #0366d6;}
     .syntax-box .section-label {color: #0366d6;}
-    .syntax-box code {color: #000; font-family: 'Courier New', Courier, monospace;}
+    .syntax-box code {color: #24292e; font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace; white-space: pre-wrap; display: block;}
     .example-box {background: #0d1117; border-left: 4px solid #28a745; color: #c9d1d9;}
-    .example-box .section-label {color: #28a745;}
-    .example-box code {margin: 0; overflow-x: auto; font-family: 'Courier New', Courier, monospace;}
+    .example-box .example-label, .example-box .section-label {color: #28a745;}
+    .example-box code {color: #24292e; font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace; white-space: pre-wrap; display: block;}
+		footer {background-color: #f6f8fa; border-top: 1px solid #e1e4e8; padding: 2rem 1rem; text-align: center; font-size: 0.85rem; color: #586069;}
+		footer address {display: inline-block; margin: 0 10px; font-style: normal;}
+		footer a {color: #0366d6; text-decoration: none;}
   </style>
 </head>
 <body>
   <header>
     <div class="header-left">
-      <button class="menu-trigger" id="menu-trigger"><span></span><span></span><span></span></button>
-      <p><input type="text" spellcheck="true" placeholder="検索する"></p>
+      <button class="menu-trigger" id="menu-trigger" aria-label="メニューを開く"><span></span><span></span><span></span></button>
+      <input type="text" spellcheck="false" placeholder="検索する">
     </div>
     <nav>
       <p><a href="#welcome">ようこそ</a></p>
-      <ul><li>Moduleとは</li><li>コードの基本構成</li></ul>
+      <ul><li><a href="#about">Moduleとは</a></li><li><a href="#basis">コードの基本構成</a></li></ul>
       <p><a href="#begin">はじめに</a></p>
       <ul>
-        <li><a href="#types">型</a><ul><li>基本型 (Fundamental Type)<ul><li>空型</li><li>論理型</li><li>整数型</li><li>浮動小数点数型</li><li>文字列型</li></ul></li><li>構造型 (Structure Type)<ul><li>集合型</li><li>配列型</li></ul></li><li>参照型 (Reference Type)</li><li>特殊型 (Irregular Type)</li></ul></li>
-        <li><a href="#operators">演算子</a><ul><li>単項演算子<ul><li>正化演算子</li><li>負化演算子</li></ul></li><li>二項演算子<ul><li>算術演算子</li><li>代入演算子</li><li>論理演算子</li><li>ビット演算子</li><li>シフト演算子</li><li>推論演算子</li></ul></li><li>複合演算子</li></ul></li>
-        <li><a href="#control">制御文</a><ul><li>if</li><li>jump</li></ul></li>
+        <li><a href="#types">型</a><ul><li>基本型 (Fundamental Type)</li><li>構造型 (Structure Type)</li><li>参照型 (Reference Type)</li><li>特殊型 (Custom Type)</li></ul></li>
+        <li><a href="#operators">演算子</a><ul><li>単項演算子</li><li>二項演算子</li><li>複合演算子</li></ul></li>
+        <li><a href="#control">制御文</a></li>
         <li><a href="#func">関数</a></li>
         <li><a href="#namespace">名前空間</a></li>
         <li><a href="#stdlib">標準ライブラリ</a></li>
-        <li><a href="#appendix">付録</a><ul><li>拡張バッカス・ナウア記法(EBNF)</li><li>中間表現(MIR)</li></ul></li>
+        <li><a href="#appendix">付録</a></li>
       </ul>
     </nav>
   </header>
   <main>
-    <section style="display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 5rem 2rem; border-bottom: 1px solid #e1e4d8;">
-      <span style="font-family: 'Courier New', Courier, monospace; font-size: 3.5rem; font-weight: bold; color: #1a1a1a; letter-spacing: 2px; margin: 0 0 2rem 0; text-shadow: 0 2px 4px rgba(0, 0, 0, 0.03);">Module Language</span>
-      <span style="cursor: pointer; display: inline-flex; align-items: center; background-color: #212529; color: #fff; padding: 12px 36px; border-radius: 6px; text-decoration: none; font-size: 1rem; font-weight: bold; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);" id="open-box" onclick="window.open('./code.html')">エディタを開く</span>
-      <article style="margin-top: 3px;">使用前に <a href="./agreement.html" style="color: #0366d6; border-bottom: 1px dashed #0366d6; text-decoration: none;">ライセンスおよび規約</a> に同意する必要があります。</article>
+    <section style="display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 4rem 1rem; border-bottom: 1px solid #e1e4d8;">
+      <span style="font-family: 'SFMono-Regular', Consolas, monospace; font-size: 3rem; font-weight: bold; color: #1a1a1a; letter-spacing: 1px; margin-bottom: 1.5rem;">Module Language</span>
+      <span style="cursor: pointer; display: inline-flex; align-items: center; background-color: #212529; color: #fff; padding: 12px 32px; border-radius: 6px; text-decoration: none; font-size: 1rem; font-weight: bold; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);" id="open-box" onclick="window.open('./code.html')">エディタを開く</span>
+      <p style="margin-top: 1rem; font-size: 0.85rem; color: #586069;">使用前に <a href="./agreement.html" style="color: #0366d6; border-bottom: 1px dashed #0366d6; text-decoration: none;">ライセンスおよび規約</a> に同意する必要があります。</p>
     </section>
     <section id="welcome">
       <h1>ようこそ</h1>
       <h2 id="about">Moduleとは</h2>
-      <p><strong>安全性</strong>・<strong>記述性</strong>・<strong>性能</strong>のバランスを追求したプログラミング言語です。Visual Studio Code (通称<q>VS Code</q>) などの環境構築を必要とせず、</p>
-      <ul>
-        <li>公式エディタ</li>
-        <li>コンパイラ</li>
-      </ul>
-      <p>の二つのみで編集ができます。コンパイラは <a href="#" onclick="addEventListener('click', () => {if (confirm('ダウンロードしますか？')){window.open('./compiler.zip');}})">ここから</a> 入手してください。</p>
-      <table>
-        <thead><tr><th>従来の課題</th><th>Moduleの考え方</th></tr></thead>
-        <tbody>
-          <tr><td>メモリ安全</td><td>コンパイラが安全性を補助する</td></tr>
-          <tr><td>記述量</td><td>必要最低限の構文で書ける</td></tr>
-          <tr><td>学習コスト</td><td>初学者でも理解しやすい設計</td></tr>
-        </tbody>
-      </table>
+      <p><strong>安全性</strong>・<strong>記述性</strong>・<strong>性能</strong>のバランスを追求したプログラミング言語です。Visual Studio Code (通称<q>VS Code</q>) などの環境構築を必要とせず、<ul><li>公式エディタ</li><li>コンパイラ</li></ul>の二つのみで編集ができます。コンパイラは <a href="#" onclick="if (confirm('ダウンロードしますか？')){window.open('./compiler.zip');} return false;">ここから</a> 入手してください。</p>
+      <div class="table-wrapper">
+				<table>
+					<thead><tr><th>従来の課題</th><th>Moduleの考え方</th></tr></thead>
+					<tbody><tr><td>メモリ安全</td><td>コンパイラが安全性を補助する</td></tr><tr><td>記述量</td><td>必要最低限の構文で書ける</td></tr><tr><td>学習コスト</td><td>初学者でも理解しやすい設計</td></tr></tbody>
+				</table>
+			</div>
       <h2 id="basis">コードの基本構成</h2>
-      <p>基本的に</p>
-      <ol>
-        <li> var/const/def 修飾子で宣言し、</li>
-        <li> main ブロック内で実行したいことを書き、</li>
-        <li>その間に定義を書く。</li>
-      </ol>
+      <p>基本的に<ol><li><code>var</code> / <code>const</code> / <code>def</code> 修飾子で宣言</li><li><code>main</code> ブロック内で実行したい処理を記述</li><li>その間に定義を書く</li></ol></p>
       <p>という流れです。コードを上部から読んだとき<br><strong>宣言 → 定義 → 実行</strong><br>となります (この順は必須でない) 。コンパイラは<strong>宣言</strong>を優先的に定義し、その次にユーザーの定義を最適化します。</p>
       <section class="ref-section example-box">
         <h3 class="example-label"><q>Hello, world!</q>を出力する</h3>
-        <code><span class="keyword">def</span> print(<span class="type">str</span>) -&gt; <span class="type">str</span><br><span class="modify">const</span> message : <span class="type">str</span> = <span class="string">"Hello, world!"</span><br><br>print : x -&gt; y { y = <span class="function">output</span>(x) }<br><span class="function">main</span>: {<br>&nbsp;print(message)<br>}</code>
+        <code><span class="keyword">def</span> print(<span class="type">str</span>) -&gt; <span class="type">str</span>
+<span class="modify">const</span> message : <span class="type">str</span> = <span class="string">"Hello, world!"</span>
+
+print : x -&gt; y { y = <span class="function">output</span>(x) }
+
+<span class="function">main</span>: {
+		print(message)
+}</code>
       </section>
-			<p>例外処理はありません (エントリーポイントとなるmain関数が<var>-1</var>という値を返します)。</p>
+			<p>例外処理はありません (エントリーポイントとなる <code>main</code> 関数が <code>-1</code> という値を返します)。</p>
     </section>
     <section id="begin">
       <h1>はじめに</h1>
       <p>このパートでは、コードを書く際の基本となる情報を整理します。</p>
       <div class="ref-card">
         <h2 class="ref-title">コメント</h2>
-        <p class="ref-description">コード中にメモを残しておきたいとき、率直に書くと定義されていない文字が含まれている可能性があるため、コンパイル時警告になります。安全にコメントを書く方法は以下の二通りあります。</p>
+        <p class="ref-description">コード中にメモを残す場合、定義されていない文字が含まれているとコンパイル時警告になります。安全にコメントを書く方法は以下の2通りです。</p>
         <section class="ref-section syntax-box">
           <h3 class="section-label">構文</h3>
-          <code><span class="comment">// コメント</span><br><span class="comment">/-<br> コメント<br>-/</span></code>
+          <code><span class="comment">// コメント</span>
+<span class="comment">/-
+	コメント
+-/</span></code>
         </section>
-        <p class="ref-description">実行したい内容と無関係な部分は、その部分をコメントにする工夫があります。</p>
       </div>
       <div class="ref-card">
         <h2 class="ref-title">識別子と予約語</h2>
         <h3>識別子</h3>
-        <p class="ref-description">識別子とは、後述する予約語以外の、以下の規則がある語句のことです:<ul><li>ユニコード文字である</li><li>数字で始めてはいけない</li><li>大文字と小文字は区別される</li></ul></p>
+        <p class="ref-description">識別子とは、予約語以外の以下の規則を満たす語句のことです。<ul><li>ユニコード文字である</li><li>数字で始めてはいけない</li><li>大文字と小文字は区別される</li></ul></p>
         <h3>予約語</h3>
-        <p class="ref-description">予約語は、既に使用が決まっている語句のことであり、以下の20個が挙げられます:</p>
-        <table>
-          <tbody>
-            <tr><td>void</td><td>bool</td><td>int</td><td>float</td><td>str</td></tr>
-            <tr><td>var</td><td>const</td><td>def</td><td>tef</td><td>if</td></tr>
-            <tr><td>and</td><td>or</td><td>not</td><td>true</td><td>false</td></tr>
-            <tr><td>is</td><td>jump</td><td>import</td><td>new</td><td>in</td></tr>
-          </tbody>
-        </table>
+        <p class="ref-description">予約語は、既に定義されている語句 (全20個) のことです。</p>
+				<div class="table-wrapper"><table><tbody><tr><td>void</td><td>bool</td><td>int</td><td>float</td><td>str</td></tr><tr><td>var</td><td>const</td><td>def</td><td>tef</td><td>if</td></tr><tr><td>and</td><td>or</td><td>not</td><td>true</td><td>false</td></tr><tr><td>is</td><td>jump</td><td>import</td><td>new</td><td>where</td></tr></tbody></table></div>
       </div>
       <div class="ref-card">
         <h2 class="ref-title">式と文</h2>
-        <p class="ref-description">式は命令を含まないもの、文は命令を含むものと定義します。文は改行区切りであり、他言語にみられる行末セミコロンは必要ありません。また、インデントはコンパイル時に読み飛ばされるので、プログラマーは自由にタブをいくつか置くことができます。ただし、変数/定数は必ず初期化しなければなりません (未定義動作の防止)。</p>
+        <p class="ref-description">式は命令を含まないもの、文は命令を含むものと定義します。文は改行区切りであり、他言語にみられる行末セミコロンは必要ありません。また、インデントはコンパイル時に読み飛ばされるので、プログラマーは自由にタブをいくつか置くことができます。変数とはアドレスに付与した識別子、定数とは変数を変更不可にした識別子のことです。ただし、それらは必ず初期化しなければなりません (未定義動作の防止)。</p>
         <section class="ref-section syntax-box">
           <h3 class="section-label">変数の宣言</h3>
           <code><span class="modify">var</span> name : type = value</code>
@@ -156,7 +151,7 @@
       </div>
       <div class="ref-card" id="types">
         <h2 class="ref-title">型</h2>
-        <p class="ref-description">型とは、占有するメモリの名前のことです。基本型、構造型、直接メモリを指し示す参照型、プログラマが定義する特殊型に分割されます。</p>
+        <p class="ref-description">型とは、<q>起点のアドレスから何バイトの領域を使うか</q>と<q>そのビット列をどう解釈するか</q>を表したものです。基本型、構造型、直接メモリを指し示す参照型、プログラマが定義する特殊型に分割されます。</p>
         <section class="ref-section syntax-box">
           <h3 class="section-label">基本型 (Fundamental Type)</h3>
           <p class="ref-description">基本型は空型、論理型、整数型、浮動小数点数型、文字列型に分けられ、これらをいくつか組み合わせて新たな型を生成することができます。</p>
@@ -187,26 +182,36 @@
 					<h5>固定長配列</h5>
 					<code>name : type[length] = {v1, v2, ...}</code>
 					<h5>可変長配列</h5>
-					<code>name : type[length] = {v1, v2, ...}</code>
+					<code>name : type[] = {v1, v2, ...}</code>
 				</section>
 				<section class="ref-section syntax-box">
 					<h3 class="section-label">参照型 (Reference Type)</h3>
 					<p class="ref-description">参照型は変数や定数、関数を指し示す型のことで、予約語の <code><span class="keyword">at</span></code> を使います。</p>
 					<code>name : type = <span class="keyword">at</span> variable</code>
 					<p class="ref-description">特に関数は以下のように記述します。</p>
-					<code>name : type -> type = <span class="keyword">at</span> func</code>
-					<p class="ref-description">a</p>
+					<code>name : type -&gt; type = <span class="keyword">at</span> func</code>
+					<p class="ref-description">関数を参照する場合、<code>type -&gt; type</code> の記述の仕方次第で安全に関数オーバーロードができます。</p>
 				</section>
 				<section class="ref-section syntax-box">
-					<h3 class="section-label">特殊型 (Irregular Type)</h3>
+					<h3 class="section-label">特殊型 (Custom Type)</h3>
 					<p class="ref-description">特殊型はプログラマが自由に型を生成でき、予約語の <code><span class="keyword">tef</span></code> (グローバル型) と <code><span class="keyword">new</span></code> (ローカル型) を使います。</p>
 					<code><span class="keyword">tef</span> identifier typedef<br>name : <span class="keyword">new</span> identifier typedef = value</code>
 					<p class="ref-description">特に<code><span class="keyword">new</span></code>は、<var>identifier</var>の部分を省略することがきます。これはローカルなゆえに匿名だからです。</p>
 				</section>
 				<section class="ref-section example-box">
 					<p class="ref-description">a</p>
-					<code><span class="keyword">var</span> a:<span class="type">int</span> = 19<br><span class="keyword">var</span> b:<span class="type">int</span> = 1<br><span class="keyword">def</span> add(<span class="type">int</span>, <span class="type">int</span>) -> <span class="type">int</span><br><span class="keyword">const</span> f : (<span class="type">int</span>, <span class="type">int</span>) -&gt; <span class="type">int</span> = <span class="leyword">at</span> add<br>add : (x, y) -&gt; z {z = x + y}<br>main : {<br>&nbsp;<span class="function">output</span>(f(a, b))<br>}</code>
+					<code><span class="keyword">var</span> a:<span class="type">int</span> = 19
+<span class="keyword">var</span> b:<span class="type">int</span> = 1
+<span class="keyword">def</span> add(<span class="type">int</span>, <span class="type">int</span>) -> <span class="type">int</span>
+<span class="keyword">const</span> f : (<span class="type">int</span>, <span class="type">int</span>) -&gt; <span class="type">int</span> = <span class="leyword">at</span> add
+
+add : (x, y) -&gt; z {z = x + y}
+
+main : {
+		<span class="function">output</span>(f(a, b))
+}</code>
 				</section>
+				<p class="ref-description">大切なことをもう一度述べます。<ul><li>アドレスとは、値 (データ) が配置されているメモリ上の番号</li><li>変数とは、アドレスに付与した名前 (識別子ともいう)</li><li>型とは、起点アドレスから何バイトの領域をどう解釈するかを表したもの</li><li>値とは、アドレスの領域に書き込まれているデータ (ビットパターン)</li></ul>です。</p>
       </div>
       <div class="ref-card" id="operators">
         <h2 class="ref-title">演算子</h2>
@@ -322,10 +327,34 @@
           <code><span class="comment">// 加算関数を宣言する</span><br><span class="keyword">def</span> add(<span class="type">int</span>, <span class="type">int</span>) -&gt; <span class="type">int</span><br><span class="comment">// 加算関数を定義する</span><br>add : (x, y) -&gt; z {z = x + y}</code>
         </section>
       </div>
+			<div class="ref-card" id="namespace">
+				<h2 class="ref-title">名前空間</h2>
+				<p class="ref-description">a</p>
+				<section class="ref-section syntax-box">
+					<h3 class="section-label">構文</h3>
+					<code></code>
+				</section>
+			</div>
+			<div class="ref-card" id="stdlib">
+				<h2 class="ref-title">標準ライブラリ</h2>
+				<p class="ref-description">a</p>
+				<section class="ref-section syntax-box">
+					<h3 class="section-label">構文</h3>
+					<code></code>
+				</section>
+			</div>
+			<div class="ref-card" id="appendix">
+				<h2 class="ref-title">付録</h2>
+				<p class="ref-description">a</p>
+				<section class="ref-section syntax-box">
+					<h3 class="section-label">構文</h3>
+					<code></code>
+				</section>
+			</div>
     </section>
     <section id="licence">
       <h1>商用利用について</h1>
-      <p>もし、Module言語で書かれたコードを商用にするとき、<a href="#">公式Github</a>に公開するか、<a href="#">公式審査員</a>に送信してください。もし、認証が未完了のままで商用扱いされているコードが発見された場合、直ちに差し止めの措置を行います。</p>
+      <p>もし、Module言語で書かれたコードを商用にするとき、<a href="#">公式Github</a>に公開するか、<a href="#">公式審査宛</a>に申請書を送信してください。もし、認証が未完了のままで商用扱いされているコードが発見された場合、直ちに差し止めの措置を行います。</p>
     </section>
   </main><!-- $name value size -->
   <footer><address><a href="#">Bug report</a></address><address><a href="#">Suggestion</a></address><p><small>Copyright © 2026. All rights reserved.</small></p></footer>
