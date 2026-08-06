@@ -38,7 +38,6 @@
     .comment {color: #6c7a89; font-style: italic;} /* #75715e */
     .type {color: #4ec9b0;} /* #377dc8 */
     .modify {color: #377dc8;} /* #4987ca */
-    .arrow {color: #ff6565;} /* #5581d7 */
     .example-label {color: inherit; margin-top: 0; margin: 0.5rem; font-size: 0.8rem; font-weight: bold;}
     .syntax {background: #f6f8fa; border-left: 4px solid #0366d6; padding: 10px; margin: 10px; border-radius: 5px;}
     .syntax-label {color: #0366d6; margin-top: 0; margin: 0.5rem; font-size: 0.85rem; font-weight: bold;}
@@ -89,16 +88,16 @@
       <p><ul><li>型エラー：異なる型である場合</li><li>ランタイムエラー：実行時に予期しないプログラムが読み込まれた場合</li><li>構文エラー：構文に合致しない場合</li><li>未定義エラー：未定義の場合</li></ul></p>
       <table><thead><tr><th>危険度レベル</th><th>条件</th></tr></thead><tbody><tr><td>1</td><td>軽微 (警告 -> 実行可能)</td></tr><tr><td>2</td><td>悪用可能性あり (権限昇格で実行可能)</td></tr><tr><td>3</td><td>極めて危険 (実行拒絶)</td></tr></tbody></table>
       <div class="example">
-        <h3 class="example-label"><q>Hello, world!</q>を出力する</h3>
+        <span class="example-label"><q>Hello, world!</q>を出力する</span>
         <code><span class="comment">// 宣言</span>
-<span class="keyword">def</span> print(<span class="type">str</span>) <span class="arrow">-&gt;</span> <span class="type">str</span>
-<span class="modify">const</span> message : <span class="type">str</span> = <span class="string">"Hello, world!"</span>
+<span class="keyword">def</span> print(<span class="type">str</span>) -&gt; <span class="type">str</span>
 
-<span class="comment">// 定義 (output関数は文字列型を入力、文字列型を出力する)</span>
-print : x <span class="arrow">-&gt;</span> y { y = <span class="function">output</span>(x)}
+<span class="comment">// 定義 (outputは出力の標準関数)</span>
+print : x -&gt; _ {<span class="function">output</span>(x)}
 
 <span class="comment">// 実行</span>
 <span class="function">main</span> : {
+  <span class="modify">const</span> message : <span class="type">str</span> = <span class="string">"Hello, world!"</span>
   print(message)
 }
 </code>
@@ -128,18 +127,12 @@ print : x <span class="arrow">-&gt;</span> y { y = <span class="function">output
       <p>識別子とは、予約語以外の以下の規則を満たす語句のことです。<ul><li>ユニコード文字である</li><li>数字で始めてはいけない</li><li>大文字と小文字は区別される</li></ul></p>
       <h3>予約語</h3>
       <p>予約語は、既に定義されている語句 (全20個) のことです。</p>
-      <table><tbody><tr><td>void</td><td>bool</td><td>int</td><td>float</td><td>str</td></tr><tr><td>var</td><td>const</td><td>def</td><td>tef</td><td>if</td></tr><tr><td>and</td><td>or</td><td>not</td><td>true</td><td>false</td></tr><tr><td>is</td><td>jump</td><td>import</td><td>new</td><td>where</td></tr></tbody></table>
+      <table><tbody><tr><td>void</td><td>bool</td><td>int</td><td>float</td><td>str</td></tr><tr><td>var</td><td>const</td><td>def</td><td>tef</td><td>if</td></tr><tr><td>true</td><td>false</td><td>for</td><td>break</td><td>continue</td></tr><tr><td>jump</td><td>import</td><td>new</td><td>where</td><td></td></tr></tbody></table>
       <h2>式と文</h2>
       <p>式は命令を含まないもの、文は命令を含むものと定義します。文は改行区切りであり、他言語にみられる行末セミコロンは必要ありません。また、インデントはコンパイル時に読み飛ばされるので、プログラマーは自由にタブをいくつか置くことができます。変数とはアドレスに付与した識別子、定数とは変数を変更不可にした識別子のことです。ただし、それらは必ず初期化しなければなりません。</p>
       <p style="font-size: 0.85rem; color: #586069; margin-top: -0.5rem; margin-bottom: 1rem;">※ 未定義動作の防止の為、未初期化の変数/定数はコンパイル時エラーとなります</p>
-      <div class="syntax">
-        <span class="syntax-label">変数の宣言</span>
-        <code><span class="modify">var</span> name : type = value</code>
-      </div>
-      <div class="syntax">
-        <span class="syntax-label">定数の宣言</span>
-        <code><span class="modify">const</span> name : type = value</code>
-      </div>
+      <div class="syntax"><span class="syntax-label">変数の宣言</span><code><span class="modify">var</span> name : type = value</code></div>
+      <div class="syntax"><span class="syntax-label">定数の宣言</span><code><span class="modify">const</span> name : type = value</code></div>
       <div class="example">
         <span class="example-label">値20を、(符号付き)整数型で宣言します。</span>
         <code><span class="modify">var</span> age : <span class="type">int</span> = 20
@@ -151,26 +144,17 @@ print : x <span class="arrow">-&gt;</span> y { y = <span class="function">output
       <p>基本型は空型、論理型、整数型、浮動小数点数型、文字列型に分けられ、これらをいくつか組み合わせて新たな型を生成することができます。</p>
       <h4>空型</h4>
       <p>値を返さない関数や、明示的に何も存在しないことを示す型です。</p>
-      <div class="syntax">
-        <span class="syntax-label">空型</span>
-        <code>name : <span class="type">void</span> = value</code>
-      </div>
+      <div class="syntax"><span class="syntax-label">空型</span><code>name : <span class="type">void</span> = value</code></div>
       <h4>論理型</h4>
       <p>真 (<code>true</code>) または偽 (<code>false</code>) を表す1バイトの型です。ビット演算および論理演算に使用されます。</p>
       <table aria-label="and"><thead><tr><th>A</th><th>B</th><th>A and B</th></tr></thead><tbody><tr><td>0</td><td>0</td><td>0</td></tr><tr><td>0</td><td>1</td><td>0</td></tr><tr><td>1</td><td>0</td><td>0</td></tr><tr><td>1</td><td>1</td><td>1</td></tr></tbody></table>
       <table aria-label="or"><thead><tr><th>A</th><th>B</th><th>A or B</th></tr></thead><tbody><tr><td>0</td><td>0</td><td>0</td></tr><tr><td>0</td><td>1</td><td>1</td></tr><tr><td>1</td><td>0</td><td>1</td></tr><tr><td>1</td><td>1</td><td>1</td></tr></tbody></table>
       <table aria-label="not"><thead><tr><th>A</th><th>not A</th></tr></thead><tbody><tr><td>0</td><td>1</td></tr><tr><td>1</td><td>0</td></tr></tbody></table>
-      <div class="syntax">
-        <span class="syntax-label">論理型</span>
-        <code>name : <span class="type">bool</span> = value</code>
-      </div>
+      <div class="syntax"><span class="syntax-label">論理型</span><code>name : <span class="type">bool</span> = value</code></div>
       <p></p><!--恒等式として"NOT(AND(NAND(A,B),OR(A,B)))=OR(AND(A,B),NOR(A,B))=NOT(XOR(A,B))"とする-->
       <h4>整数型</h4>
       <p>負数は2の補数として扱われます。二進数 (<code>0bYYYY...</code>)、十進数 (<code>YYYY..., 0dYYYY...</code>)、十六進数 (<code>0xYYYY...</code>)を表現することができます。</p>
-      <div class="syntax">
-        <span class="syntax-label">整数型</span>
-        <code>name : <span class="type">int</span> = value</code>
-      </div>
+      <div class="syntax"><span class="syntax-label">整数型</span><code>name : <span class="type">int</span> = value</code></div>
       <h4>浮動小数点数型</h4>
       <p>精度に応じた単精度 (32bit) / 倍精度 (64bit) 浮動小数点数を扱います。内部形式はIEEE 754の規格に従っています。指数 (<code>YY...eYY...</code>) を用いて表現することができます。</p>
       <div class="syntax">
@@ -189,14 +173,18 @@ print : x <span class="arrow">-&gt;</span> y { y = <span class="function">output
       <p>※ バックスラッシュは、Shift-JISでは円記号として表示されます。</p>
       <h3 id="struct">構造型 (Structure Type)</h3>
       <h4>集合型</h4>
-      <p>数学の集合(ZFC)と同等の扱いです。クイックソートによって、重複排除を実現しています。</p>
+      <p>数学の公理的集合と同等です。クイックソートによって、重複排除を実現しています。</p>
       <table><thead><tr><th>演算子</th><th>意味</th><th>使い方</th></tr></thead><tbody><tr><td>+</td><td>和集合</td><td><code>{1, 2} + {3, 4}</code></td></tr><tr><td>-</td><td>差集合</td><td><code>{1, 2} - {3, 4}</code></td></tr><tr><td>&</td><td>共通部分</td><td><code>{1, 2} & {3, 4}</code></td></tr><tr><td>*</td><td>冪集合</td><td><code>{1, 2} * {3, 4}</code></td></tr><tr><td>^</td><td>補集合</td><td>^{1, 2}</td></tr></tbody></table>
       <div class="syntax">
         <span class="syntax-label">構文</span>
         <code>name : <span class="type">set</span> = {v1, v2, ...}
-name : <span class="type">set</span> = {v | Set-builderNotation}</code>
+name : <span class="type">set</span> = { v | Set-builderNotation}</code>
       </div>
       <p>空集合は <code>{}</code> 、部分集合は <code>{{...}, ...}</code> と書きます。インデックス外は空集合です。</p>
+      <div class="example">
+        <span class="example-label">例</span>
+        <code><span class="modify">const</span> s : <span class="type">set</span> = {a| <span class="modify">var</span> a : <span class="type">int</span> = 0, a += 2, a % 3 <span class="keyword">is</span> 0}</code>
+      </div>
       <h4>配列型</h4>
       <p>配列の長さと配列の要素数が異なる場合や空の配列 (<code>{}</code>)、多次元配列の深さと各 <code>length</code> が異なる場合は、コンパイル時に指定された型の初期値で埋められます。</p>
       <div class="syntax">
@@ -213,14 +201,14 @@ name : type[] = {v1, v2, ...}</code>
         <code><span class="modify">const</span> string : <span class="type">str</span>[] = {"H", "e", "l", "l", "o"}</code>
       </div>
       <h3 id="refer">参照型 (Reference Type)</h3>
-      <p>参照型は変数や定数、関数、配列を指し示す型のことで、<code><span class="keyword">at</span></code> 演算子を使います。左辺値はアドレスなので、通常は符号なし整数です。関数を参照する場合、<code>type -&gt; type</code> の記述の仕方次第で安全に関数オーバーロードができます。配列を参照する場合、その先頭から指します。</p>
+      <p>参照型は変数や定数、関数、配列を指し示す型のことで、<code>at</code> 演算子を使います。左辺値はアドレスなので、通常は符号なし整数です。関数を参照する場合、<code>type -&gt; type</code> の記述の仕方次第で安全に関数オーバーロードができます。配列を参照する場合、その先頭から指します。</p>
       <div class="syntax">
         <span class="syntax-label">構文</span>
         <code><span class="comment">// 変数や定数、配列を参照するとき</span>
-name : type = <span class="keyword">at</span> variable
+name : type = at variable
 
 <span class="comment">// 関数を参照するとき</span>
-name : type <span class="arrow">-&gt;</span> type = <span class="keyword">at</span> func
+name : type -&gt; type = at func
 
 <span class="comment">// 参照先に代入</span>
 [name] = value</code>
@@ -229,10 +217,10 @@ name : type <span class="arrow">-&gt;</span> type = <span class="keyword">at</sp
         <span class="example-label">例</span>
         <code><span class="modify">var</span> a : <span class="type">int</span> = 19
 <span class="modify">var</span> b : <span class="type">int</span> = 1
-<span class="keyword">def</span> add(<span class="type">int</span>, <span class="type">int</span>) <span class="arrow">-&gt;</span> <span class="type">int</span>
-<span class="modify">const</span> f : (<span class="type">int</span>, <span class="type">int</span>) <span class="arrow">-&gt;</span> <span class="type">int</span> = <span class="keyword">at</span> add
+<span class="keyword">def</span> add(<span class="type">int</span>, <span class="type">int</span>) -&gt; <span class="type">int</span>
+<span class="modify">const</span> f : (<span class="type">int</span>, <span class="type">int</span>) -&gt; <span class="type">int</span> = at add
 
-add : (x, y) <span class="arrow">-&gt;</span> z {z = x + y}
+add : (x, y) -&gt; z {z = x + y}
 
 <span class="function">main</span> : {
   <span class="function">output</span>(f(a, b))
@@ -240,33 +228,35 @@ add : (x, y) <span class="arrow">-&gt;</span> z {z = x + y}
       </div>
       <p>重要点は<ul><li>アドレスとは、値 (データ) が配置されているメモリ上の番号</li><li>変数とは、アドレスに付与した名前 (識別子ともいう)</li><li>型とは、起点アドレスから何バイトの領域をどう解釈するかを表したもの</li><li>値とは、アドレスの領域に書き込まれているデータ (ビットパターン)</li></ul>です。</p>
       <h3 id="custom">特殊型 (Custom Type)</h3>
-      <p>特殊型はプログラマが自由に型を生成でき、予約語の <code>tef</code> (グローバル型) と <code>new</code> (ローカル型) を使います。</p>
+      <p>特殊型はプログラマが自由に型を生成でき、予約語の <code>new</code> を使います。</p>
       <div class="syntax">
         <span class="syntax-label">構文</span>
-        <code><span class="keyword">tef</span> identifier typedef
-name : <span class="keyword">new</span> identifier typedef = value</code>
+        <code>name : <span class="keyword">new</span> identifier typedef = value</code>
       </div>
-      <p>特に <code>new</code> は、<code>identifier</code>の部分を省略することができます。これはローカルなゆえに匿名だからです。</p>
+      <p><code>identifier</code>の部分を省略することができます。これはローカルなゆえに匿名だからです。</p>
+      <p><code></code></p>
       <div class="example">
         <span class="example-label">例</span>
-        <code><span class="keyword">tef</span> latice {<span class="type">int</span>, <span class="type">int</span>}
-z : <span class="keyword">new</span> complex {<span class="type">float</span>, <span class="type">float</span>} = {0.0, 0.0}</code>
+        <code>z : <span class="keyword">new</span> complex {<span class="type">float</span>, <span class="type">float</span>} = {0.0, 0.0}</code>
       </div>
       <h2 id="operator">演算子</h2>
       <p>いくつかの変数や定数を組み合わせた式のことで、以下の種類があります。</p>
       <table><thead><tr><th>優先順位</th><th>演算子</th><th>意味</th><th>結合規則</th></tr></thead><tbody><tr><td>高</td><td style="font-family: monospace; font-weight: bold; text-align: center;">() [] .</td><td>括弧、アクセス指定</td><td rowspan="3">左から右</td></tr><tr><td></td><td style="font-family: monospace; font-weight: bold; text-align: center;">!</td><td>オーバーフロー解決</td></tr><tr><td></td><td style="font-family: monospace; font-weight: bold; text-align: center;">::</td><td>キャスト</td></tr><tr><td></td><td style="font-family: monospace; font-weight: bold; text-align: center;">at</td><td>参照</td><td rowspan="4">右から左</td></tr><tr><td></td><td style="font-family: monospace; font-weight: bold; text-align: center;">sizeof typeof alignof</td><td>サイズ指定、型指定</td></tr><tr><td></td><td style="font-family: monospace; font-weight: bold; text-align: center;">func(...)</td><td>関数呼び出し</td></tr><tr><td></td><td style="font-family: monospace; font-weight: bold; text-align: center;">not</td><td>否定</td></tr><tr><td></td><td style="font-family: monospace; font-weight: bold; text-align: center;">* / %</td><td>乗算、除算、剰余</td><td rowspan="8">左から右</td></tr><tr><td></td><td style="font-family: monospace; font-weight: bold; text-align: center;">+ -</td><td>加算、減算</td></tr><tr><td></td><td style="font-family: monospace; font-weight: bold; text-align: center;">&lt;&lt; &gt;&gt;</td><td>シフト</td></tr><tr><td></td><td style="font-family: monospace; font-weight: bold; text-align: center;">&lt; &lt;= &gt; &gt;=</td><td>不等号</td></tr><tr><td></td><td style="font-family: monospace; font-weight: bold; text-align: center;">is</td><td>等号</td></tr><tr><td></td><td style="font-family: monospace; font-weight: bold; text-align: center;">and</td><td>論理積、ビット積</td></tr><tr><td></td><td style="font-family: monospace; font-weight: bold; text-align: center;">or</td><td>論理和、ビット和</td></tr><tr><td></td><td style="font-family: monospace; font-weight: bold; text-align: center;">:=</td><td>推論</td></tr><tr><td></td><td style="font-family: monospace; font-weight: bold; text-align: center;">=</td><td>代入</td><td rowspan="4">右から左</td></tr><tr><td></td><td style="font-family: monospace; font-weight: bold; text-align: center;">where</td><td>限定</td></tr><tr><td></td><td style="font-family: monospace; font-weight: bold; text-align: center;">ref</td><td>オーバーレイ</td></tr><tr><td>低</td><td style="font-family: monospace; font-weight: bold; text-align: center;">delete</td><td>解放</td></tr></tbody></table>
-      <p>コンパイル後は、逆ポーランド記法に従って独自の抽象木を生成します。</p>
+      <p>コンパイル後は、ポーランド記法に従って独自の抽象木を生成します。</p>
       <h3 id="otm">オーバーフロー解決演算子</h3>
       <p>事前にオーバーフローが発生する可能性をコンパイラに知らせることができ、そのコンパイル時間の短縮します。</p>
-      <div class="syntax">
-        <span class="syntax-label">構文</span>
-        <code>name : type! = value</code>
+      <div class="syntax"><span class="syntax-label">構文</span><code>name : type! = value</code></div>
+      <div class="example">
+        <span class="example-label">例</span>
+        <code><span class="modify">var</span> e : <span class="type">int</span>! = 40000</code>
       </div>
       <h3 id="cast">キャスト演算子</h3>
       <p>異なる型に変換する場合に使います。変数にのみ使用することができ、定数に対してはコンパイル時エラーになります。</p>
-      <div class="syntax">
-        <span class="syntax-label">構文</span>
-        <code>variable :: type</code>
+      <div class="syntax"><span class="syntax-label">構文</span><code>variable :: type</code></div>
+      <div class="example">
+        <span class="example-label">例</span>
+        <code><span class="modify">var</span> x : <span class="type">int</span> = 60
+<span class="modify">const</span> y : <span class="type">float</span> = x :: <span class="type">float</span></code>
       </div>
       <h3 id="of">サイズ指定演算子 / 型指定演算子</h3>
       <p>サイズ指定演算子はバイト数、型指定演算子は型名そのものを扱います。</p>
@@ -338,22 +328,26 @@ variable <span class="keyword">or</span> variable
         <span class="syntax-label">構文</span>
         <code>name : type = value <span class="keyword">where</span> condition</code>
       </div>
-      <p>whereによる制約条件は違反の場合のみ評価やその変数が存在する全期間における契約(制約が強い方が優先). コンパイル時にリテラルまたは定数が代入される場合は即座に条件と照らし合わせる.</p>
+      <p>その変数が存在する全期間における制約とみなします。コンパイル時にリテラルまたは定数が代入される場合は即座に条件と照らし合わせられます。</p>
       <div class="example">
         <span class="example-label">例</span>
         <code><span class="modify">var</span> a : <span class="type">int</span> = 2 <span class="keyword">where</span> a &gt; 0 <span class="keyword">or</span> a &lt;= 20</code>
       </div>
       <h3 id="over">オーバーレイ演算子</h3>
       <p>より大きいアライメントを指定することで、新しく確保したメモリに値をコピーして、ポインタを付け替えることをしません(ゼロ・リロケーション)。なので、本体領域の低位ビットと拡張領域の高位ビットとして安全に値を参照できます。もし指定値がオーバーフローした場合、演算結果は破棄されず、一つ上のバイトサイズへ透過的にメモリを拡張します。別の型へキャストされる場合はコンパイル時エラーです。</p>
-      <div class="syntax">
-        <span class="syntax-label">構文</span>
-        <code>ref name = variable</code>
+      <div class="syntax"><span class="syntax-label">構文</span><code>ref name = variable</code></div>
+      <div class="example">
+        <span class="example-label">例</span>
+        <code><span class="modify">var</span> c : <span class="type">int</span> = 100
+ref d := c</code>
       </div>
       <h3 id="del">解放演算子</h3>
       <p>確保したメモリ、使用済みのメモリを一括解放できます。</p>
-      <div class="syntax">
-        <span class="syntax-label">構文</span>
-        <code>delete name</code>
+      <div class="syntax"><span class="syntax-label">構文</span><code>delete name</code></div>
+      <div class="example">
+        <span class="example-label">例</span>
+        <code><span class="modify">const</span> E : <span class="type">int</span>[4] = {1, 2, 3, 4}
+delete E</code>
       </div>
       <p>解放演算子があるということは、ガベージコレクション(GC)の機能はありません。むしろ、<strong>実行時の圧倒的な軽さ</strong>と<strong>予測しやすさ</strong>を優先させています。</p>
       <h3>複合代入演算子</h3>
@@ -361,22 +355,35 @@ variable <span class="keyword">or</span> variable
       <table><thead><tr><th>演算子</th><th>表記</th><th>意味</th></tr></thead><tbody><tr><td>加算代入演算子</td><td><code>x += y</code></td><td><code>x = x + y</code></td></tr><tr><td>減算代入演算子</td><td><code>x -= y</code></td><td><code>x = x - y</code></td></tr><tr><td>乗算代入演算子</td><td><code>x *= y</code></td><td><code>x = x * y</code></td></tr><tr><td>除算代入演算子</td><td><code>x /= y</code></td><td><code>x = x / y</code></td></tr><tr><td>冪乗代入演算子</td><td><code>x ^= y</code></td><td><code>x = x ^ y</code></td></tr><tr><td>剰余代入演算子</td><td><code>x %= y</code></td><td><code>x = x % y</code></td></tr></tbody></table>
       <h2 id="control">制御文</h2>
       <h3>if</h3>
-      <p>式の条件が真 (<code>true</code>) の場合にブロック内の命令を実行します。逆に、式の条件が偽 (<code>false</code>) の場合は実行されずに次の命令があるアドレスに進みます。</p>
+      <p>式の条件が真 (<code>true</code>) の場合にブロック内の命令を順に実行します。逆に、式の条件が偽 (<code>false</code>) の場合は実行されずに次の命令があるアドレスに進みます。</p>
       <div class="syntax">
         <span class="syntax-label">構文</span>
         <code><span class="keyword">if</span> (condition){
   statement
 }</code>
       </div>
-      <h3>jump</h3>
-      <p>a</p>
+      <div class="example">
+        <span class="example-label">例</span>
+        <code><span class="keyword">if</span> (){}</code>
+      </div>
+      <h3>for</h3>
+      <p>条件式が真である限り、命令の繰り返しを実行します。</p>
       <div class="syntax">
         <span class="syntax-label">構文</span>
-        <code><span class="keyword">jump</span> name
-
-name: statement</code>
+        <code><span class="keyword">for</span> (name : type = init-value | condition){
+  statement
+}</code>
       </div>
-      <p>もしループを構成したいときは、<code>if</code>と<code>jump</code>を組み合わせて使います。</p>
+      <div class="example">
+        <span class="example-label">例</span>
+        <code><span class="keyword">for</span> (<span class="modify">var</span> x : <span class="type">int</span>){}</code>
+      </div>
+      <p>包含演算子 <code>in</code> を用いて、配列の要素にアクセスできます。</p>
+      <div class="example">
+        <span class="example-label">例</span>
+        <code><span class="modify">const</span> L : <span class="type">int</span>[] = {3, 1, 4, 1, 5}
+<span class="keyword">for</span> (<span class="modify">var</span> v : <span class="type">str</span> in L){}</code>
+      </div>
       <h2 id="func">関数</h2>
       <p>関数はコンピュータに対する命令(アルゴリズム)の集合です。コンパイラは<ol><li>到達不能コード削除</li><li>インライン展開</li><li>定数畳み込み</li></ol>の順で最適化を行います。</p>
       <div class="syntax">
