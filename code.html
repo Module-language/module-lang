@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>ModWeb IDE</title><link rel="manifest" href="./manifest.json">
+  <style>
+    body { margin: 0; padding: 0; background-color: #f7f7f7; color: black; height: 100vh; width: 100vw; overflow: hidden; font-family: sans-serif; }
+    header { grid-column: 1 / -1; grid-row: 1; background-color: #e0e0e0; border-bottom: 1px solid #ccc; display: flex; align-items: center; padding: 0 8px; height: 35px; box-sizing: border-box; }
+    button { display: flex; flex-direction: column; justify-content: space-around; width: 25px; height: 25px; border: none; background: transparent; cursor: pointer; padding: 3px; }
+    button span { width: 100%; height: 2px; background-color: black; border-radius: 2px; }
+    ul { list-style: none; padding: 0; margin: 0; }
+    .menu { display: flex; font-size: 14px; margin-left: 5px; }
+    .menu > li { position: relative; cursor: pointer; padding: 4px 8px; }
+    .menu > li:hover { background: #d0d0d0; }
+    .menu ul { display: none; position: absolute; top: 100%; left: 0; background: #fff; border: 1px solid #ccc; min-width: 120px; z-index: 20; }
+    .menu > li:hover ul { display: block; }
+    .menu ul li { padding: 6px 12px; }
+    .menu ul li:hover { background: #f0f0f0; }
+    main { position: relative; width: 100%; height: calc(100vh - 35px); overflow: hidden; background-color: #fff; }
+    #treeItems { position: absolute; top: 0; left: -250px; width: 240px; height: 100%; background-color: #ffffff; border-right: 1px solid #ccc; box-shadow: 2px 0 8px rgba(0,0,0,0.15); padding: 8px; box-sizing: border-box; overflow-y: auto; transition: left 0.2s ease-in-out; z-index: 10; }
+    #treeItems.open { left: 0; }
+    #treeItems div { cursor: pointer; padding: 6px 8px; font-size: 14px; border-radius: 3px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    #treeItems div:hover { background-color: #e4e4e4; }
+    #treeItems div.active { background-color: #d0e0f0; font-weight: bold; }
+    #editor { display: flex; width: 100%; height: 100%; position: relative; overflow: hidden; }
+    #lines { width: 40px; height: 100%; background-color: #f8f9fa; padding: 10px 4px; font-family: Consolas, monospace; font-size: 20px; line-height: 1.5; color: #a0a0a0; user-select: none; text-align: right; overflow: hidden; border-right: 1px solid #e8e8e8; box-sizing: border-box; }
+    #input, #overlay { position: absolute; top: 0; left: 40px; width: calc(100% - 40px); height: 100%; padding: 10px 12px; margin: 0; font-family: Consolas, monospace; font-size: 20px; line-height: 1.5; white-space: pre; tab-size: 2; border: none; outline: none; box-sizing: border-box; }
+    #input { background: transparent; color: transparent !important; caret-color: black; resize: none; overflow: auto; z-index: 2; }
+    #overlay { color: black; background: transparent; pointer-events: none; overflow: hidden; z-index: 1; }
+    .error { text-decoration: underline wavy #ff4d4d; text-decoration-skip-ink: none; }
+  </style>
+</head>
+<body>
+  <header>
+    <button id="menu"><span></span><span></span><span></span></button>
+    <ul class="menu">
+      <li>File<ul><li onclick="selectFolder();">Open Folder</li><li onclick="window.close();">Exit</li></ul></li>
+      <li>Console<ul><li>Run</li><li>Compile</li></ul></li>
+      <li><a href="./index.html" target="_blank" style="text-decoration: none; color: black;">Document</a></li>
+    </ul>
+  </header>
+  <main>
+    <div id="editor">
+      <div id="lines"><div>1</div></div>
+      <textarea id="input" spellcheck="false"></textarea>
+      <div id="overlay"></div>
+    </div>
+    <div id="treeItems"></div>
+  </main>
+  <script>
+    if ('serviceWorker' in navigator){
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./service.js').catch(err => console.error('Service Worker failed', err));
+      });
+    }
+    const INPUT = document.getElementById('input');
+    const OVERLAY = document.getElementById('overlay');
+    const LINES = document.getElementById('lines');
+    const TREE = document.getElementById('treeItems');
+    document.getElementById('menu').addEventListener('click', () => TREE.classList.toggle('open'));
+    let activePath = null, dirHandle = null, fileHandle = {}, fileElements = {}, wasmInst = null;
+    const completions = {
+      keywords: ['var', 'const', 'new', 'static', 'def', 'tef', 'if', 'loop', 'end', 'break', 'continue', 'import'],
+      types: ['bool', 'int', 'float', 'char', 'wchar'],
+      funcs: ['input', 'print', 'len', 'sizeof', 'typeof', 'alignof']
+    };
+    const kwRegex = new RegExp(`\\b(${completions.keywords.join('|')})\\b`, 'g');
+    const typeRegex = new RegExp(`\\b(${completions.types.join('|')})\\b`, 'g');
+    const funcRegex = new RegExp(`\\b(${completions.funcs.join('|')})\\b`, 'g');
+    function writeString(str){
+      const encoder = new TextEncoder();
+      const bytes = encoder.encode(str);
+      const ptr = wasmInst.exports.allocate_buffer(bytes.length + 1);
+      const memory = new Uint8Array(wasmInst.exports.memory.buffer);
+      memory.set(bytes, ptr); memory[ptr + bytes.length] = 0;
+      return {ptr, len:bytes.length};
+    }
+    function readString(ptr, len){
+      const memory = new Uint8Array(wasmInst.exports.memory.buffer);
+      const bytes = memory.subarray(ptr, ptr + len);
+      return new TextDecoder().decode(bytes);
+    }
+    async function initCompiler(){
+      const response = await fetch('./code.wasm');
+      const bytes = await response.arrayBuffer();
+      const results = await WebAssembly.instantiate(bytes, {
+        env: {
+          debuggerlog: (ptr, len) => console.log(readString(ptr, len))
+        }
+      });
+      wasmInst = results.instance;
+    }
+    function compileCode(source){
+      if (!wasmInst) return;
+      const {ptr, len} = writeString(source);
+      const resultPtr = wasmInst.exports.compile(ptr, len);
+      const memView = new DataView(wasmInst.exports.memory.buffer);
+      const resPtr = memView.getUint32(resultPtr, true);
+      const resLen = memView.getUint32(resPtr + 4, true);
+      const output = readString(resPtr, resLen);
+      wasmInst.exports.free_buffer(ptr);
+      wasmInst.exports.free_buffer(resPtr);
+      wasmInst.exports.free_buffer(resultPtr);
+      return output;
+    }
+    async function Compiler(){
+      const code = INPUT.value;
+      try {
+        const result = compileCode(code); console.log("Successfully Compiled: ", result);
+      } catch (err){console.error("Compilation Error: ", err);}
+    }
+    async function scanDirectory(dirHandle, parentElement, currentPath){
+      const dirs = []; const files = [];
+      for await (const entry of dirHandle.values()){
+        if (entry.kind === 'directory'){dirs.push(entry);} else {files.push(entry);}
+      }
+      for (const dir of dirs){
+        const relPath = currentPath ? `${currentPath}/${dir.name}` : dir.name;
+        await scanDirectory(dir, parentElement, relPath);
+      }
+      for (const entry of files){
+        const relPath = currentPath ? `${currentPath}/${entry.name}` : entry.name;
+        fileHandle[relPath] = entry;
+        const fileDiv = document.createElement('div');
+        fileDiv.textContent = entry.name;
+        fileDiv.title = relPath;
+        fileElements[relPath] = fileDiv;
+        fileDiv.addEventListener('click', () => {loadFile(relPath); TREE.classList.remove('open');});
+        parentElement.appendChild(fileDiv);
+      }
+    }
+    async function selectFolder(){
+      if (!('showDirectoryPicker' in window)){alert('Cannot function a File System Access API.'); return;}
+      try {
+        dirHandle = await window.showDirectoryPicker();
+        TREE.innerHTML = ''; fileHandle = {}; fileElements = {}; activePath = null;
+        await scanDirectory(dirHandle, TREE, "");
+        TREE.classList.add('open');
+      } catch (err) {if (err.name !== 'AbortError') console.error(err);}
+    }
+    async function loadFile(path){
+      const handle = fileHandle[path];
+      if (!handle) return;
+      try {
+        const file = await handle.getFile();
+        INPUT.value = await file.text();
+        if (activePath && fileElements[activePath]) fileElements[activePath].classList.remove('active');
+        activePath = path;
+        if (fileElements[activePath]) fileElements[activePath].classList.add('active');
+        OVERLAY.innerHTML = applyColor(INPUT.value);
+        Linenum();
+      } catch (err) { alert(`Failed to load file: ${err.message}`); }
+    }
+    function applyColor(text){
+      let html = text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+      html = html
+        .replace(/("(?:[^"\\]|\\.)*"|'(?:[^'\\]|\\.)*')/g, '<span style="color: #ce9178;">$1</span>')
+        .replace(/\/\/.*|\/-(?:[\s\S]*?)-\//gm, '<span style="color: #6c7a89; font-style: italic;">$&</span>')
+        .replace(kwRegex, '<span style="color: #ff5252;">$1</span>')
+        .replace(typeRegex, '<span style="color: #377dc8;">$1</span>')
+        .replace(funcRegex, '<span style="color: #ebc750;">$1</span>');
+      return html;
+    }
+    function Linenum(){
+      const lineCount = INPUT.value.split('\n').length;
+      LINES.innerHTML = Array.from({ length: lineCount }, (_, i) => `<div>${i + 1}</div>`).join('');
+    }
+    INPUT.addEventListener('input', () => {
+      OVERLAY.innerHTML = applyColor(INPUT.value);
+      Linenum();
+    });
+    INPUT.addEventListener('scroll', () => {
+      OVERLAY.scrollTop = INPUT.scrollTop;
+      OVERLAY.scrollLeft = INPUT.scrollLeft;
+      LINES.scrollTop = INPUT.scrollTop;
+    });
+    INPUT.addEventListener('keydown', async (e) => {
+      if (e.key === 'Tab') {
+        e.preventDefault();
+        const start = INPUT.selectionStart;
+        const end = INPUT.selectionEnd;
+        INPUT.value = INPUT.value.substring(0, start) + "  " + INPUT.value.substring(end);
+        INPUT.selectionStart = INPUT.selectionEnd = start + 2;
+        OVERLAY.innerHTML = applyColor(INPUT.value);
+        return;
+      }
+      if ((e.ctrlKey || e.metaKey) && e.key === 's') {
+        e.preventDefault();
+        if (activePath && fileHandle[activePath]) {
+          try {
+            const writable = await fileHandle[activePath].createWritable();
+            await writable.write(INPUT.value);
+            await writable.close();
+          } catch (err) { console.error(`Failed to save: ${err}`); }
+        }
+        return;
+      }
+      if ((e.ctrlKey || e.metaKey) && e.key === 'e') {
+        e.preventDefault();
+        TREE.classList.toggle('open');
+      }
+    });
+    document.querySelector('.menu').addEventListener('click', (e) => {
+      if (e.target.textContent === 'Compile' || e.target.textContent === 'Run'){
+        Compiler();
+      }
+    });
+  </script>
+</body>
+</html>
