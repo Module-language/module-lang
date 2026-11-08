@@ -1,0 +1,738 @@
+<!DOCTYPE html><html lang="ja">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Module言語仕様書</title><link rel="stylesheet" href="./mod.css"></head>
+<body>
+<header><h1>Module言語公式仕様書</h1><p>システムプログラミングの入門</p><p class="muted">更新日時 : 2026/11/6 (JST)</p></header>
+<main>
+<h2>目次</h2>
+<nav aria-label="navi" id="menu"><a href="#crit">1. 設計原則</a><a href="#startup">2. スタートアップ</a><a href="#comment">3. コメント</a><a href="#identifier">4. 識別子</a><a href="#type">5. 型</a><a href="#operator">6. 演算子</a><a href="#control">7. 制御文</a><a href="#function">8. 関数</a><a href="#namespace">9. 名前空間</a><a href="#stdlib">10. 標準ライブラリ</a><a href="#appendix">11. 補足情報</a><a href="#qa">12. Q & A</a></nav>
+<section id="crit">
+<h2>1. 設計原則</h2>
+<p><code>Module</code>言語は静的手続き型スクリプト言語であり、メタシステムプログラミングと数値計算に特化しています。その安全性・記述性・性能のバランスを追求し、予期せぬシステムエラーをコンパイル前の型チェックによって排除します。</p>
+<p style="text-align:center;">=== <a href="#menu">目次へ戻る</a> ===</p>
+</section>
+<section id="startup">
+<h2>2. スタートアップ</h2>
+<p><code>Module</code>言語はコンパイルを必要とするので、以下の手順で準備を進めます。</p>
+<ol>
+<li><a href="./startup.zip" target="_blank">ここをクリック</a> (ファイルサイズ: 12MB) する。</li>
+<li>ダウンロードが完了するまで待つ。</li>
+<li>ダウンロードしたフォルダーを解凍し、以下のファイルが同封されているか確認する。
+<ul><li><code>PROGRAM/</code><ul><li><code>main.mod</code></li><li><code>utils.mod</code></li></ul></li><li><code>STDLIB/</code><ul><li><code>ALGORITHM.txt</code></li><li><code>GRAPH.txt</code></li><li><code>MATH.txt</code></li><li><code>NETWORK.txt</code></li><li><code>SYSTEM.txt</code></li><li><code>ERROR.txt</code></li></ul></li><li><code>modc.exe</code></li></ul>
+</li>
+</ol>
+<p>コードエディター (<code>VS Code</code>や<a href="./code.html" target="_blank">公式エディター</a>) で<code>main.mod</code>を開き、以下のコードを入力してください。改行は文の区切りで、インデントは読み飛ばされます。</p>
+<pre class="example"><span class="function">print</span>(<span class="string">"Hello, world"</span>)</pre>
+<p>コンパイラー<code>modc.exe</code>のコマンドラインで<code>:c main.mod</code>を実行すると、標準ライブラリ (<code>./STDLIB/*.txt</code>) &RightArrow; 宣言ファイル (<code>./PROGRAM/utils.mod</code>) &RightArrow; 定義ファイル (<code>./PROGRAM/main.mod</code>) の順序でファイルを読み込み、アルゴリズム到達不能なコードの削除および定数畳み込みの最適化を行い、<code>PROGRAM</code>フォルダーに<code>main.asm</code>ファイルが生成されます。また、<code>:r main.mod</code>でコンパイルと実行を一括にすることができます。</p>
+<p style="text-align:center;">=== <a href="#menu">目次へ戻る</a> ===</p>
+</section>
+<section id="comment">
+<h2>3. コメント</h2>
+<p>コード中にメモを残す場合、<code>/-</code>と<code>-/</code>で囲まれた領域を注釈として扱います。</p>
+<pre class="syntax"><span class="comment">/- memo -/</span>
+
+<span class="comment">/-
+    memo
+-/</span></pre>
+<pre class="example"><span class="comment">/-
+    Hello, world を出力する
+-/</span>
+<span class="function">print</span>(<span class="string">"Hello, world"</span>)</pre>
+<pre class="output">Hello, world</pre>
+<p style="text-align:center;">=== <a href="#menu">目次へ戻る</a> ===</p>
+</section>
+<section id="identifier">
+<h2>4. 識別子</h2>
+<p>数字以外で始まり、スペースで区切られ、大文字と小文字の区別がある文字または文字列を識別子 (トークン) と呼びます。</p>
+<table>
+<caption>既定の識別子</caption>
+<thead><tr><th>識別子</th><th>意味</th><th>識別子</th><th>意味</th></tr></thead>
+<tbody>
+<tr><td><code>bool</code></td><td>論理型</td><td><code>def</code></td><td>関数宣言</td></tr>
+<tr><td><code>int</code></td><td>整数型</td><td><code>tef</code></td><td>名前空間宣言</td></tr>
+<tr><td><code>float</code></td><td>実数型</td><td><code>if</code></td><td>分岐</td></tr>
+<tr><td><code>char</code></td><td>文字型</td><td><code>loop</code></td><td>反復</td></tr>
+<tr><td><code>wchar</code></td><td>ワイド文字型</td><td><code>end</code></td><td>スコープ終了</td></tr>
+<tr><td><code>var</code></td><td>変数宣言</td><td><code>break</code></td><td>反復終了</td></tr>
+<tr><td><code>const</code></td><td>定数宣言</td><td><code>continue</code></td><td>反復継続</td></tr>
+<tr><td><code>static</code></td><td>静的メモリ宣言</td><td><code>import</code></td><td>導入宣言</td></tr>
+<tr><td><code>new</code></td><td>動的メモリ宣言</td></tr>
+</tbody>
+</table>
+<p>他の識別子は規定されておらず、ユニコード文字かつ先頭文字から10文字を有効範囲としています。識別子を使うときは、未定義動作防止の観点から初期化されないとコンパイル時エラーとなります。ただし、値渡し (書き換えは生じないものの、比較的大きな値には複製の時間で非効率) になります。</p>
+<h3>4.1 可変な識別子の宣言 (変数)</h3>
+<p>使用しなくなった時点で解放されます。</p>
+<pre class="syntax"><span class="keyword">var</span> type identifier = expression</pre>
+<pre class="example"><span class="keyword">var</span> <span class="type">int</span> age = 20</pre>
+<h3>4.2 不変な識別子の宣言 (定数)</h3>
+<p>コンパイル時に置き換えられます。</p>
+<pre class="syntax"><span class="keyword">const</span> type identifier = expression</pre>
+<pre class="example"><span class="keyword">const</span> <span class="type">int</span> lifespan = 80
+
+<span class="comment">/- 代入はコンパイル時エラー : lifespan = 90 -/</span></pre>
+<h3>4.3 識別子とメモリの関係</h3>
+<p>プログラム開始から終了までメモリを保持する機能、および任意のスコープのみにメモリを保持する機能があります。スコープとは識別子を参照できる範囲です。</p>
+<div class="diagram-container">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 740 320" style="max-width: 100%;height:auto;font-family:sans-serif;">
+<defs>
+<linearGradient id="mem-grad" x1="0%" y1="0%" x2="100%" y2="0%">
+<stop offset="0%" stop-color="var(--panel)" stop-opacity="0.8"/>
+<stop offset="100%" stop-color="var(--panel)" stop-opacity="0.3"/>
+</linearGradient>
+</defs>
+<rect x="20" y="40" width="700" height="250" rx="8" fill="url(#mem-grad)" stroke="var(--line)" stroke-width="2"/>
+<text x="35" y="25" fill="var(--muted)" font-size="12" font-weight="bold">メモリ空間構造 &amp; 生存期間マップ</text>
+<g transform="translate(40, 60)">
+<rect x="0" y="0" width="200" height="210" rx="6" fill="var(--bg)" stroke="#2e7d32" stroke-width="2"/>
+<rect x="0" y="0" width="200" height="32" rx="6" fill="#2e7d32" opacity="0.15"/>
+<text x="100" y="22" text-anchor="middle" fill="#2e7d32" font-size="14" font-weight="bold">データ領域 (Data/BSS)</text>
+<rect x="15" y="50" width="170" height="40" rx="4" fill="var(--panel)" stroke="var(--line)"/>
+<text x="25" y="74" fill="var(--fg)" font-size="12" font-family="monospace">var/const static</text>
+<text x="15" y="115" fill="var(--fg)" font-size="12">• 保持 : <tspan font-weight="bold">全期間</tspan></text>
+<text x="15" y="135" fill="var(--fg)" font-size="12">• プログラム起動〜終了</text>
+<text x="15" y="155" fill="var(--fg)" font-size="12">• 固定化された静的アドレス</text>
+<text x="15" y="185" fill="var(--muted)" font-size="11">グローバル / 静的変数</text>
+</g>
+<g transform="translate(270, 60)">
+<rect x="0" y="0" width="200" height="210" rx="6" fill="var(--bg)" stroke="#2457c5" stroke-width="2"/>
+<rect x="0" y="0" width="200" height="32" rx="6" fill="#2457c5" opacity="0.15"/>
+<text x="100" y="22" text-anchor="middle" fill="#2457c5" font-size="14" font-weight="bold">スタック領域 (Stack)</text>
+<rect x="15" y="50" width="170" height="40" rx="4" fill="var(--panel)" stroke="var(--line)"/>
+<text x="25" y="74" fill="var(--fg)" font-size="12" font-family="monospace">var / const</text>
+<text x="15" y="115" fill="var(--fg)" font-size="12">• 保持 : <tspan font-weight="bold">スコープ内</tspan></text>
+<text x="15" y="135" fill="var(--fg)" font-size="12">• 関数・ブロック退出時に解放</text>
+<text x="15" y="155" fill="var(--fg)" font-size="12">• 自動メモリ管理 (高速)</text>
+<text x="15" y="185" fill="var(--muted)" font-size="11">ローカル変数 / 引数</text>
+</g>
+<g transform="translate(500, 60)">
+<rect x="0" y="0" width="200" height="210" rx="6" fill="var(--bg)" stroke="#8e24aa" stroke-width="2"/>
+<rect x="0" y="0" width="200" height="32" rx="6" fill="#8e24aa" opacity="0.15"/>
+<text x="100" y="22" text-anchor="middle" fill="#8e24aa" font-size="14" font-weight="bold">ヒープ領域 (Heap)</text>
+<rect x="15" y="50" width="170" height="40" rx="4" fill="var(--panel)" stroke="var(--line)"/>
+<text x="25" y="74" fill="var(--fg)" font-size="12" font-family="monospace">var/const new</text>
+<text x="15" y="115" fill="var(--fg)" font-size="12">• 保持 : <tspan font-weight="bold">動的設定</tspan></text>
+<text x="15" y="135" fill="var(--fg)" font-size="12">• 任意の生存期間</text>
+<text x="15" y="155" fill="var(--fg)" font-size="12">• 実行時の可変長メモリ確保</text>
+<text x="15" y="185" fill="var(--muted)" font-size="11">動的バッファ / 参照返却</text>
+</g>
+</svg>
+</div>
+<h4>4.3.1 静的メモリ宣言 (スタック領域)</h4>
+<p>プログラムの開始から終了まで、メモリを保持する機能です。これは、実行中もしくは静的にメモリを確保するとも意味します。</p>
+<pre class="syntax"><span class="comment">/- 不変静的メモリ宣言 : 初期化後変更不可能 -/</span>
+<span class="keyword">const</span> <span class="keyword">static</span> identifier = [type, type, ...]{expression, expression, ...}
+
+<span class="comment">/- 可変静的メモリ : 初期化後変更可能 -/</span>
+<span class="keyword">var</span> <span class="keyword">static</span> identifier = [type, type, ...]{expression, expression, ...}</pre>
+<p>右辺の<code>[]</code>は配列の型配置、<code>{}</code>はその要素を意味しています。また、その配列の要素として配列を代入することもできます。</p>
+<pre class="example"><span class="keyword">var</span> <span class="keyword">static</span> calmem = [<span class="type">int</span>&lt;16&gt;, <span class="type">float</span>&lt;32&gt;[3]]{2, {0.67, 0.23, 0.45}}
+
+<span class="comment">/- 以下と同じ -/</span>
+<span class="keyword">var</span> <span class="type">int</span>&lt;16&gt; c_1 = 2
+<span class="keyword">var</span> <span class="type">float</span>&lt;32&gt;[3] c_2 = {0.67, 0.23, 0.45}</pre>
+<h4>4.3.2 動的メモリ宣言 (ヒープ領域)</h4>
+<p>任意のスコープのみ、メモリを保持する機能です。これは、実行時もしくは動的にメモリを確保するとも意味します。しかし、確保の失敗があった場合は<a href="./ERROR.html">ERRORライブラリ</a>リファレンスで仕様を確認してください。</p>
+<pre class="syntax"><span class="comment">/- 不変動的メモリ宣言 : 初期化後変更不可能 -/</span>
+<span class="keyword">const</span> <span class="keyword">new</span> identifier = [type, type, ...]{expression, expression, ...}
+
+<span class="comment">/- 可変動的メモリ宣言 : 初期化後変更可能 -/</span>
+<span class="keyword">var</span> <span class="keyword">new</span> identifier = [type, type, ...]{expression, expression, ...}</pre>
+<pre class="example"><span class="keyword">var</span> <span class="type">int</span> length = <span class="function">input</span>()
+<span class="keyword">var</span> <span class="keyword">new</span> buffer = [<span class="type">char</span>[length]]{{0, 67}}</pre>
+<p>ただし、<code>type</code> (初期型) と右辺の<code>expression</code> (初期値) は、型・配列・初期化規則に従い、宣言ごとに<code>static</code>または<code>new</code>の一方だけを指定します。</p>
+<p style="text-align:center;">=== <a href="#menu">目次へ戻る</a> ===</p>
+</section>
+<section id="type">
+<h2>5. 型</h2>
+<table>
+<thead><tr><th>分類</th><th>型名</th><th>サイズ</th><th>表現可能範囲</th></tr></thead>
+<tbody>
+<tr><td>論理型</td><td><code>bool</code></td><td><code>1 bit</code></td><td><code>0, 1</code></td></tr>
+<tr><td rowspan="4">整数型</td><td rowspan="4"><code>int</code></td><td><code>8 bit</code></td><td><code>-128 ~ 127 (0 ~ 255)</code></td></tr>
+<tr><td><code>16 bit</code></td><td><code>-32,768 ~ 32,767 (0 ~ 65,535)</code></td></tr>
+<tr><td><code>32 bit</code></td><td><code>-2,147,483,648 ~ 2,147,483,647 (0 ~ 4,294,967,295)</code></td></tr>
+<tr><td><code>64 bit</code></td><td><code>-9,223,372,036,854,775,808 ~ 9,223,372,036,854,775,807 (0 ~ 18,446,744,073,709,551,615)</code></td></tr>
+<tr><td rowspan="3">実数型</td><td rowspan="3"><code>float</code></td><td><code>16 bit</code></td><td>-</td></tr>
+<tr><td><code>32 bit</code></td><td><code>1.175&Cross;10<sup>-38</sup> ~ 3.402&Cross;10<sup>38</sup></code></td></tr>
+<tr><td><code>64 bit</code></td><td><code>a</code></td></tr>
+<tr><td rowspan="2">文字型</td><td><code>char</code></td><td><code>8 bit</code></td><td><code>0 ~ 255</code></td></tr>
+<tr><td><code>wchar</code></td><td><code>16 bit</code></td><td><code>0 ~ 65535</code></td></tr>
+</tbody>
+</table>
+<small>※ <code>n</code>ビットで<code>-2<sup>n-1</sup> ~ 2<sup>n-1</sup>-1 (0 ~ 2<sup>n</sup>-1)</code> (括弧内は符号無しの場合) を表現することができます。</small>
+<p>これら以外に、同一な型の値を並べた配列型、アドレスを指し示す参照型、異なる型の値を並べたタプル型があります。</p>
+<h3>5.1 論理型</h3>
+<p>真または偽を示す型です。偽として扱われるものは整数<code>0</code>の他に、空配列、空文字列、無効なメモリアドレスです。厳密に<code>1</code>ビットで表現したい場合、定義演算子で<code>TRUE := 1</code>もしくは<code>FALSE := 0</code>としてください。</p>
+<h3>5.2 整数型</h3>
+<p>正数と負数があり、負数は正数の 2 の補数です。以下の整数を表現することができます。</p>
+<table>
+<thead><tr><th>種類</th><th>表記</th><th>例</th></tr></thead>
+<tbody>
+<tr><td>二進数</td><td><code>0b</code>で始まる</td><td><code>0b0101</code></td></tr>
+<tr><td>十進数</td><td><code>0</code>以外で始まる</td><td><code>712</code></td></tr>
+<tr><td>十六進数</td><td><code>0x</code>で始まる</td><td><code>0x4E</code></td></tr>
+</tbody>
+</table>
+<h3>5.3 実数型</h3>
+<p><code>IEEE 754</code>で定義されている、32ビットの単精度 (符号1ビット、指数部8ビット、仮数部23ビット) または64ビットの倍精度 (符号1ビット、指数部11ビット、仮数部52ビット) の実数を扱います。特別な値は下の表を参考してください。</p>
+<table>
+<thead><tr><th>値</th><th>符号部</th><th>指数部</th><th>仮数部</th></tr></thead>
+<tbody><tr><td><code>&infin;</code></td><td><code>0</code></td><td><code>11111111</code></td><td><code>0</code></td></tr><tr><td><code>-&infin;</code></td><td><code>1</code></td><td><code>11111111</code></td><td><code>0</code></td></tr><tr><td><code>NaN</code></td><td>任意</td><td><code>11111111</code></td><td><code>0</code>以外任意</td></tr></tbody>
+</table>
+<h3>5.4 文字型</h3>
+<p><code>ASCII</code>互換文字および<code>Unicode</code>互換文字を扱います。基本的な文字リテラル表記は<code>"..."</code>です。文字列は<code>\0</code>で終端される固定長の<code>char / wchar</code>配列であり、安全なバッファとして扱われます。式の文字列埋め込みは<code>$(...)</code>で囲みます。ただし、<code>wchar</code>オブジェクトに格納する際、<code>U+FFFF</code>を超えるコードポイントはサロゲートペア (16ビット値2つ) で表現する必要があるため、その配列化が必要になります。</p>
+<table>
+<thead><tr><th>型</th><th>幅</th><th>意味</th><th>想定する値域・表現</th></tr></thead>
+<tbody>
+<tr><td><code>char</code></td><td>8ビット</td><td>ASCII互換文字</td><td>ASCII文字を8ビット値として表す</td></tr>
+<tr><td><code>wchar</code></td><td>16ビット</td><td>Unicode互換文字</td><td>Unicodeの16ビット符号単位を表す</td></tr>
+</tbody>
+</table>
+<table>
+<thead><tr><th>変換</th><th>可否</th><th>規則</th></tr></thead>
+<tbody>
+<tr><td><code>char</code> &rightarrow; <code>wchar</code></td><td>許可</td><td>ASCII値を対応するUnicode値へ拡張する</td></tr>
+<tr><td><code>wchar</code> &rightarrow; <code>char</code></td><td>禁止</td><td>暗黙変換・直接代入ともにコンパイルエラー</td></tr>
+<tr><td><code>char</code> &rightarrow; <code>char</code></td><td>許可</td><td>通常の代入規則に従う</td></tr>
+<tr><td><code>wchar</code> &rightarrow; <code>wchar</code></td><td>許可</td><td>通常の代入規則に従う</td></tr>
+</tbody>
+</table>
+<table>
+<caption>制御文字とエスケープ文字</caption>
+<thead><tr><th>制御文字</th><th>意味</th></tr></thead>
+<tbody>
+<tr><td><code>\'</code></td><td>シングルクォーテーション記号</td></tr>
+<tr><td><code>\"</code></td><td>ダブルクォーテーション記号</td></tr>
+<tr><td><code>\\</code></td><td>バックスラッシュ記号</td></tr>
+<tr><td><code>\0</code></td><td>終端文字</td></tr>
+<tr><td><code>\n</code></td><td>改行</td></tr>
+<tr><td><code>\s</code></td><td>空白 (スペース一つ)</td></tr>
+<tr><td><code>\t</code></td><td>水平タブ</td></tr>
+<tr><td><code>\u</code></td><td>ユニコード文字</td></tr>
+</tbody>
+</table>
+<h3>5.5 配列型</h3>
+<p>固定長 (スタック方式) で、型名のあとに<code>[length]</code>をつけます。配列の宣言された長さと初期化時の要素数が異なる場合や空の配列 (<code>{}</code>)、多次元配列の深さと各<code>length</code>が異なる場合は、コンパイル時に指定された型の初期値で埋められます。配列の要素にアクセスするには<code>identifier[index]</code>を使います。</p>
+<div class="diagram-container">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 220" style="max-width: 100%;height:auto;font-family:ui-monospace,SFMono-Regular,Consolas,sans-serif;">
+<defs>
+<marker id="arrow-pos" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 1 L 10 5 L 0 9 z" fill="#2457c5" /></marker>
+<marker id="arrow-neg" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 1 L 10 5 L 0 9 z" fill="#e65100" /></marker>
+</defs>
+<g transform="translate(60, 85)">
+<rect x="0" y="0" width="100" height="50" rx="4" fill="var(--panel)" stroke="var(--line)" stroke-width="2"/>
+<text x="50" y="30" text-anchor="middle" fill="var(--fg)" font-size="14" font-weight="bold">array[0]</text>
+<rect x="120" y="0" width="100" height="50" rx="4" fill="var(--panel)" stroke="var(--line)" stroke-width="2"/>
+<text x="170" y="30" text-anchor="middle" fill="var(--fg)" font-size="14" font-weight="bold">array[1]</text>
+<rect x="240" y="0" width="100" height="50" rx="4" fill="var(--panel)" stroke="var(--line)" stroke-width="2"/>
+<text x="290" y="30" text-anchor="middle" fill="var(--fg)" font-size="14" font-weight="bold">array[2]</text>
+<text x="370" y="32" text-anchor="middle" fill="var(--muted)" font-size="20">&ctdot;</text>
+<rect x="390" y="0" width="100" height="50" rx="4" fill="var(--panel)" stroke="var(--line)" stroke-width="2"/>
+<text x="440" y="30" text-anchor="middle" fill="var(--fg)" font-size="14" font-weight="bold">array[-2]</text>
+<rect x="510" y="0" width="100" height="50" rx="4" fill="var(--panel)" stroke="var(--line)" stroke-width="2"/>
+<text x="560" y="30" text-anchor="middle" fill="var(--fg)" font-size="14" font-weight="bold">array[-1]</text>
+</g>
+<path d="M 110,65 L 610,65" stroke="#2457c5" stroke-width="2" marker-end="url(#arrow-pos)"/>
+<text x="360" y="55" text-anchor="middle" fill="#2457c5" font-size="12" font-weight="bold">正のインデックス (Head から順アクセス : 0 〜 n-1)</text>
+<path d="M 620,155 L 120,155" stroke="#e65100" stroke-width="2" marker-end="url(#arrow-neg)"/>
+<text x="360" y="175" text-anchor="middle" fill="#e65100" font-size="12" font-weight="bold">負のインデックス (Tail から逆アクセス : -1 〜 -n)</text>
+<text x="60" y="205" fill="var(--muted)" font-size="11">低位アドレス (Head)</text>
+<text x="660" y="205" text-anchor="end" fill="var(--muted)" font-size="11">高位アドレス (Tail)</text>
+</svg>
+</div>
+<pre class="syntax"><span class="comment">/- 可変配列 : 要素が可変 -/</span>
+<span class="keyword">var</span> type[length] identifier = {expression, expression, ...}
+
+<span class="comment">/- 不変配列 : 要素が不変 -/</span>
+<span class="keyword">const</span> type[length] identifier = {expression, expression, ...}</pre>
+<p><code>head</code> (<code>array[0]</code>) を指定する以外に、<code>tail</code> (<code>array[-1]</code>) も指定することができます。その関係式は<code>array[-n] = array[<span class="function">len</span>(array) - n]</code>で、コンパイル時に正のインデックスへ展開されます。</p>
+<pre class="example"><span class="keyword">const</span> <span class="type">char</span>[5][5] string = {"He", "is", "smart"}
+<span class="keyword">const</span> <span class="type">char</span> word = string[-2][1]
+<span class="function">print</span>(word)</pre>
+<pre class="output">s</pre>
+<h3>5.6 参照型</h3>
+<p>参照型は変数や定数、関数、配列のアドレスを示す型で、アドレスは必ず参照先の変数で操作します。アドレスを保持する識別子を必要とし、その戻り値の16ビット正符号整数をアドレスとします。</p>
+<pre class="syntax"><span class="comment">/- 可変参照 -/</span>
+<span class="keyword">var</span> <span class="type">int</span> identifier = ref expression
+
+<span class="comment">/- 不変参照 -/</span>
+<span class="keyword">const</span> <span class="type">int</span> identifier = ref expression</pre>
+<pre class="example"><span class="keyword">const</span> <span class="type">int</span> value = 20
+<span class="keyword">var</span> <span class="type">int</span> p = ref value
+
+<span class="comment">/- 参照の初期化 -/</span>
+<span class="keyword">var</span> <span class="type">int</span> q = ref 0
+
+<span class="comment">/- コンパイル時エラー : 0以外の即値 -/</span>
+<span class="comment">/- const int r = ref 20 -/</span>
+
+<span class="function">print</span>(<span class="string">"$(p)\n$(q)"</span>)</pre>
+<pre class="output">0x7fff5fbff8ac
+0x000000000000</pre>
+<pre class="example"><span class="keyword">const</span> <span class="type">char</span>[] g = <span class="string">"Hello, world"</span>
+
+<span class="comment">/- 文字列 "Hello, world" を指す -/</span>
+<span class="keyword">var</span> <span class="type">char</span>[] s = ref g
+
+<span class="comment">/- 文字を指す -/</span>
+<span class="keyword">var</span> <span class="type">char</span> p = ref s
+
+<span class="function">print</span>(p += 1)</pre>
+<pre class="output">e</pre>
+<table>
+<thead><tr><th>アドレス演算</th><th>意味</th></tr></thead>
+<tbody><tr><td><code>p += n</code></td><td>アドレスを<code>xのバイトサイズ &Cross; n</code>進む</td></tr><tr><td><code>p -= n</code></td><td>アドレスを<code>xのバイトサイズ &Cross; n</code>戻る</td></tr><tr><td><code>p + n = expression</code></td><td><code>p</code>から<code>n</code>進んだアドレスに<code>expression</code>を代入する</td></tr><tr><td><code>p - n = expression</code></td><td><code>p</code>から<code>n</code>戻ったアドレスに<code>expression</code>を代入する</td></tr></tbody>
+</table>
+<h3>5.7 タプル型</h3>
+<p>複数の型の値を順番通りにまとめて保持できる変更不可な配列型で、必ず定義演算子を使います。要素へのアクセスは<code>identifier[index]</code>で可能です。</p>
+<pre class="syntax">identifier := (expression, expression, ...)</pre>
+<pre class="example"><span class="comment">/- 年齢、名前、売上前年比 -/</span>
+person := (26, <span class="string">"Tanaka"</span>, 1.8)
+<span class="function">print</span>(person[1])</pre>
+<pre class="output">Tanaka</pre>
+<p>名前空間宣言を使えば、以下のように書き換えることができます。</p>
+<pre class="example"><span class="keyword">tef</span> DATA
+    <span class="type">int</span>,
+    <span class="type">char</span>[],
+    <span class="type">float</span>
+<span class="keyword">end</span>
+
+<span class="keyword">const</span> DATA person = {26, <span class="string">"Tanaka"</span>, 1.8}
+<span class="function">print</span>(person[2])</pre>
+<pre class="output">1.8</pre>
+<p style="text-align:center;">=== <a href="#menu">目次へ戻る</a> ===</p>
+</section>
+<section id="operator">
+<h2>6. 演算子</h2>
+<p>二項演算子は同じ型の間のみ演算が可能です。</p>
+<table>
+<thead><tr><th>評価優先度</th><th>演算子</th><th>意味</th><th>結合規則</th></tr></thead>
+<tbody>
+<tr><td>高</td><td><code>::</code></td><td>アクセス</td><td rowspan="6">左結合</td></tr>
+<tr><td></td><td><code>() []</code></td><td>括弧</td></tr>
+<tr><td></td><td><code>ref</code></td><td>参照</td></tr>
+<tr><td></td><td><code>&lt;...&gt;</code></td><td>バイト</td></tr>
+<tr><td></td><td><code>:</code></td><td>キャスト</td></tr>
+<tr><td></td><td><code>func(...)</code></td><td>関数呼び出し</td></tr>
+<tr><td></td><td><code>not</code></td><td>論理否定 / ビット否定</td><td>右結合</td></tr>
+<tr><td></td><td><code>^</code></td><td>冪算</td><td>左結合</td></tr>
+<tr><td></td><td><code>-</code></td><td>マイナス</td><td>右結合</td></tr>
+<tr><td></td><td><code>* / %</code></td><td>乗算、除算、剰余</td><td rowspan="7">左結合</td></tr>
+<tr><td></td><td><code>+ -</code></td><td>加算、減算</td></tr>
+<tr><td></td><td><code>&lt;&lt; &gt;&gt;</code></td><td>シフト</td></tr>
+<tr><td></td><td><code>&lt; &gt;</code></td><td>不等号</td></tr>
+<tr><td></td><td><code>is</code></td><td>等号</td></tr>
+<tr><td></td><td><code>and</code></td><td>論理積 / ビット積</td></tr>
+<tr><td></td><td><code>or</code></td><td>論理和 / ビット和</td></tr>
+<tr><td></td><td><code>=</code></td><td>代入</td><td rowspan="5">右結合</td></tr>
+<tr><td></td><td><code>+= -= *= /= %= ^=</code></td><td>複合代入</td></tr>
+<tr><td></td><td><code>~</code></td><td>オーバーレイ</td></tr>
+<tr><td></td><td><code>&</code></td><td>エイリアス</td></tr>
+<tr><td>低</td><td><code>:=</code></td><td>定義</td></tr>
+</tbody>
+</table>
+<h3>6.1 算術演算子</h3>
+<h4>6.1.1 マイナス演算子 <code>-</code></h4>
+<p>a</p>
+<pre class="syntax">- expression</pre>
+<pre class="example">-1</pre>
+<h4>6.1.2 加算演算子 <code>+</code></h4>
+<p>a</p>
+<pre class="syntax">expression + expression</pre>
+<pre class="example">1 + 2</pre>
+<h4>6.1.3 減算演算子 <code>-</code></h4>
+<p>a</p>
+<pre class="syntax">expression - expression</pre>
+<pre class="example">1 - 2</pre>
+<h4>6.1.4 乗算演算子 <code>*</code></h4>
+<p>a</p>
+<pre class="syntax">expression * expression</pre>
+<pre class="example">1 * 2</pre>
+<h4>6.1.5 除算演算子 <code>/</code></h4>
+<p>a</p>
+<pre class="syntax">expression / expression</pre>
+<pre class="example">1 / 2</pre>
+<h4>6.1.6 剰余演算子 <code>%</code></h4>
+<p>a</p>
+<pre class="syntax">expression % expression</pre>
+<pre class="example">1 % 2</pre>
+<h4>6.1.7 冪算演算子 <code>^</code></h4>
+<p>a</p>
+<pre class="syntax">expression ^ expression</pre>
+<pre class="example">1 ^ 2</pre>
+<h4>6.1.8 代入演算子 <code>=</code></h4>
+<p>a</p>
+<pre class="syntax">identifier = expression</pre>
+<pre class="example"><span class="keyword">const</span> <span class="type">char</span> c = <span class="string">"M"</span></pre>
+<h4>6.1.9 複合代入演算子<code>+= -= *= /= %= ^=</code></h4>
+<pre class="syntax"><span class="comment">/- y = y + x -/</span>
+identifier += identifier
+
+<span class="comment">/- y = y - x -/</span>
+identifier -= identifier
+
+<span class="comment">/- y = y * x -/</span>
+identifier *= identifier
+
+<span class="comment">/- y = y / x -/</span>
+identifier /= identifier
+
+<span class="comment">/- y = y % x -/</span>
+identifier %= identifier
+
+<span class="comment">/- y = y ^ x -/</span>
+identifier ^= identifier</pre>
+<pre class="example"><span class="keyword">var</span> <span class="type">int</span> x = 2
+<span class="keyword">var</span> <span class="type">int</span> y = (x += 1)</pre>
+<h3>6.2 論理演算子</h3>
+<h4>6.2.1 ビット積演算子 / 論理積演算子 <code>and</code></h4>
+<p>a</p>
+<table>
+<thead><tr><th><code>A</code></th><th><code>B</code></th><th><code>A and B</code></th></tr></thead>
+<tbody><tr><td>0</td><td>0</td><td>0</td></tr><tr><td>0</td><td>1</td><td>0</td></tr><tr><td>1</td><td>0</td><td>0</td></tr><tr><td>1</td><td>1</td><td>1</td></tr><tr><td>整数型</td><td>整数型</td><td>整数型</td></tr><tr><td>論理型</td><td>論理型</td><td>論理型</td></tr></tbody>
+</table>
+<pre class="syntax">expression and expression</pre>
+<pre class="example">a</pre>
+<h4>6.2.2 ビット和演算子 / 論理和演算子 <code>or</code></h4>
+<p>a</p>
+<table>
+<thead><tr><th><code>A</code></th><th><code>B</code></th><th><code>A or B</code></th></tr></thead>
+<tbody><tr><td>0</td><td>0</td><td>0</td></tr><tr><td>0</td><td>1</td><td>1</td></tr><tr><td>1</td><td>0</td><td>1</td></tr><tr><td>1</td><td>1</td><td>1</td></tr><tr><td>整数型</td><td>整数型</td><td>整数型</td></tr><tr><td>論理型</td><td>論理型</td><td>論理型</td></tr></tbody>
+</table>
+<pre class="syntax">expression or expression</pre>
+<pre class="example">a</pre>
+<h4>6.2.3 ビット否定 / 論理否定演算子 <code>not</code></h4>
+<p>a</p>
+<table>
+<thead><tr><th>A</th><th>not A</th></tr></thead>
+<tbody><tr><td>0</td><td>1</td></tr><tr><td>1</td><td>0</td></tr><tr><td>整数型</td><td>整数型</td></tr><tr><td>論理型</td><td>論理型</td></tr></tbody>
+</table>
+<h4>6.2.4 等号演算子 <code>is</code></h4>
+<p>a</p>
+<pre class="syntax">expression is expression</pre>
+<pre class="example"><span class="keyword">var</span> <span class="type">float</span> x = 0.5
+<span class="keyword">const</span> <span class="type">bool</span> t = x is 0.5</pre>
+<h4>6.2.5 不等号演算子 <code>&lt; &gt;</code></h4>
+<p>a</p>
+<pre class="syntax"><span class="comment">/- 未満 -/</span>
+expression &lt; expression
+
+<span class="comment">/- 超過 -/</span>
+expression &gt; expression</pre>
+<pre class="example">10 &gt; 2</pre>
+<h3>6.3 システム演算子</h3>
+<h4>6.3.1 アクセス演算子 <code>::</code></h4>
+<p>オブジェクト内の変数や定数にアクセスします。</p>
+<pre class="syntax">identifier::identifier</pre>
+<pre class="example"><span class="keyword">import</span> MATH
+<span class="keyword">const</span> <span class="type">int</span> s = MATH::<span class="function">sum</span>(1, 2)</pre>
+<h4>6.3.2 バイト演算子 <code>&lt;...&gt;</code></h4>
+<p>型のビットサイズをプログラマが決定することができます。8ビットは1バイトに等しいです。もし2の累乗の数でない場合は、その数の一つの上のバイトサイズになります。例えば、<code>&lt;15&gt;</code>は<code>&lt;16&gt;</code>として、<code>&lt;53&gt;</code>は<code>&lt;64&gt;</code>となります。特に指定できるバイトは下の表を参考してください。</p>
+<table>
+<thead><tr><th>符号あり</th><th>符号なし</th></tr></thead>
+<body>
+<tr><td><code>8</code></td><td><code>u8</code></td></tr>
+<tr><td><code>16</code></td><td><code>u16</code></td></tr>
+<tr><td><code>32</code></td><td><code>u32</code></td></tr>
+<tr><td><code>64</code></td><td><code>u64</code></td></tr>
+<tr><td><code>A</code> (任意)</td><td><code>uA</code></td></tr>
+</body>
+</table>
+<pre class="syntax">type&lt;number&gt;</pre>
+<pre class="example"><span class="keyword">var</span> <span class="type">char</span>&lt;16&gt;[15] greeting = <span class="string">"Hello, world"</span></pre>
+<h4>6.3.3 キャスト演算子 <code>:</code></h4>
+<p>自動的に型変換は行わないため、異なる型に変換する場合に使います。変数にのみ使用することができ、定数に対してはコンパイル時エラーになります。</p>
+<pre class="syntax">identifier : type</pre>
+<pre class="example"><span class="keyword">const</span> <span class="type">char</span> c = <span class="string">"A"</span>
+<span class="keyword">const</span> <span class="type">wchar</span> w = c : <span class="type">wchar</span></pre>
+<h4>6.3.4 シフト演算子 <code>&lt;&lt; &gt;&gt;</code></h4>
+<p>整数型の値どうしを計算します。</p>
+<pre class="syntax"><span class="comment">/- 左シフト -/</span>
+identifier &lt;&lt; identifier
+
+<span class="comment">/- 右シフト -/</span>
+identifier &gt;&gt; identifier</pre>
+<pre class="example"><span class="keyword">const</span> <span class="type">int</span> result = 40 &lt;&lt; 3</pre>
+<h4>6.3.5 オーバーレイ演算子 <code>~</code></h4>
+<p>新しく確保したメモリに値をコピーしたり、参照型を付け替えることをしません (ゼロ・リロケーション) 。値がオーバーフローした場合の演算結果は破棄されません。別の型へのキャストはコンパイル時エラーです。</p>
+<pre class="syntax">~ identifier</pre>
+<pre class="example"><span class="keyword">var</span> <span class="type">int</span>&lt;16&gt; x = 40000
+<span class="keyword">const</span> <span class="type">int</span> y = ~x</pre>
+<h4>6.3.6 エイリアス演算子 <code>&</code></h4>
+<p>既に宣言されている変数を別名として確保します。これは参照渡しになります。</p>
+<pre class="syntax">&identifier</pre>
+<pre class="example"><span class="keyword">var</span> <span class="type">char</span>[10] greeting = <span class="string">"Morning"</span>
+<span class="function">print</span>(<span class="string">"$(greeting)\n"</span>)
+
+<span class="keyword">var</span> <span class="type">char</span>[] g = &greeting
+g = <span class="string">"Evening"</span>
+
+<span class="function">print</span>(<span class="string">"$(greeting)\n"</span>)
+<span class="function">print</span>(g)</pre>
+<pre class="output">Morning
+Evening
+Evening</pre>
+<h4>6.3.7 定義演算子 <code>:=</code></h4>
+<p>左辺を文字定数、右辺をその式とする演算子です。型を明示する場合は、キャスト演算子を使います。</p>
+<pre class="syntax">identifier := expression</pre>
+<pre class="example"><span class="comment">/- 定数の宣言 -/</span>
+SQ_2 := 1.4
+
+<span class="comment">/- 型の明示付き定数 -/</span>
+PI:<span class="type">float</span>&lt;32&gt; := 3.14
+<span class="comment">/- const float&lt;32&gt; PI = 3.14 -/</span></pre>
+<p style="text-align:center;">=== <a href="#menu">目次へ戻る</a> ===</p>
+</section>
+<section id="control">
+<h2>7. 制御文</h2>
+<h3>7.1 <code>if</code></h3>
+<p>条件が真の場合にブロック内の命令を順に実行し、偽の場合は実行されずに次の命令に進みます。</p>
+<pre class="syntax"><span class="keyword">if</span> condition
+    body
+<span class="keyword">end</span></pre>
+<pre class="example"><span class="keyword">const</span> <span class="type">bool</span> x = 1
+<span class="keyword">const</span> <span class="type">bool</span> y = 0
+<span class="keyword">if</span> x and y is 1
+    <span class="function">print</span>(<span class="string">"No"</span>)
+<span class="keyword">end</span>
+<span class="keyword">if</span> x or y is 1
+    <span class="function">print</span>(<span class="string">"Yes"</span>)
+<span class="keyword">end</span></pre>
+<pre class="output">Yes</pre>
+<h3>7.2 <code>loop</code></h3>
+<p>命令の繰り返しを実行します。繰り返し中断には予約語の<code>break</code>、繰り返し再開には予約語の<code>continue</code>を使います。</p>
+<pre class="syntax"><span class="keyword">loop</span>
+    body
+<span class="keyword">end</span></pre>
+<pre class="example"><span class="keyword">var</span> <span class="type">int</span> i = 0
+<span class="keyword">var</span> <span class="type">int</span>&lt;u16&gt; result = 0
+<span class="keyword">const</span> <span class="type">int</span>[] list1 = {1, 4, 3, 6}
+<span class="keyword">const</span> <span class="type">int</span>[] list2 = {2, 3, 7, 1}
+<span class="comment">/- 内積の計算 -/</span>
+<span class="keyword">loop</span>
+    <span class="keyword">if</span> i &gt; sizeof(list1)
+        <span class="keyword">break</span>
+    <span class="keyword">end</span>
+    result += list1[i] * list2[i]
+    i += 1
+<span class="keyword">end</span>
+<span class="function">print</span>(result)</pre>
+<pre class="output">41</pre>
+<p style="text-align:center;">=== <a href="#menu">目次へ戻る</a> ===</p>
+</section>
+<section id="function">
+<h2>8. 関数</h2>
+<p>関数はコンピュータに対する命令 (アルゴリズム) の集合で、型から型へ変換する<strong>単一入力・単一出力</strong>を原則としています。定義のときは仮引数、呼び出すときは実引数を必要とします。非単一の入力および出力には、タプル型を使います。</p>
+<h3>8.1 関数の呼び出し</h3>
+<p>コンパイラ側で標準提供されている関数です。宣言なしで直接呼び出すことができます。</p>
+<h4>8.1.1 <code>input</code>関数</h4>
+<p>標準入力を受け取って値を返します。</p>
+<pre class="syntax"><span class="function">input</span>() -&gt; <span class="type">int</span>[]</pre>
+<h4>8.1.2 <code>print</code>関数</h4>
+<p>指定された値や式の結果を標準出力に印字します。行末に改行文字<code>\n</code>は挿入されません。</p>
+<pre class="syntax"><span class="function">print</span>(expression) -&gt; <span class="keyword">const</span> <span class="type">int</span></pre>
+<h4>8.1.3 <code>len</code>関数</h4>
+<p>渡された配列や文字列の要素数（長さ）を整数で返します。</p>
+<pre class="syntax"><span class="function">len</span>(expression) -&gt; <span class="type">int</span></pre>
+<h4>8.1.4 <code>sizeof</code>関数</h4>
+<p>指定された識別子や式の型が使用するメモリ領域のバイト数を返します。</p>
+<pre class="syntax"><span class="function">sizeof</span>(expression) -&gt; <span class="type">int</span></pre>
+<pre class="example">a</pre>
+<h4>8.1.5 <code>typeof</code>関数</h4>
+<p>指定された識別子の型を返します。</p>
+<pre class="syntax"><span class="function">typeof</span>(expression) -&gt; type</pre>
+<pre class="example"><span class="keyword">if</span> typeof(4.1) is <span class="type">float</span>
+    <span class="function">print</span>(<span class="string">"float"</span>)
+<span class="keyword">end</span></pre>
+<pre class="output">float</pre>
+<h4>8.1.6 <code>alignof</code>関数</h4>
+<p>指定された型に適用されるアライメント（バイト単位）を返します。</p>
+<pre class="syntax"><span class="function">alignof</span>(expression) -&gt; <span class="type">int</span></pre>
+<pre class="example">a</pre>
+<h3>8.2 関数の宣言</h3>
+<p>プログラマが自由に関数を作成することができます。引数パラメータに対して<code>identifier = expression</code>とデフォルト値を設定することができます。</p>
+<pre class="syntax"><span class="keyword">def</span> identifier type -&gt; type</pre>
+<pre class="example"><span class="comment">/- タプル型を受け取り、値 (実数型) を返す関数 -/</span>
+<span class="keyword">def</span> multiply (<span class="type">float</span>, <span class="type">float</span>) -&gt; <span class="type">float</span>&lt;64&gt;
+
+<span class="comment">/- 値 (16ビット整数型) を受け取り、配列型を返す関数 -/</span>
+<span class="keyword">def</span> retArr <span class="type">int</span>&lt;16&gt; -&gt; <span class="type">char</span>[]
+
+<span class="comment">/- タプル型を受け取り、タプル型を返す関数 -/</span>
+<span class="keyword">def</span> calculate (<span class="type">int</span>, <span class="type">int</span>) -&gt; (<span class="type">int</span>, <span class="type">int</span>)</pre>
+<p><code><span class="keyword">def</span> identifier type -&gt; <span class="keyword">const</span> type</code>のように戻り値が<code><span class="keyword">const</span></code>ならば、その関数がインライン化されます。</p>
+<h3>8.3 関数の定義</h3>
+<p>宣言された関数に対して、その本体を定義します。戻り値として指定したパラメータに値を代入した時点で、関数のブロック全体から脱出します。一度も代入されなかった場合はコンパイル時エラーになります。</p>
+<pre class="syntax">identifier parameter -&gt; parameter
+    body
+<span class="keyword">end</span></pre>
+<pre class="example"><span class="keyword">def</span> div (<span class="type">int</span>, <span class="type">int</span>) -&gt; <span class="type">int</span>
+
+div (x, y) -&gt; z
+    <span class="keyword">if</span> y is 0
+        z = 0
+        <span class="comment">/- パラメータ z に代入されると同時に値が返される -/</span>
+    <span class="keyword">end</span>
+    z = x / y
+<span class="keyword">end</span></pre>
+<pre class="example"><span class="keyword">def</span> calculateA (<span class="type">int</span>, <span class="type">int</span>) -&gt; (<span class="type">int</span>, <span class="type">int</span>)
+<span class="keyword">def</span> calculateB (<span class="type">int</span>, <span class="type">int</span>) -&gt; (<span class="type">int</span>, <span class="type">int</span>)
+
+calculateA in -&gt; (a, b)
+    <span class="comment">/-
+      仮引数 in は (int, int) のタプル型
+      戻り値の a と b は仮引数のため、代入可能 (初期化原則より)
+    -/</span>
+    a = in[0] + in[1]
+    b = in[0] * in[1]
+<span class="keyword">end</span>
+
+calculateB (in_a, in_b) -&gt; (a, b)
+    <span class="comment">/- 仮引数 (in_a, in_b) は、in_a と in_b の整数型 -/</span>
+    a = in_a + in_b
+    b = in_a * in_b
+<span class="keyword">end</span>
+
+<span class="keyword">const</span> <span class="type">int</span> sumA = calculateA(1, 2)[0]
+<span class="keyword">const</span> <span class="type">int</span> sumB = calculateB(1, 2)[0]
+<span class="keyword">const</span> <span class="type">int</span> mulA = calculateA(1, 2)[1]
+<span class="keyword">const</span> <span class="type">int</span> mulB = calculateB(1, 2)[1]
+<span class="function">print</span>(<span class="string">"SumA : $(sumA)\tSumB : $(sumB)\nMulA : $(mulA)\tMulB : $(mulB)"</span>)</pre>
+<pre class="output">SumA : 3    SumB : 3
+MulA : 2    MulB : 2</pre>
+<p><code>new</code>で動的に確保したメモリを参照型で返す場合、コンパイル時に静的メモリ宣言に変えられます。</p>
+<h3>8.4 関数のオーバーロード</h3>
+<p>関数の識別子が複数あり、定義が単数の場合はオーバーロードと呼ばれます。実引数の型および数に対応する関数が呼び出されます。</p>
+<pre class="example"><span class="keyword">def</span> sum (<span class="type">int</span>, <span class="type">int</span>) -&gt; <span class="type">int</span>
+
+<span class="comment">/- 引数の数が異なる場合 -/</span>
+<span class="keyword">def</span> sum (<span class="type">int</span>, <span class="type">int</span>, <span class="type">int</span>) -&gt; <span class="type">int</span>
+
+<span class="comment">/- 引数の型が異なる場合 -/</span>
+<span class="keyword">def</span> sum (<span class="type">float</span>, <span class="type">float</span>) -&gt; <span class="type">float</span>
+
+sum (a, b, c = 0) -&gt; d
+    d = a + b + c
+<span class="keyword">end</span></pre>
+<p style="text-align:center;">=== <a href="#menu">目次へ戻る</a> ===</p>
+</section>
+<section id="namespace">
+<h2>9. 名前空間</h2>
+<p>識別子の衝突を防ぎ、構造を整理するために使用します。名前空間に同名が存在するときは、一つに定まっていないためにコンパイル時で未定義エラーです。</p>
+<pre class="syntax"><span class="keyword">tef</span> identifier
+    body
+<span class="keyword">end</span></pre>
+<pre class="example"><span class="keyword">import</span> MATH
+<span class="keyword">tef</span> complex
+    <span class="type">float</span> x,
+    <span class="type">float</span> y
+    <span class="keyword">def</span> norm (<span class="type">float</span>, <span class="type">float</span>) -&gt; <span class="type">float</span>
+<span class="keyword">end</span>
+
+norm (x, y) -> z
+    z = MATH::sqrt(x ^ 2 + y ^ 2)
+<span class="keyword">end</span>
+
+<span class="keyword">const</span> <span class="type">float</span> complex::x = 1.2
+<span class="keyword">const</span> <span class="type">float</span> complex::y = 3.8
+
+<span class="function">print</span>(complex::norm(complex::x, complex::y))</pre>
+<p>名前空間の型を抽象化するには、コンパイル時に指定された型で最適化された<strong>ラムダ型</strong>を使います。</p>
+<pre class="example"><span class="keyword">tef</span> binary [T] (T, T) -&gt; T
+
+<span class="comment">/-
+    名前空間 binary に addi という関数を定義する
+    コンパイル時に def addi (int, int) -&gt; int となる
+-/</span>
+<span class="keyword">def</span> addi binary(<span class="type">int</span>)</pre>
+<p style="text-align:center;">=== <a href="#menu">目次へ戻る</a> ===</p>
+</section>
+<section id="stdlib">
+<h2>10. 標準ライブラリ</h2>
+<p>コンパイラと同時にダウンロードされる、再利用可能なものです。その内容は熟練の公式開発者のみが毎年アップデートを行います。</p>
+<pre class="syntax"><span class="keyword">import</span> identifier</pre>
+<h3>10.1 <code>MATH</code>ライブラリ</h3>
+<p>三角関数や対数などの数学専門ライブラリです。<code>&pi;</code>などの数学定数はバックスラッシュ (例 : <code>\&pi;</code>) で区別します。詳しくは<a href="./MATH.html">ここをクリック</a>。</p>
+<h3>10.2 <code>ALGORITHM</code>ライブラリ</h3>
+<p>ソーティングやグラフなどのアルゴリズム専門ライブラリです。詳しくは<a href="./ALGORITHM.html">ここをクリック</a>。</p>
+<h3>10.3 <code>SYSTEM</code>ライブラリ</h3>
+<p>ファイルI/OやメモリなどのOS処理専門ライブラリです。詳しくは<a href="./SYSTEM.html">ここをクリック</a>。</p>
+<h3>10.4 <code>NETWORK</code>ライブラリ</h3>
+<p>通信やHTTPリクエストなどのネットワーク処理専門ライブラリです。主な関数群は以下の通りです。詳しくは<a href="./NETWORK.html">ここをクリック</a>。</p>
+<table>
+<thead><tr><th>操作</th><th>意味</th></tr></thead>
+<tbody>
+<tr><td><code><span class="function">open</span>()</code></td><td>読み込み</td></tr>
+<tr><td><code><span class="function">write</span>()</code></td><td>書き込み</td></tr>
+<tr><td><code><span class="function">export</span>()</code></td><td>書き出し</td></tr>
+<tr><td><code><span class="function">close</span>()</code></td><td>書き込み終わり</td></tr>
+</tbody>
+</table>
+<h3>10.5 <code>GRAPH</code>ライブラリ</h3>
+<p>二次元や三次元の描画専門ライブラリです。LaTeXのtikzライブラリの上位互換を目指していますが、その内部処理はC++およびRust製エンジンです。詳しくは<a href="./GRAPH.html">ここをクリック</a>。</p>
+<h3>10.6 <code>ERROR</code>ライブラリ</h3>
+<p>例外処理専門のライブラリです。例外の種類は以下の表の通りです。詳しくは<a href="./ERROR.html">ここをクリック</a>。</p>
+<table>
+<thead><tr><th>エラーの種類</th><th>例外名</th><th>意味</th><th>条件</th></tr></thead>
+<tbody>
+<tr><td>ランタイムエラー</td><td><code>OverErr</code></td><td>オーバーフロー</td><td>実行時に予期しないプログラムが読み込まれた場合</td></tr>
+<tr><td rowspan="3">構文エラー</td><td><code>IndexErr</code></td><td>無効インデックス</td><td rowspan="3">構文に合致しない場合</td></tr>
+<tr><td><code>ValErr</code></td><td>無効な値</td></tr>
+<tr><td><code>ZeroErr</code></td><td>ゼロ除算</td></tr>
+<tr><td rowspan="3">型エラー</td><td><code>TypeErr</code></td><td>無効な型</td></tr>
+<tr><td><code>NulErr</code></td><td>無効なアドレス参照</td><td rowspan="2">異なる型である場合</td></tr>
+<tr><td><code>MemErr</code></td><td>メモリ異常</td></tr>
+</tbody>
+</table>
+<p style="text-align:center;">=== <a href="#menu">目次へ戻る</a> ===</p>
+</section>
+<section id="appendix">
+<h2>11. 補足情報</h2>
+<h3>11.1 EBNF</h3>
+<table>
+<tbody>
+<tr><td>Program</td><td>=</td><td>FuncDeclare | FuncDefine ;</td></tr>
+<tr><td>Type</td><td>=</td><td>"bool" | "int" | "float" | "char" | "wchar" | "ref" Identifier | CustomType ;</td></tr>
+<tr><td>Number</td><td>=</td><td>"0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9" | ( "A" | "a" ) | ( "B" | "b" ) | ( "C" | "c" ) | ( "D" | "d" ) | ( "E" | "e" ) | ( "F" | "f" ) ;</td></tr>
+<tr><td>Digit</td><td>=</td><td>{ "0b" | "0x" } Digit { Digit } ;</td></tr>
+<tr><td>Definition</td><td>=</td><td>( "var" | "const" ) Type [ "[" Digit "]" ] Identifier "=" Expression ;</td></tr>
+<tr><td>FuncDeclare</td><td>=</td><td>"def" Identifier "(" [ Type ] ")" "-&gt;" Type ;</td></tr>
+<tr><td>FuncDefine</td><td>=</td><td>Identifier "(" { Identifier } ")" "-&gt;" Identifier Body "end" ;</td></tr>
+<tr><td>FuncCall</td><td>=</td><td>Identifier "(" { Identifier } ")" ;</td></tr>
+<tr><td>IfStat</td><td>=</td><td>"if" Condition Body "end" ;</td></tr>
+<tr><td>LoopStat</td><td>=</td><td>"loop" Body "end" ;</td></tr>
+<tr><td>Typedef</td><td>=</td><td>"tef" Identifier [ FuncDeclare | Type Identifier ] "end" ;</td></tr>
+</tbody>
+</table>
+<h3>11.2 商用利用</h3>
+<p>個人利用以外に、もしModule言語で書かれたコードを商用にするとき、<a href="./license.html">公式審査宛</a>に申請書を送信してください。もし、認証が未完了のままで商用扱いされているコードが発見された場合、安全性不信の理由から直ちに差し止めの措置を行います。</p>
+<h4>11.2.1 申請の方法</h4>
+<p><a href="https://forms.gle/DJy3LCPnRWKv294H9" target="_blank">申請フォーム</a> (Google Forms) にアクセスして、必要事項を入力。</p>
+<h4>11.2.2 申請後の流れ</h4>
+<p>公式審査員が申請書の入力内容を確認してから、その一週間以内に許諾の可否を示す電子メールを送信します。プログラマはそのメールを受け取り、可否に関らずできるだけプログラムの改善をしてください。メールには、審査員からのコメントや重要ポイントが書かれているはずです。</p>
+<h3>11.3 最新情報</h3>
+<h4>11.3.1 追加済み項目</h4>
+<p>なし</p>
+<h4>11.3.2 追加予定項目</h4>
+<table>
+<thead><tr><th>項目</th><th>備考</th></tr></thead>
+<tbody>
+<tr><td><code>async</code>修飾子</td><td>非同期命令</td></tr>
+<tr><td><code>await</code>演算子</td><td>非同期待機</td></tr>
+</tbody>
+</table>
+<p style="text-align:center;">=== <a href="#menu">目次へ戻る</a> ===</p>
+</section>
+<section id="qa">
+<h2>12. Q & A</h2>
+<p>ここでは、審査員へ頻繁に寄せられる質問と答案を提示します。</p>
+<h3>Q1. なぜC/C++ではなくModule言語を使うのですか ?</h3>
+<h4>A. C/C++の強力な低レベル制御性を維持しつつ、初心者でも安全に記述できるよう、独自の静的解析やエラーチェックをコンパイラレベルで強制するためです。</h4>
+<p style="text-align:center;">=== <a href="#menu">目次へ戻る</a> ===</p>
+</section>
+</main>
+<footer>
+<p><a href="https://docs.google.com/forms/d/e/1FAIpQLSclYhTdMKYHPXBGk4lVrPdjXP_lzMQs0DQBx9UhciQeTwjSUg/viewform?usp=sharing&amp;ouid=109410664909589678111" target="_blank">バグの報告</a> <a href="https://docs.google.com/forms/d/e/1FAIpQLScf2ThHcc-8nd3oHwyLRFDYEois7CxO97379vLTDkfhR9VEeg/viewform?usp=sharing&amp;ouid=109410664909589678111" target="_blank">仕様の提案</a> <a href="./agreement.html">利用規約</a></p>
+<p><small>Copyright © 2026. All rights reserved.</small></p>
+</footer>
+</body>
+</html>

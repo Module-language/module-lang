@@ -1,0 +1,31 @@
+:root{color-scheme:light dark;--bg:#fff;--fg:#202124;--muted:#5f6368;--line:#dadce0;--panel:#f6f8fa;--accent:#2457c5;--code:#f1f3f4;}
+@media(prefers-color-scheme:dark){:root{--bg:#15171a;--fg:#e8eaed;--muted:#aeb4bc;--line:#3b4047;--panel:#20242a;--accent:#8ab4f8;--code:#20242a};}
+body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.8 "Segoe UI",sans-serif;}
+header{padding:3rem 1.3rem;background:var(--panel);border-bottom:1px solid var(--line);}
+main{padding:2rem 1.25rem 5rem;}
+.diagram-container{margin:1.5rem 0;overflow-x:auto;text-align:center;}
+h2{margin-top:2rem;padding-bottom:.45rem;border-bottom:1px solid var(--line);}
+code,pre{font-family:ui-monospace,Consolas,monospace;}
+code{background:var(--code);border-radius:4px;padding:.10rem .2rem;}
+pre{position:relative;background:var(--code);padding:1.8rem 1rem 1rem;overflow:auto;border-radius:8px;border:1px solid var(--line);line-height:1.5;margin:1rem 0;}
+pre::before{position:absolute;top:0.3rem;left:0.7rem;font-size:0.75rem;font-weight:bold;opacity:0.8;font-family:sans-serif;}
+pre.syntax{border-left:3px solid #2457c5;background:var(--panel);}
+pre.syntax::before{content:"構文";color:#4e80eb;}
+pre.example{border-left:3px solid #2e7d32;}
+pre.example::before{content:"例文";color:#38973d;}
+pre.output{border-left:3px solid #8e24aa;color:var(--fg);}
+pre.output::before{content:"出力";color:#ab47bc;}
+table{border-collapse:collapse;width:100%;margin:1rem 0;display:block;overflow-x:auto;}
+th,td{padding:.65rem .8rem;border:1px solid var(--line);}
+th{background:var(--panel);}
+.notice{padding:1rem 1.1rem;border-left:4px solid var(--accent);background:var(--panel);border-radius:0 8px 8px 0;}
+.muted{color:var(--muted);}
+nav{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));}
+nav a{display:block;text-decoration:none;padding:4px;scroll-padding-top:60px;}
+nav a:hover{background-color:#2f3234;}
+.keyword{color:#ff5252;}
+.function{color:#e3c45d;}
+.string{color:#ce9178;}
+.comment{color:#6c7a89;font-style:italic;}
+.type{color:#498bd2;}
+footer{border-top:1px solid var(--line);color:var(--muted);text-align:center;}
