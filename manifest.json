@@ -1,7 +1,7 @@
 {
-  "short_name": "ModuleEditor",
-  "name": "Module Language Web Editor",
-  "description": "Module言語専用の軽量・高速なWebエディタ。オフラインでも完全に動作します。",
+  "short_name": "Mod_Note",
+  "name": "Module Notebook",
+  "description": "Web Code Editor for Module Programming Language",
   "icons": [
     {
       "src": "modlang.ico",
@@ -17,8 +17,8 @@
     }
   ],
   "start_url": "./code.html",
-  "background_color": "#f7f7f7",
-  "theme_color": "#4a90e2",
+  "background_color": "#090C10",
+  "theme_color": "#0F131A",
   "display": "standalone",
   "orientation": "portrait-primary"
 }
