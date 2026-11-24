@@ -1,0 +1,52 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Module Notebook</title><link rel="manifest" href="./manifest.json"><link rel="stylesheet" href="./code.css"></head>
+<body>
+  <header>
+    <div class="header-left">
+      <button id="menu" title="Toggle Explorer (Ctrl+E)" aria-label="Toggle Explorer"><svg width="15" height="15" viewBox="0 0 16 16" fill="none"><path d="M2 4H14M2 8H10M2 12H14" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></button>
+      <ul class="menu">
+        <li>File<ul><li onclick="selectFolder();"><span>Open Folder</span><span class="shortcut-hint">FS</span></li><li onclick="saveCurrentFile();"><span>Save File</span><span class="shortcut-hint">Ctrl+S</span></li><li onclick="window.close();"><span>Exit</span><span class="shortcut-hint">Alt+E</span></li></ul></li>
+        <li><a href="./index.html" target="_blank">Document</a></li>
+      </ul>
+    </div>
+    <div class="header-right">
+      <span id="activeFileLabel"></span>
+      <button class="action-pill primary" onclick="Compiler();" title="Compile source">
+        <svg width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M4 3L13 8L4 13V3Z" fill="currentColor"/></svg>
+        <span>Compile</span>
+      </button>
+      <button class="action-pill primary" onclick="Compiler();" title="Run source">
+        <svg width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M4 3L13 8L4 13V3Z" fill="currentColor"/></svg>
+        <span>Run</span>
+      </button>
+      <button class="action-pill" onclick="toggleConsole();" title="Toggle console"><span>Log</span></button>
+    </div>
+  </header>
+  <main>
+    <div id="editor">
+      <div id="lines"><div class="active-line">1</div></div>
+      <div class="code-stage">
+        <div id="active-line-band"></div>
+        <textarea id="input" spellcheck="false"></textarea>
+        <div id="overlay"></div>
+      </div>
+    </div>
+    <div id="treeItems">
+      <div class="tree-header"><span>Project Tree</span><span style="color: var(--text-muted);">[Ctrl+E]</span></div>
+      <div id="treeList"></div>
+    </div>
+    <div id="consoleDrawer">
+      <div class="console-bar"><span>OUTPUT</span><span style="cursor: pointer; color: var(--text-muted);" onclick="clearConsole();">CLEAR</span></div>
+      <pre id="consoleLog"></pre>
+    </div>
+  </main>
+  <footer>
+    <div class="telemetry-group">
+      <span class="telemetry-item">POS <b id="posReadout">1:1</b></span>
+      <span class="telemetry-item">LINES <b id="lineReadout">1</b></span>
+      <span class="telemetry-item">BYTES <b id="byteReadout">0</b></span>
+    </div>
+    <div class="telemetry-group"><span class="telemetry-item">WASM <b id="wasmStatus">STANDBY</b></span></div>
+  </footer>
+  <script src="./code.js"></script>
+</body>
+</html>
