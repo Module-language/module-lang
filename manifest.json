@@ -4,19 +4,19 @@
   "description": "Web Code Editor for Module Programming Language",
   "icons": [
     {
-      "src": "modlang.ico",
+      "src": "https://github.com/Module-language/module-lang/blob/main/modlang.ico",
       "sizes": "192x192",
       "type": "ico",
       "purpose": "any maskable"
     },
     {
-      "src": "modlang.ico",
+      "src": "https://github.com/Module-language/module-lang/blob/main/modlang.ico",
       "sizes": "512x512",
       "type": "ico",
       "purpose": "any maskable"
     }
   ],
-  "start_url": "./code.html",
+  "start_url": "https://github.com/Module-language/module-lang/blob/main/code.html",
   "background_color": "#090C10",
   "theme_color": "#0F131A",
   "display": "standalone",
