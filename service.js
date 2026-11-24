@@ -1,7 +1,5 @@
-const CACHE_NAME = 'module-editor-v1';
-const ASSETS = [
-  './', './code.html', './manifest.json', './modlang.json'
-];
+const CACHE_NAME = 'module-notebook';
+const ASSETS = ['./', './code.html', './manifest.json', './modlang.json'];
 self.addEventListener('install', (e) => {
   e.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
